@@ -1,0 +1,6 @@
+# 文件
+*.user
+
+# 目录
+build/
+test_dir/

@@ -1,0 +1,8 @@
+# include(./FindACore.cmake)
+
+set(ACore_LIB_DIR "@ACore_LIB_DIR@" CACHE INTERNAL "")
+set(ACore_LIBS "@ACore_LIBS@" CACHE INTERNAL "")
+set(ACore_BINARY_INCLUDE "@ACore_BINARY_INCLUDE@" CACHE INTERNAL "")
+set(ACore_Resource_DIR "@ACore_Resource_DIR@")
+set(ACore_Test "ACore_Test" CACHE INTERNAL "")
+LINK_DIRECTORIES(${ACore_LIB_DIR})

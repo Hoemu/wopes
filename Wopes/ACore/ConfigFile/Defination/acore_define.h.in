@@ -1,0 +1,4 @@
+#define ACORE_DEF "@ACORE_DEF@"
+#define ACore_LIB_DIR "@ACore_LIB_DIR@"
+#define ACore_Lib_major 1
+#define ACore_Lib_minor 0
