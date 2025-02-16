@@ -9,17 +9,10 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
-
 # set(OpenCV_DIR xxxx) # xxxx目录包含OpenCVConfig.cmake\
-find_package(OpenCV REQUIRED)
-find_package(ACore REQUIRED)
 
-message("lib path " ${ACore})
-message("lib include path " ${ACore_BINARY_INCLUDE})
+include(./WopesConfigFile/WopesConfigPackage.cmake)
 
-# include_directories(${ACore_INCLUDE_DIRS})
 # link_directories(${PROJECT_SOURCE_DIR}/../ACore/)
 include_directories(${ACore_BINARY_INCLUDE})
 include_directories(${OpenCV_INCLUDE_DIRS})
@@ -59,13 +52,8 @@ endif()
 # 链接库
 target_link_libraries(WopeWin PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
-    acore
+    ${ACore_LIBS}
 )
-
-
-# add_executable(${PROJECT_NAME} *.cpp)
-# target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBRARIES})
-
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

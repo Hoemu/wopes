@@ -29,3 +29,4 @@ else()
     set(IS_GENERAT_LIBRARY ON)    # Release 模式关闭调试
 endif()
 
+set(IS_GENERAT_LIBRARY ON) # TODO 必要时候可以注释掉

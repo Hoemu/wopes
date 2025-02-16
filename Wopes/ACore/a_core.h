@@ -1,10 +1,7 @@
 #ifndef A_CORE_H
 #define A_CORE_H
 
-#include <iostream>
 #include "ACore_global.h"
-
-using namespace std;
 
 class ACORE_EXPORT ACore
 {
@@ -13,7 +10,9 @@ public:
 
     void print();
 
-    void test(){std::cout<<"test"<<std::endl;}
+    void test();
+
+    void build();
 };
 
 #endif // A_CORE_H
