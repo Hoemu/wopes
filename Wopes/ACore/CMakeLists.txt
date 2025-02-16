@@ -7,30 +7,16 @@ message(STATUS "Generating '${PROJECT_BINARY_DIR}/ConfigFile/ACoreBaseConfig.cma
 
 find_configure_file(${PROJECT_SOURCE_DIR}/ConfigFile)
 generate_head_file(${CMAKE_CURRENT_SOURCE_DIR})
-
-set(HEADERS
-    a_core.h
-    ACore_global.h
-)
-
-set(SOURCES
-    a_core.cpp
-    main.cpp
-)
-
-set(SRCS WIN32
-    ${SOURCES}
-    ${HEADERS}
-)
+find_source_code(SRCS)
 
 if(IS_GENERAT_LIBRARY)
     add_library(ACore SHARED
-        ${SOURCES} ${HEADERS}
+        ${SRCS}
         )
     target_compile_definitions(ACore PRIVATE ACORE_LIBRARY)
     message(STATUS "execute library")
 else()
-    add_executable(ACore ${SOURCES} ${HEADERS})
+    add_executable(ACore ${SRCS})
     message(STATUS "execute exe")
 endif()
 

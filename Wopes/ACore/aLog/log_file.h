@@ -1,0 +1,45 @@
+#ifndef LOGFILE_H
+#define LOGFILE_H
+#define unint unsigned int
+
+#include <memory>
+#include "data_param.h"
+
+using std::iostream;
+
+struct functionData
+{
+    //    void (LogFile::*callback)();
+    unsigned int threadID = 0x0000;
+    string filePath;
+    thread* th;
+    bool isRunning;
+    bool dataFlag = false;
+    std::shared_ptr<DataParam> ptrDataParam;
+};
+
+class LogFile
+{
+public:
+    // 注意这里面的数据是不生效的（并没有在当前线程下运行）
+    LogFile();
+    ~LogFile();
+
+    /** 设置文件路径，只能初始化一次 */
+    void setFilePath(list<string> var);
+
+    void push(const msg_data& data);
+
+protected:
+    void run_thread(const functionData& var);
+
+private:
+    /** 日志路径 */
+    list<string> logFilePath;
+
+    list<FILE*> fileList;
+
+    vector<functionData> vecThread;
+};
+
+#endif // LOGFILE_H

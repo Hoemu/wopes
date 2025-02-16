@@ -30,6 +30,17 @@ function(generate_head_file target_dir)
     endforeach()
 endfunction()
 
+function(find_source_code OUTPUT_VAR)
+    file(GLOB_RECURSE src "*.cpp" "*.h")
+    set(fileList "")
+    foreach(child ${src})
+        LIST(APPEND fileList ${child})
+        # message("append value " ${child})
+    endforeach()
+    set(${OUTPUT_VAR} ${fileList} PARENT_SCOPE)
+    # message(STATUS "[end src] " ${fileList})
+endfunction()
+
 include(./ConfigFile/ACore.cmake)
 include(./ConfigFile/ACorePackageConfig.cmake)
 
