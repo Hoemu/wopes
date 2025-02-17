@@ -2,7 +2,6 @@
 message(STATUS "Begin ACoreBaseConfig")
 
 set(ACore_INCLUDE_DIRS_CONFIGCMAKE "${CMAKE_CURRENT_BINARY_DIR}/include")
-# add_definitions(__ACore_INCLUDE_DIRS )
 
 function(find_configure_file target_dir)
     file(GLOB_RECURSE children "${target_dir}/*.in")
@@ -10,10 +9,11 @@ function(find_configure_file target_dir)
     foreach(child ${children})
         get_filename_component(dir_name ${child} NAME)
         string(REGEX REPLACE "\\.in$" "" output_str "${dir_name}")
-        set(ACoreConfigFile "${CMAKE_CURRENT_BINARY_DIR}/${output_str}")
-        # string(REGEX REPLACE "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}" res "${ACoreConfigFile}")
-        # message("-- operator " ${ACoreConfigFile})
-        configure_file(${child} "${ACoreConfigFile}" @ONLY)
+        set(ACoreAllConfigFile "${CMAKE_CURRENT_BINARY_DIR}/${output_str}")
+        # string(REGEX REPLACE "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}" res "${ACoreAllConfigFile}")
+        # message("-- operator " ${ACoreAllConfigFile})
+        configure_file(${child} "${ACoreAllConfigFile}" @ONLY)
+        install(FILES "${ACoreAllConfigFile}" DESTINATION "./")
     endforeach()
 endfunction()
 
@@ -41,7 +41,13 @@ function(find_source_code OUTPUT_VAR)
     # message(STATUS "[end src] " ${fileList})
 endfunction()
 
+# TODO 设置头文件（非 .h 类型）
+function(copy_head target_dir OUTPUT_VAR)
+    set(${OUTPUT_VAR} ${target_dir} PARENT_SCOPE)
+endfunction()
+
 include(./ConfigFile/ACore.cmake)
 include(./ConfigFile/ACorePackageConfig.cmake)
+include(./ACore)
 
 message(STATUS "End ACoreBaseConfig")

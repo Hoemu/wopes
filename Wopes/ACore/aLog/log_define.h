@@ -3,6 +3,8 @@
 
 #define HAS_FILE_INFO
 
+#include "log_system.h"
+
 #if defined(HAS_FILE_INFO)
 #define LOG_INFO(x)                                                     \
     LogSystem::instance()->setLogMsg(__FILE__, __FUNCTION__, __LINE__); \

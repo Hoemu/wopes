@@ -14,10 +14,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(./WopesConfigFile/WopesConfigPackage.cmake)
 
 # link_directories(${PROJECT_SOURCE_DIR}/../ACore/)
-include_directories(${ACore_BINARY_INCLUDE})
+include_directories(${ACore_INCLUDE_DIRS})
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-# message("opencv lib "${OpenCV_LIBS})
+message(${ACore_INCLUDE_DIRS} "+" ${ACORE_STATIC_DIRS})
+
+# message("opencv lib " ${OpenCV_LIBS})
 
 set(PROJECT_SOURCES
         main.cpp
@@ -52,7 +54,7 @@ endif()
 # 链接库
 target_link_libraries(WopeWin PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
-    ${ACore_LIBS}
+    # ${ACore_LIBS}
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

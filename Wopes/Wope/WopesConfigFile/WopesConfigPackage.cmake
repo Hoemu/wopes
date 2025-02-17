@@ -8,4 +8,4 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 # 寻找其他包
 
 find_package(OpenCV REQUIRED)
-find_package(ACore REQUIRED)
+# find_package(ACore REQUIRED)

@@ -4,9 +4,9 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    a.print();
-    a.test();
-    a.build();
+    // a.print();
+    // a.test();
+    // a.build();
 }
 
 MainWindow::~MainWindow()

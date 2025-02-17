@@ -1,8 +1,10 @@
 # include(./FindACore.cmake)
 
-set(ACore_LIB_DIR "@ACore_LIB_DIR@" CACHE INTERNAL "")
-set(ACore_LIBS "@ACore_LIBS@" CACHE INTERNAL "")
-set(ACore_BINARY_INCLUDE "@ACore_BINARY_INCLUDE@" CACHE INTERNAL "")
-set(ACore_Resource_DIR "@ACore_Resource_DIR@")
-set(ACore_Test "ACore_Test" CACHE INTERNAL "")
-LINK_DIRECTORIES(${ACore_LIB_DIR})
+set(ACore_SHARED_DIRS "@ACore_SHARED_DIRS@" CACHE INTERNAL "动态库文件")
+set(ACore_LIBS "@ACore_LIBS@" CACHE INTERNAL "库名称")
+set(ACORE_STATIC_DIRS "@ACORE_STATIC_DIRS@" CACHE INTERNAL "静态库文件")
+set(ACore_INCLUDE_DIRS "@ACore_INCLUDE_DIRS@" CACHE INTERNAL "头文件路径")
+set(ACore_Test "ACore_Test" CACHE INTERNAL "测试样例")
+
+# include(./ACoreVersion.cmake)
+# include(./FindACore.cmake)

@@ -1,0 +1,2 @@
+#include "a_core.h"
+#include "./aLog/log_define.h"

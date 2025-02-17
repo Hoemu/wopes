@@ -27,7 +27,18 @@ set_target_properties(ACore PROPERTIES
 target_link_libraries(ACore PRIVATE Qt${QT_VERSION_MAJOR}::Core)
 
 # 安装可执行文件到bin目录
-install(TARGETS ACore DESTINATION bin)
-install(TARGETS ACore LIBRARY DESTINATION lib)
+install(TARGETS ACore
+    EXPORT ACore
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION bin
+)
+
+# 安装配置文件
+# install(EXPORT ACore
+#   FILE ACoreConfig.cmake
+#   NAMESPACE ACore::
+#   DESTINATION lib/cmake/ACore
+# )
 
 
