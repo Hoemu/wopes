@@ -22,8 +22,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE
     ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
 # var set
-set(ACore_LIBS "acore")
 set(ACore_Resource_DIR ${CMAKE_CURRENT_BINARY_DIR})
+# set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/../../${PROJECT_NAME}") # 自己定义了库路径
 set(ACore_SHARED_DIRS "${CMAKE_INSTALL_PREFIX}/bin")
 SET(ACORE_STATIC_DIRS "${CMAKE_INSTALL_PREFIX}/lib")
 set(ACore_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")
@@ -33,6 +33,9 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
     set(IS_GENERAT_LIBRARY ON)    # Release 模式关闭调试
 endif()
+
+# set (CMAKE_C_COMPILER "C:/ProgramData/Qt6.8/Tools/mingw1310_64/bin/gcc.exe")
+# set (CMAKE_CXX_COMPILER "C:/ProgramData/Qt6.8/Tools/mingw1310_64/bin/g++.exe")
 
 set(IS_GENERAT_LIBRARY ON) # TODO 必要时候可以注释掉
 

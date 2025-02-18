@@ -1,6 +1,9 @@
 # 当前页面主要写一些函数和宏定义
 message(STATUS "Begin ACoreBaseConfig")
 
+include(./ConfigFile/ACore.cmake)
+include(./ConfigFile/ACorePackageConfig.cmake)
+
 set(ACore_INCLUDE_DIRS_CONFIGCMAKE "${CMAKE_CURRENT_BINARY_DIR}/include")
 
 function(find_configure_file target_dir)
@@ -25,8 +28,13 @@ function(generate_head_file target_dir)
         string(REGEX REPLACE "${dir_name}" "" head_dir "${head_res}")
         string(REGEX REPLACE "${CMAKE_CURRENT_BINARY_DIR}/include" "" head_install "${head_dir}")
         install(FILES ${child} DESTINATION include/${head_install})
-        file(COPY ${child} DESTINATION "${head_dir}")
-        # message("head -" ${head_install})
+        if(NOT ${dir_name} MATCHES "main.cpp")
+            file(COPY ${child} DESTINATION "${head_dir}")
+            message("Find file " ${dir_name})
+        elseif(NOT IS_GENERAT_LIBRARY)
+            file(COPY ${child} DESTINATION "${head_dir}")
+            message("Find file " ${dir_name})
+        endif()
     endforeach()
 endfunction()
 
@@ -46,8 +54,6 @@ function(copy_head target_dir OUTPUT_VAR)
     set(${OUTPUT_VAR} ${target_dir} PARENT_SCOPE)
 endfunction()
 
-include(./ConfigFile/ACore.cmake)
-include(./ConfigFile/ACorePackageConfig.cmake)
 include(./ACore)
 
 message(STATUS "End ACoreBaseConfig")

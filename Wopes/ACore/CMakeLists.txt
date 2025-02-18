@@ -16,12 +16,12 @@ if(IS_GENERAT_LIBRARY)
     target_compile_definitions(ACore PRIVATE ACORE_LIBRARY)
     message(STATUS "execute library")
 else()
-    add_executable(ACore ${SRCS})
+    add_executable(ACore ${SRCS} main.cpp)
     message(STATUS "execute exe")
 endif()
 
 set_target_properties(ACore PROPERTIES
-    OUTPUT_NAME "acore"          # 修改基础名称，生成 libRenamedLib.a
+    OUTPUT_NAME "ACore"          # 修改基础名称，生成 libRenamedLib.a
 )
 
 target_link_libraries(ACore PRIVATE Qt${QT_VERSION_MAJOR}::Core)

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 // #include "../ACore/a_core.h"
 // #include <ACore>
+#include "a_core.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -22,6 +23,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    // ACore a;
+    ACore a;
 };
 #endif // MAINWINDOW_H
