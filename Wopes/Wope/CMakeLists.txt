@@ -14,8 +14,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(./WopesConfigFile/WopesConfigPackage.cmake)
 
 # link_directories(${PROJECT_SOURCE_DIR}/../ACore/)
-include_directories(${ACore_INCLUDE_DIRS})
-# include_directories(${OpenCV_INCLUDE_DIRS})
+include_directories(${ACore_DIR_INCLUDE}) # 动态变化
+include_directories(${OpenCV_INCLUDE_DIRS})
 
 message(${ACore_INCLUDE_DIRS})
 message(${ACore_SHARED_DIRS})
@@ -62,7 +62,7 @@ link_directories(${ACore_LIBS})
 # 链接库
 target_link_libraries(WopeWin PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
-    ${ACore_LIBS}
+    ${ACore_DIR_LIB}
     ${OpenCV_LIBS}
 )
 

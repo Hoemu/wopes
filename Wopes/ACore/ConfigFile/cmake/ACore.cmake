@@ -21,24 +21,22 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE
     ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
-# var set
-set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/../${PROJECT_NAME}") # 自己定义了库路径
-set(ACore_LIBS "${CMAKE_INSTALL_PREFIX}/lib/lib${PROJECT_NAME}.dll.a")     # 实际的路径
-set(ACore_Resource_DIR ${CMAKE_CURRENT_BINARY_DIR})
-set(ACore_SHARED_DIRS "${CMAKE_INSTALL_PREFIX}/bin")
-SET(ACORE_STATIC_DIRS "${CMAKE_INSTALL_PREFIX}/lib")
-set(ACore_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")
-set(ACore_INCLUDE_DIRS_CONFIGCMAKE "${CMAKE_CURRENT_BINARY_DIR}/include")
-
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(IS_GENERAT_LIBRARY OFF)   # Debug 模式下启用调试
 else()
     set(IS_GENERAT_LIBRARY ON)    # Release 模式关闭调试
 endif()
 
-# set (CMAKE_C_COMPILER "C:/ProgramData/Qt6.8/Tools/mingw1310_64/bin/gcc.exe")
-# set (CMAKE_CXX_COMPILER "C:/ProgramData/Qt6.8/Tools/mingw1310_64/bin/g++.exe")
+# include(./CMakePackageConfigHelpers)# TODO 需要自动定位 ACore_DIRS 时放开注释
 
-set(IS_GENERAT_LIBRARY ON) # TODO 必要时候可以注释掉
+# TODO 手动设置位置
+set(IS_GENERAT_LIBRARY ON) # 是否生成库/或者是调试模式
+set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/../${PROJECT_NAME}") # 自定义安装位置
+set(ACore_LIBS "${CMAKE_INSTALL_PREFIX}/lib/lib${PROJECT_NAME}.dll.a")     # 静态库位置（安装后）
+set(ACore_Resource_DIR ${CMAKE_CURRENT_BINARY_DIR})
+set(ACore_SHARED_DIRS "${CMAKE_INSTALL_PREFIX}/bin")                       # 动态库位置（安装后）
+SET(ACORE_STATIC_DIRS "${CMAKE_INSTALL_PREFIX}/lib")                       # 静态库位置（安装后）
+set(ACore_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")                  # 头文件位置（安装后）
+set(ACore_INCLUDE_DIRS_CONFIGCMAKE "${CMAKE_CURRENT_BINARY_DIR}/include")  # 未定义
 
 

@@ -5,8 +5,8 @@ project(Wopes LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# add_subdirectory(./ACore)
-# add_subdirectory(./Wope)
+add_subdirectory(./ACore)
+add_subdirectory(./Wope)
 
 # cmake --install .
 # cmake --build . --target install
