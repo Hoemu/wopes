@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(ACore LANGUAGES CXX)
 
-include(./ConfigFile/ACoreBaseConfig.cmake)
+include(./ConfigFile/cmake/ACoreBaseConfig.cmake)
 message(STATUS "Generating '${PROJECT_BINARY_DIR}/ConfigFile/ACoreBaseConfig.cmake'")
 
 find_configure_file(${PROJECT_SOURCE_DIR}/ConfigFile)
@@ -28,17 +28,16 @@ target_link_libraries(ACore PRIVATE Qt${QT_VERSION_MAJOR}::Core)
 
 # 安装可执行文件到bin目录
 install(TARGETS ACore
-    EXPORT ACore
+    EXPORT ACoreTargets
     ARCHIVE DESTINATION lib
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION bin
 )
 
-# 安装配置文件
-# install(EXPORT ACore
-#   FILE ACoreConfig.cmake
-#   NAMESPACE ACore::
-#   DESTINATION lib/cmake/ACore
-# )
+install(EXPORT ACoreTargets
+  FILE ACoreTargets.cmake          # 生成的目标文件名
+  NAMESPACE ACore::                # 命名空间（推荐格式）
+  DESTINATION ./      # 安装路径
+)
 
 

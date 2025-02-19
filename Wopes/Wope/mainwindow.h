@@ -23,6 +23,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    ACore a;
+    ACore::ACore a;
 };
 #endif // MAINWINDOW_H

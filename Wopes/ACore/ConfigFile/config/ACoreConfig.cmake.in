@@ -1,5 +1,6 @@
 # include(./FindACore.cmake)
-
+@PACKAGE_INIT@
+include("${CMAKE_CURRENT_LIST_DIR}/ACoreTargets.cmake")
 set(ACore_SHARED_DIRS "@ACore_SHARED_DIRS@" CACHE INTERNAL "动态库文件")
 set(ACore_LIBS "@ACore_LIBS@" CACHE INTERNAL "库名称")
 set(ACORE_STATIC_DIRS "@ACORE_STATIC_DIRS@" CACHE INTERNAL "静态库文件")

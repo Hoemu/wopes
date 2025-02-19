@@ -3,16 +3,17 @@
 
 #include "ACore_global.h"
 
-class ACORE_EXPORT ACore
-{
+namespace ACore {
+class ACORE_EXPORT ACore {
 public:
-    ACore();
+  ACore();
 
-    void print();
+  void print();
 
-    void test();
+  void test();
 
-    void build();
+  void build();
 };
+} // namespace ACore
 
 #endif // A_CORE_H

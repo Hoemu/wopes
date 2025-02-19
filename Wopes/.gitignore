@@ -1,6 +1,7 @@
 # 文件
 *.user
+ACore/*.user
 
 # 目录
 build/
-test_dir/
+ACore/build/
