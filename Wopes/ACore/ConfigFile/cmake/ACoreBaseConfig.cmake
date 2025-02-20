@@ -4,6 +4,7 @@ message(STATUS "Begin ACoreBaseConfig")
 include(./ConfigFile/cmake/ACore.cmake)
 include(./ConfigFile/cmake/ACorePackageConfig.cmake)
 include(./ConfigFile/cmake/ACoreUtil.cmake)
+include(./ConfigFile/cmake/ACoreVersionUtil.cmake)
 # include(./ConfigFile/cmake/ACoreTargets.cmake)
 
 

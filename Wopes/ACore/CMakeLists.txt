@@ -9,9 +9,12 @@ find_configure_file(${PROJECT_SOURCE_DIR}/ConfigFile)
 generate_head_file(${CMAKE_CURRENT_SOURCE_DIR})
 find_source_code(SRCS)
 
+  message(STATUS "PROJECT_VERSION: ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
+
 if(IS_GENERAT_LIBRARY)
     add_library(ACore SHARED
         ${SRCS}
+        ${ACore_Version}
         )
     target_compile_definitions(ACore PRIVATE ACORE_LIBRARY)
     message(STATUS "execute library")
@@ -21,7 +24,7 @@ else()
 endif()
 
 set_target_properties(ACore PROPERTIES
-    OUTPUT_NAME "ACore"          # 修改基础名称，生成 libRenamedLib.a
+    OUTPUT_NAME "ACore"          # 修改基础名称，生成 libACore.a
 )
 
 # 安装可执行文件到bin目录
@@ -35,7 +38,7 @@ install(TARGETS ACore
 install(EXPORT ACoreTargets
   FILE ACoreTargets.cmake          # 生成的目标文件名
   NAMESPACE ACore::                # 命名空间（推荐格式）
-  DESTINATION ./      # 安装路径
+  DESTINATION ./                   # 安装路径
 )
 
 

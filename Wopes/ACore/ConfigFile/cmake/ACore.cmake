@@ -5,6 +5,11 @@
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# 显示详细编译过程
+# enable_language(RC)
+# set(CMAKE_RC_VERBOSE ON)  # 显示详细编译过程
+# set(CMAKE_RC_FLAGS "--preprocessor-arg=-v")  # 显示预处理细节
+
 # DeBug output
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG
     ${CMAKE_CURRENT_BINARY_DIR}/bin)
@@ -29,7 +34,6 @@ endif()
 
 # include(./CMakePackageConfigHelpers)# TODO 需要自动定位 ACore_DIRS 时放开注释
 
-# 库设置
 set(IS_GENERAT_LIBRARY ON) # 是否生成库/或者是调试模式
 set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/../${PROJECT_NAME}") # 自定义安装位置
 set(ACore_LIBS "${CMAKE_INSTALL_PREFIX}/lib/lib${PROJECT_NAME}.dll.a")     # 静态库位置（安装后）
@@ -38,3 +42,6 @@ set(ACore_SHARED_DIRS "${CMAKE_INSTALL_PREFIX}/bin")                       # 动
 SET(ACORE_STATIC_DIRS "${CMAKE_INSTALL_PREFIX}/lib")                       # 静态库位置（安装后）
 set(ACore_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")                  # 头文件位置（安装后）
 set(ACore_INCLUDE_DIRS_CONFIGCMAKE "${CMAKE_CURRENT_BINARY_DIR}/include")  # 未定义
+
+# message(STATUS "PROJECT_VERSION = ${PROJECT_VERSION}")
+
