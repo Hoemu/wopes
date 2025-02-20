@@ -1,5 +1,6 @@
 # 文件
 ACore/*.user
+doc/*..bkp
 
 # 目录
 build/
