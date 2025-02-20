@@ -1,15 +1,30 @@
 #include "a_core.h"
-#include "aLog/log_define.h"
 #include <iostream>
-namespace ACore {
-ACore::ACore() {}
-
-void ACore::print() {
-  std::cout << "print_F" << std::endl;
-  LOG_INFO("init core.");
+#include "aLog/log_define.h"
+namespace ACore
+{
+ACore::ACore()
+{
+    initLog();
 }
 
-void ACore::test() { std::cout << "test" << std::endl; }
+void ACore::print()
+{
+    LOG_INFO("init core.");
+}
 
-void ACore::build() { std::cout << "build running..." << std::endl; }
+void ACore::test()
+{
+    std::cout << "test" << std::endl;
+}
+
+void ACore::build()
+{
+    std::cout << "build running..." << std::endl;
+}
+
+void ACore::initLog()
+{
+    LOG_INFO("Init Log")->setFilePath({ "./log/Error.log", "./log/log" });
+}
 } // namespace ACore

@@ -3,6 +3,7 @@
 #define unint unsigned int
 
 #include <memory>
+#include "../aFileSystem/a_file_system.h"
 #include "data_param.h"
 
 using std::iostream;
@@ -38,6 +39,8 @@ private:
     list<string> logFilePath;
 
     list<FILE*> fileList;
+
+    AFileSystem* file;
 
     vector<functionData> vecThread;
 };

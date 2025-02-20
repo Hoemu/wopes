@@ -1,7 +1,7 @@
-# base output
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+# 编程环境设置
+# set(CMAKE_AUTOUIC ON)
+# set(CMAKE_AUTOMOC ON)
+# set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -29,7 +29,7 @@ endif()
 
 # include(./CMakePackageConfigHelpers)# TODO 需要自动定位 ACore_DIRS 时放开注释
 
-# TODO 手动设置位置
+# 库设置
 set(IS_GENERAT_LIBRARY ON) # 是否生成库/或者是调试模式
 set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/../${PROJECT_NAME}") # 自定义安装位置
 set(ACore_LIBS "${CMAKE_INSTALL_PREFIX}/lib/lib${PROJECT_NAME}.dll.a")     # 静态库位置（安装后）
@@ -38,5 +38,3 @@ set(ACore_SHARED_DIRS "${CMAKE_INSTALL_PREFIX}/bin")                       # 动
 SET(ACORE_STATIC_DIRS "${CMAKE_INSTALL_PREFIX}/lib")                       # 静态库位置（安装后）
 set(ACore_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")                  # 头文件位置（安装后）
 set(ACore_INCLUDE_DIRS_CONFIGCMAKE "${CMAKE_CURRENT_BINARY_DIR}/include")  # 未定义
-
-

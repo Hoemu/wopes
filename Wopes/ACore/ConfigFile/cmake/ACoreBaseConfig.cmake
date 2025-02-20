@@ -4,7 +4,6 @@ message(STATUS "Begin ACoreBaseConfig")
 include(./ConfigFile/cmake/ACore.cmake)
 include(./ConfigFile/cmake/ACorePackageConfig.cmake)
 include(./ConfigFile/cmake/ACoreUtil.cmake)
-# include(./CMakePackageConfigHelpers) # TODO 需要自动定位 ACore_DIRS 时放开注释
 # include(./ConfigFile/cmake/ACoreTargets.cmake)
 
 
@@ -64,8 +63,6 @@ endfunction()
 function(copy_head target_dir OUTPUT_VAR)
     set(${OUTPUT_VAR} ${target_dir} PARENT_SCOPE)
 endfunction()
-
-message("Test " ${SRC_T})
 
 include(./ACore)
 

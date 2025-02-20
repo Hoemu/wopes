@@ -17,10 +17,10 @@ include(./WopesConfigFile/WopesConfigPackage.cmake)
 include_directories(${ACore_DIR_INCLUDE}) # 动态变化
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-message(${ACore_INCLUDE_DIRS})
-message(${ACore_SHARED_DIRS})
-message(${ACORE_STATIC_DIRS})
-message(${ACore_LIBS})
+# message(${ACore_INCLUDE_DIRS})
+# message(${ACore_SHARED_DIRS})
+# message(${ACORE_STATIC_DIRS})
+# message(${ACore_LIBS})
 
 # message("opencv lib " ${OpenCV_LIBS})
 

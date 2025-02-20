@@ -24,8 +24,6 @@ set_target_properties(ACore PROPERTIES
     OUTPUT_NAME "ACore"          # 修改基础名称，生成 libRenamedLib.a
 )
 
-target_link_libraries(ACore PRIVATE Qt${QT_VERSION_MAJOR}::Core)
-
 # 安装可执行文件到bin目录
 install(TARGETS ACore
     EXPORT ACoreTargets

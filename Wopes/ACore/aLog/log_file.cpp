@@ -33,8 +33,8 @@ void LogFile::push(const msg_data &data)
 
 void LogFile::run_thread(const functionData &var)
 {
-    //    std::cout << var.threadID << "-" << var.filePath.c_str() << std::endl;
-    FILE *file = fopen(var.filePath.c_str(), "a");
+    string file_path = var.filePath;
+    FILE *file = fopen(file_path.c_str(), "a");
 
     if (file == NULL)
     { // 打开失败直接返回
