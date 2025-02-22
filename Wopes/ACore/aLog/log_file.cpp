@@ -31,6 +31,14 @@ void LogFile::push(const MsgData &data)
     }
 }
 
+void LogFile::pushString(const string &data)
+{
+    for (functionData fuc : vecThread)
+    {
+        fuc.ptrDataParam.get()->pushString(data);
+    }
+}
+
 void LogFile::run_thread(const functionData &var)
 {
     string file_path = var.filePath;

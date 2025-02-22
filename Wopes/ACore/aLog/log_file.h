@@ -31,6 +31,8 @@ public:
 
     void push(const MsgData& data);
 
+    void pushString(const string& data);
+
 protected:
     void run_thread(const functionData& var);
 

@@ -20,8 +20,6 @@ public:
     /** 临时使用，需要手挡修改回去 */
     void useDateLogTemp(bool var);
 
-    void operator>>(const std::string& var);
-
     void setFilePath(list<string> var);
 
     LogDataParam* getDataBufferObject() const;

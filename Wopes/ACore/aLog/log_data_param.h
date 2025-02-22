@@ -50,6 +50,8 @@ public:
 
     void push(const MsgData &var);
 
+    void pushString(const string &str);
+
     void pop();
 
     size_t size();
