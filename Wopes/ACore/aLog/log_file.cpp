@@ -12,7 +12,7 @@ void LogFile::setFilePath(list<string> var)
     for (const string &path : logFilePath)
     {
         functionData data;
-        data.ptrDataParam = std::make_unique<DataParam>();
+        data.ptrDataParam = std::make_unique<LogDataParam>();
         data.threadID = vecThread.size();
         data.isRunning = true;
         data.filePath = path;
@@ -23,7 +23,7 @@ void LogFile::setFilePath(list<string> var)
     std::cout << "var size is:" << logFilePath.size() << std::endl;
 }
 
-void LogFile::push(const msg_data &data)
+void LogFile::push(const MsgData &data)
 {
     for (functionData fuc : vecThread)
     {
@@ -38,7 +38,7 @@ void LogFile::run_thread(const functionData &var)
 
     if (file == NULL)
     { // 打开失败直接返回
-        std::cerr << "file open fail." << std::endl;
+        std::cerr << "file open fail:" << file_path << std::endl;
         return;
     }
 
@@ -47,21 +47,10 @@ void LogFile::run_thread(const functionData &var)
         while (vecThread[var.threadID].ptrDataParam.get()->size())
         {
             vecThread[var.threadID].dataFlag = true;
-            msg_data da = vecThread[var.threadID].ptrDataParam.get()->front();
-
-            vector<string> logLevel = vecThread[var.threadID].ptrDataParam.get()->getLogLevel();
-            string msgFile;
+            string dataMsg = vecThread[var.threadID].ptrDataParam.get()->frontString();
             //            std::cout << "thread [" << var.threadID << "] " << da.date << "." << da.ms << "=" << da.msg << std::endl;
-            fputs(da.date, file); // 日期
-            string msStr = "." + std::to_string(da.ms) + "] ";
-            fputs(msStr.c_str(), file);                   // 毫秒
-            fputs(logLevel[(int)da.model].c_str(), file); // 异常等级
-            fputs(da.file.c_str(), file);                 // 文件
-            string lineStr = " @" + std::to_string(da.line);
-            fputs(lineStr.c_str(), file); // 文件长度
-            string msgStr = " " + da.msg + "\n";
-            fputs(msgStr.c_str(), file); // 文件长度
-                                         //            fwrite(vecThread[var.threadID]ptrDataParam.get()->front().msg.c_str(), 0, 24, file); //写入操作
+            fputs(dataMsg.c_str(), file);
+            fputs("\n", file); // 文件长度
             vecThread[var.threadID].ptrDataParam.get()->pop();
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));

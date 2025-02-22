@@ -15,7 +15,7 @@ public:
 
     bool getDateLog() const;
 
-    void push(const msg_data& var);
+    void push(const MsgData& var);
 
     /** 临时使用，需要手挡修改回去 */
     void useDateLogTemp(bool var);
@@ -24,7 +24,7 @@ public:
 
     void setFilePath(list<string> var);
 
-    DataParam* getDataBufferObject() const;
+    LogDataParam* getDataBufferObject() const;
 
 private:
     bool dateLogTemp;
@@ -32,7 +32,7 @@ private:
     bool dateLogLongUse;
 
     // 这个数据才是一段一段的
-    DataParam* dataBuffer;
+    LogDataParam* dataBuffer;
 
     LogFile* logFile;
 };

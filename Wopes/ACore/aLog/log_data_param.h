@@ -1,5 +1,5 @@
-#ifndef DATAPARAM_H
-#define DATAPARAM_H
+#ifndef LOG_DATAPARAM_H
+#define LOG_DATAPARAM_H
 
 #include <iostream>
 #include <list>
@@ -29,7 +29,7 @@ enum class LOG_LEVEL
     LOG_COUNT
 };
 
-struct msg_data
+struct MsgData
 {
     string file = "NONE";
     string functionName = "NONE";
@@ -41,25 +41,29 @@ struct msg_data
     LOG_LEVEL model;
 };
 
-class DataParam
+class LogDataParam
 {
 public:
-    queue<msg_data> &getDataBuffer();
+    queue<MsgData> &getDataBuffer();
 
     const vector<string> &getLogLevel() const;
 
-    void push(const msg_data &var);
+    void push(const MsgData &var);
 
     void pop();
 
     size_t size();
 
-    msg_data front() const;
+    MsgData front() const;
+
+    string frontString() const;
 
 private:
-    queue<msg_data> data;
+    queue<MsgData> data;
+
+    queue<string> dataString;
 
     const vector<string> logLevel = { "LOG_INFO", "LOG_DEBUG", "LOG_DETUALT", "LOG_WARN", "LOG_ERROR", "LOG_FATAL", "LOG_OFF", "LOG_COUNT" };
 };
 
-#endif // DATAPARAM_H
+#endif // LOG_DATAPARAM_H

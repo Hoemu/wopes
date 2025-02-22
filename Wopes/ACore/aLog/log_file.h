@@ -4,7 +4,7 @@
 
 #include <memory>
 #include "../aFileSystem/a_file_system.h"
-#include "data_param.h"
+#include "log_data_param.h"
 
 using std::iostream;
 
@@ -16,7 +16,7 @@ struct functionData
     thread* th;
     bool isRunning;
     bool dataFlag = false;
-    std::shared_ptr<DataParam> ptrDataParam;
+    std::shared_ptr<LogDataParam> ptrDataParam;
 };
 
 class LogFile
@@ -29,7 +29,7 @@ public:
     /** 设置文件路径，只能初始化一次 */
     void setFilePath(list<string> var);
 
-    void push(const msg_data& data);
+    void push(const MsgData& data);
 
 protected:
     void run_thread(const functionData& var);

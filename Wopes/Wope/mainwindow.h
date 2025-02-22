@@ -21,6 +21,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_btn_test_clicked();
+
 private:
     Ui::MainWindow *ui;
     ACore::ACore a;

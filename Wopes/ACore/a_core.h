@@ -2,6 +2,7 @@
 #define A_CORE_H
 
 #include "ACore_global.h"
+#include "aLog/log_define.h"
 
 namespace ACore
 {
@@ -10,14 +11,9 @@ class ACORE_EXPORT ACore
 public:
     ACore();
 
-    void print();
-
     void test();
 
     void build();
-
-private:
-    void initLog();
 };
 } // namespace ACore
 

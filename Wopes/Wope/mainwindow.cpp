@@ -6,10 +6,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     // a.print();
     a.test();
+
     a.build();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_btn_test_clicked()
+{
+    LOG_INFO("test");
 }

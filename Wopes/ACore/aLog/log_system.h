@@ -3,8 +3,8 @@
 
 #include <mutex>
 #include <thread>
-#include "data_param.h"
 #include "log_controller.h"
+#include "log_data_param.h"
 
 class ACORE_EXPORT LogSystem
 {
@@ -26,13 +26,11 @@ public:
 protected:
     void log();
 
-    void log_base_info();
-
 private:
     LogSystem();
     ~LogSystem();
 
-    msg_data data;
+    MsgData data;
 
     static LogSystem* mInstance;
 

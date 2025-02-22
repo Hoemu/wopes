@@ -23,7 +23,7 @@ void LogSystem::destroy()
 
 void LogSystem::log()
 {
-    DataParam* dataBuffer = controller->getDataBufferObject();
+    LogDataParam* dataBuffer = controller->getDataBufferObject();
     threadStatus = true;
 
     while (threadStatus)
@@ -31,7 +31,7 @@ void LogSystem::log()
         if (dataBuffer->size() > 0)
         {
             mMutex.lock();
-            log_base_info();
+            std::cout << dataBuffer->frontString() << std::endl;
             dataBuffer->pop();
             mMutex.unlock();
         }
@@ -43,30 +43,12 @@ void LogSystem::log()
     }
 }
 
-void LogSystem::log_base_info()
-{
-    DataParam* dataBuffer = controller->getDataBufferObject();
-    msg_data tempData = dataBuffer->front();
-    vector<string> logLevel = dataBuffer->getLogLevel();
-
-    std::cout << tempData.date << "." << tempData.ms << "] ";
-    std::cout << logLevel[(int)tempData.model] << " ";
-
-    if (controller->getDateLog() == false)
-    {
-        controller->useDateLogTemp(true);
-        return;
-    }
-    std::cout << tempData.file << ":(" << tempData.functionName << ")@" << tempData.line << " ";
-    std::cout << tempData.msg << std::endl;
-}
-
 LogSystem::LogSystem()
 {
     std::ios::sync_with_stdio(false); // 输出优化
     work_console = new std::thread(&LogSystem::log, this);
     controller = new LogController();
-    controller->setFilePath({ "../test/Input_log", "../Error_log", "../Waring_log" }); // 设置默认路径
+    controller->setFilePath({ "../Input_log", "../Error_log", "../Waring_log" }); // 设置默认路径
 }
 
 LogSystem::~LogSystem()
@@ -89,7 +71,7 @@ void LogSystem::setLogMsg(std::string file, std::string functionName, int line)
     struct tm* local_tm = localtime(&now);
 
     data.ms = ms.count();
-    strftime(data.date, sizeof(data.date), "[%Y-%m-%d %H:%M:%S", local_tm);
+    strftime(data.date, sizeof(data.date), "%Y-%m-%d %H:%M:%S", local_tm);
 }
 
 void LogSystem::setMsg(std::string msg)
