@@ -20,7 +20,7 @@ void LogFile::setFilePath(list<string> var)
         vecThread.push_back(data);
     }
 
-    std::cout << "var size is:" << logFilePath.size() << std::endl;
+    // std::cout << "var size is:" << logFilePath.size() << std::endl;
 }
 
 void LogFile::push(const MsgData &data)

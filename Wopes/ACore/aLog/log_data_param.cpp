@@ -25,6 +25,7 @@ void LogDataParam::push(const MsgData &var)
 void LogDataParam::pushString(const string &str)
 {
     dataString.push(str);
+    for (int i = 0; i < str.size(); i++) {}
     // TODO 以字符串的形式 push 也需要解析
 }
 

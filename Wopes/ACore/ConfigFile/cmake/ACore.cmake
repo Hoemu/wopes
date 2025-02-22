@@ -34,7 +34,7 @@ endif()
 
 # include(./CMakePackageConfigHelpers)# TODO 需要自动定位 ACore_DIRS 时放开注释
 
-set(IS_GENERAT_LIBRARY ON) # 是否生成库/或者是调试模式
+# set(IS_GENERAT_LIBRARY ON) # 是否生成库/或者是调试模式
 set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/../${PROJECT_NAME}") # 自定义安装位置
 set(ACore_LIBS "${CMAKE_INSTALL_PREFIX}/lib/lib${PROJECT_NAME}.dll.a")     # 静态库位置（安装后）
 set(ACore_Resource_DIR ${CMAKE_CURRENT_BINARY_DIR})
