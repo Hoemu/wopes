@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     a.test();
 
     a.build();
+    LOG_INFO("输出日志");
 }
 
 MainWindow::~MainWindow()

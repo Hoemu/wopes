@@ -34,7 +34,7 @@ public:
     void pushString(const string& data);
 
 protected:
-    void run_thread(const functionData& var);
+    void runThread(const functionData& var);
 
 private:
     /** 日志路径 */

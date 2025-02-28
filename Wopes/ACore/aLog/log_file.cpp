@@ -3,7 +3,10 @@
 
 LogFile::LogFile() {}
 
-LogFile::~LogFile() {}
+LogFile::~LogFile()
+{
+    std::cout << "LogFile delete." << std::endl;
+}
 
 void LogFile::setFilePath(list<string> var)
 {
@@ -16,7 +19,7 @@ void LogFile::setFilePath(list<string> var)
         data.threadID = vecThread.size();
         data.isRunning = true;
         data.filePath = path;
-        data.th = new thread(&LogFile::run_thread, this, data);
+        data.th = new thread(&LogFile::runThread, this, data);
         vecThread.push_back(data);
     }
 
@@ -39,30 +42,35 @@ void LogFile::pushString(const string &data)
     }
 }
 
-void LogFile::run_thread(const functionData &var)
+void LogFile::runThread(const functionData &var)
 {
-    string file_path = var.filePath;
-    FILE *file = fopen(file_path.c_str(), "a");
+    AFileSystem mFileSystem(var.filePath);
+    // string file_path = var.filePath;
+    // // TODO 如果这个路径不存在，那么需要创造新的路径
+    // FILE *file = fopen(file_path.c_str(), "a");
 
-    if (file == NULL)
-    { // 打开失败直接返回
-        std::cerr << "file open fail:" << file_path << std::endl;
-        return;
-    }
+    // if (file == NULL)
+    // { // 打开失败直接返回
+    //     std::cerr << "file open fail:" << file_path << std::endl;
+    //     return;
+    // }
 
+    mFileSystem.createFilePath("a");
     while (var.isRunning)
     {
+        // 在这里进行优化，每一次日志读取完毕后，关闭读指针
         while (vecThread[var.threadID].ptrDataParam.get()->size())
         {
             vecThread[var.threadID].dataFlag = true;
             string dataMsg = vecThread[var.threadID].ptrDataParam.get()->frontString();
             //            std::cout << "thread [" << var.threadID << "] " << da.date << "." << da.ms << "=" << da.msg << std::endl;
-            fputs(dataMsg.c_str(), file);
-            fputs("\n", file); // 文件长度
+            // fputs(dataMsg.c_str(), file);
+            // fputs("\n", file); // 文件长度
+            mFileSystem.appendLine(dataMsg);
             vecThread[var.threadID].ptrDataParam.get()->pop();
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
-
-    fclose(file);
+    mFileSystem.closeFile();
+    // fclose(file);
 }
