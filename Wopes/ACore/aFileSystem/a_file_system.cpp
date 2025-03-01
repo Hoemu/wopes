@@ -14,8 +14,8 @@ bool AFileSystem::createFilePath(const string &var)
 
     if (fp == NULL)
     { // 打开失败直接返回
-        std::cerr << "file open fail:" << filePath << std::endl;
-        return false;
+        std::cerr << "Warning: file open fail:" << filePath << std::endl;
+        isExitsPath();
     }
     return true;
 }
@@ -38,5 +38,5 @@ bool AFileSystem::isExist()
 
 bool AFileSystem::isExitsPath()
 {
-
+    return true;
 }

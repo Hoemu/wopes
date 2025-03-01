@@ -19,7 +19,9 @@ if(IS_GENERAT_LIBRARY)
     target_compile_definitions(ACore PRIVATE ACORE_LIBRARY)
     message(STATUS "execute library")
 else()
-    add_executable(ACore ${SRCS} main.cpp)
+    add_executable(ACore ${SRCS} main.cpp
+        aFileSystem/a_dir.h aFileSystem/a_dir.cpp
+        aLog/log_stream.h aLog/log_stream.cpp)
     message(STATUS "execute exe")
 endif()
 

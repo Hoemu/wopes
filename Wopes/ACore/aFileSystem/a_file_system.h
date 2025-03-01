@@ -1,12 +1,6 @@
 #ifndef A_FILE_SYSTEM_H
 #define A_FILE_SYSTEM_H
 
-#ifdef _WIN32 // Includes both 32 bit and 64 bit
-#include <direct.h>
-#else
-#include <sys/stat.h>
-#endif
-
 #include <string>
 #include "../ACore_global.h"
 
