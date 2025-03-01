@@ -5,10 +5,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
     // a.print();
-    a.test();
+    acore::ACore acoreInit;
 
-    a.build();
-    LOG_INFO("输出日志");
+    list<string> var = { "./test_1", "./test_2" };
+    LOG_INFO("输出日志")->setFilePath(var);
+    LOG_ERROR("ERROR");
 }
 
 MainWindow::~MainWindow()
@@ -18,5 +19,5 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btn_test_clicked()
 {
-    LOG_INFO("test");
+    LOG_DEBUG("test");
 }

@@ -1,21 +1,11 @@
 #include "a_core.h"
-#include <iostream>
 
-namespace ACore
+namespace acore
 {
 ACore::ACore()
 {
-    LOG_INFO("Init core.");
+    LOG_INFO("Init core."); // 测试用
+    LOG_INFO("Init Log System.");
 }
 
-void ACore::test()
-{
-    std::cout << "test" << std::endl;
-}
-
-void ACore::build()
-{
-    std::cout << "build running..." << std::endl;
-}
-
-} // namespace ACore
+} // namespace acore

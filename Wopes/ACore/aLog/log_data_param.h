@@ -25,8 +25,6 @@ enum class LOG_LEVEL
     LOG_WARN,
     LOG_ERROR,
     LOG_FATAL,
-    LOG_OFF,
-    LOG_COUNT
 };
 
 struct MsgData
@@ -65,7 +63,7 @@ private:
 
     queue<string> dataString;
 
-    const vector<string> logLevel = { "LOG_INFO", "LOG_DEBUG", "LOG_DETUALT", "LOG_WARN", "LOG_ERROR", "LOG_FATAL", "LOG_OFF", "LOG_COUNT" };
+    const vector<string> logLevel = { "LOG_INFO", "LOG_DEBUG", "LOG_DETUALT", "LOG_WARN", "LOG_ERROR", "LOG_FATAL" };
 };
 
 #endif // LOG_DATAPARAM_H

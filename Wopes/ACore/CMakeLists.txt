@@ -19,9 +19,7 @@ if(IS_GENERAT_LIBRARY)
     target_compile_definitions(ACore PRIVATE ACORE_LIBRARY)
     message(STATUS "execute library")
 else()
-    add_executable(ACore ${SRCS} main.cpp
-        aFileSystem/a_dir.h aFileSystem/a_dir.cpp
-        aLog/log_stream.h aLog/log_stream.cpp)
+    add_executable(ACore ${SRCS} main.cpp)
     message(STATUS "execute exe")
 endif()
 
@@ -39,7 +37,7 @@ install(TARGETS ACore
 
 install(EXPORT ACoreTargets
   FILE ACoreTargets.cmake          # 生成的目标文件名
-  NAMESPACE ACore::                # 命名空间（推荐格式）
+  NAMESPACE acore::                # 命名空间（推荐格式）
   DESTINATION ./                   # 安装路径
 )
 

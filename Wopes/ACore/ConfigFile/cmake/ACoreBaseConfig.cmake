@@ -60,6 +60,18 @@ function(find_source_code OUTPUT_VAR)
     # message(STATUS "[end src] " ${fileList})
 endfunction()
 
+function(find_depends_src OUTPUT_VAR TARGET_DIR)
+    set(fileList "")
+    foreach(child ${TARGET_DIR})
+        get_no_sufix_dir(file_dir ${child})
+        if(NOT ${file_dir} MATCHES "build")
+            LIST(APPEND fileList ${child})
+            # message("append value " ${file_dir})
+        endif()
+    endforeach()
+    set(${OUTPUT_VAR} ${fileList} PARENT_SCOPE)
+endfunction()
+
 # TODO 设置头文件（非 .h 类型）
 function(copy_head target_dir OUTPUT_VAR)
     set(${OUTPUT_VAR} ${target_dir} PARENT_SCOPE)

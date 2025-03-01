@@ -13,9 +13,10 @@ bool AFileSystem::createFilePath(const string &var)
     fp = fopen(filePath.c_str(), var.c_str());
 
     if (fp == NULL)
-    { // 打开失败直接返回
+    {
+        // 打开失败，可能没有这个路径，那么就生成路径
         std::cerr << "Warning: file open fail:" << filePath << std::endl;
-        isExitsPath();
+        return false;
     }
     return true;
 }
@@ -38,5 +39,11 @@ bool AFileSystem::isExist()
 
 bool AFileSystem::isExitsPath()
 {
+    FILE *tFp = fopen(filePath.c_str(), "r");
+    if (tFp == NULL)
+    {
+        return false;
+    }
+    fclose(tFp);
     return true;
 }

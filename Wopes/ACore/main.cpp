@@ -3,7 +3,7 @@
 
 int main()
 {
-    LOG_INFO("main:");
+    LOG_INFO("main:")->useDateLog(true);
     std::cout << "hello world." << std::endl;
 
     while (1) {} // 需要线程阻塞

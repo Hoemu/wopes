@@ -4,17 +4,13 @@
 #include "ACore_global.h"
 #include "aLog/log_define.h"
 
-namespace ACore
+namespace acore
 {
 class ACORE_EXPORT ACore
 {
 public:
     ACore();
-
-    void test();
-
-    void build();
 };
-} // namespace ACore
+} // namespace acore
 
 #endif // A_CORE_H

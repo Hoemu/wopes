@@ -1,24 +1,30 @@
 #ifndef A_DIR_H
 #define A_DIR_H
 
+#include <sys/stat.h>
+#include <list>
 #include <string>
 #include "../ACore_global.h"
-#ifdef _WIN32 // Includes both 32 bit and 64 bit
-#include <direct.h>
-#else
-#include <sys/stat.h>
-#endif
 
+using std::list;
 using std::string;
 
 class A_DECL_EXPORT ADir
 {
 public:
-    ADir(const string &filePath = nullptr);
+    ADir(const string& filePath = nullptr);
+    ~ADir();
+
+    void cd();
+
+    bool mMkdir();
 
 private:
     string mFilePath;
     string mFileDir;
+    string mFileName;
+
+    list<string> listSingleDir;
 };
 
 #endif // A_DIR_H

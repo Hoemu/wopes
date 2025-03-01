@@ -21,6 +21,7 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 # message(${ACore_SHARED_DIRS})
 # message(${ACORE_STATIC_DIRS})
 # message(${ACore_LIBS})
+# message(${ACore_DIR_LIB})
 
 # message("opencv lib " ${OpenCV_LIBS})
 
