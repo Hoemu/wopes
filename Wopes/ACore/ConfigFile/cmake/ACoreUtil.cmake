@@ -1,5 +1,4 @@
 # 这个页面主要写一些工具函数
-
 function(get_no_sufix_dir OUTPUT_VAR target_path)
     get_filename_component(file_name ${target_path} NAME)
     string(REGEX REPLACE "${file_name}" "" no_sufix_file_dir "${target_path}")

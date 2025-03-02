@@ -1,4 +1,5 @@
 #include "log_file.h"
+#include <iostream>
 #include <thread>
 
 LogFile::LogFile() {}
@@ -22,7 +23,6 @@ void LogFile::setFilePath(list<string> var)
         data.th = new thread(&LogFile::runThread, this, data);
         vecThread.push_back(data);
     }
-
     // std::cout << "var size is:" << logFilePath.size() << std::endl;
 }
 
@@ -49,7 +49,7 @@ void LogFile::runThread(const functionData &var)
 
     while (var.isRunning)
     {
-        // 在这里进行优化，每一次日志读取完毕后，关闭读指针
+        // TODO 在没有日志时候保存文件，并关闭文件，当有日志的时候唤醒线程，并打开线程
         while (vecThread[var.threadID].ptrDataParam.get()->size())
         {
             vecThread[var.threadID].dataFlag = true;

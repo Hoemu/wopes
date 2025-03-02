@@ -23,12 +23,11 @@ public:
 
     bool closeFile();
 
-    bool isExist();
-
     /**
-     *  @brief 判断路径是否存在
+     * @brief 文件是否存在
+     * @return bool
      */
-    bool isExitsPath();
+    bool isExist();
 
 private:
     string filePath;

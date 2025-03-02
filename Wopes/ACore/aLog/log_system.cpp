@@ -77,6 +77,10 @@ void LogSystem::setLogMsg(std::string file, std::string functionName, int line)
 
 void LogSystem::setMsg(std::string msg)
 {
+    if (msg.empty())
+    {
+        msg = "Warning:LogNone";
+    }
     data.msg = msg;
     controller->push(data);
 }

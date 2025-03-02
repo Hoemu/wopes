@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project(ACore LANGUAGES CXX)
 
 include(./ConfigFile/cmake/ACoreBaseConfig.cmake)
-message(STATUS "Generating '${PROJECT_BINARY_DIR}/ConfigFile/ACoreBaseConfig.cmake'")
+# message(STATUS "Generating '${PROJECT_BINARY_DIR}/ConfigFile/ACoreBaseConfig.cmake'")
 
 find_configure_file(${PROJECT_SOURCE_DIR}/ConfigFile)
 generate_head_file(${CMAKE_CURRENT_SOURCE_DIR})
@@ -17,14 +17,14 @@ if(IS_GENERAT_LIBRARY)
         ${ACore_Version}
         )
     target_compile_definitions(ACore PRIVATE ACORE_LIBRARY)
-    message(STATUS "execute library")
+    message(STATUS "create lib")
 else()
     add_executable(ACore ${SRCS} main.cpp)
-    message(STATUS "execute exe")
+    message(STATUS "create exe")
 endif()
 
 set_target_properties(ACore PROPERTIES
-    OUTPUT_NAME "ACore"          # 修改基础名称，生成 libACore.a
+    OUTPUT_NAME "acore"          # 修改基础名称，生成 libACore.a
 )
 
 # 安装可执行文件到bin目录
@@ -40,5 +40,12 @@ install(EXPORT ACoreTargets
   NAMESPACE acore::                # 命名空间（推荐格式）
   DESTINATION ./                   # 安装路径
 )
+
+# 添加自定义目标实现安装自动触发
+# add_custom_target(auto_install
+#     DEPENDS all
+#     COMMAND "${CMAKE_COMMAND}" --install "${CMAKE_BINARY_DIR}"
+#     COMMENT "Auto-installing built targets"
+# )
 
 

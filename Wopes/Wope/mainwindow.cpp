@@ -8,8 +8,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     acore::ACore acoreInit;
 
     list<string> var = { "./test_1", "./test_2" };
-    LOG_INFO("输出日志")->setFilePath(var);
+    LOG_INFO("输出日志");
     LOG_ERROR("ERROR");
+    qDebug();
 }
 
 MainWindow::~MainWindow()

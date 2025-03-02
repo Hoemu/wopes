@@ -2,12 +2,26 @@
 
 StringUtil::StringUtil() {}
 
-list<std::string> StringUtil::split(const std::string &var, const std::string splitCondition)
+list<string> StringUtil::split(const string &var, const string &splitCondition, const bool &isFilePath)
 {
     list<string> listStr;
-    for (int index = 0; index < var.size(); index++)
+    int dirIndex = 0;
+    int preIndex = 0;
+    int len = 0;
+
+    while (dirIndex < var.size())
     {
-        // TODO 查找字串
+        int pos = var.find_first_of(splitCondition, dirIndex);
+        dirIndex = splitCondition.size() + pos;
+        len = pos - preIndex;
+        listStr.push_back(var.substr(preIndex, len));
+        preIndex = pos + 1;
+
+        if (pos == string::npos)
+        {
+            break;
+        }
     }
+
     return listStr;
 }

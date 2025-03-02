@@ -1,16 +1,13 @@
 #ifndef LOG_DATAPARAM_H
 #define LOG_DATAPARAM_H
 
-#include <iostream>
 #include <list>
-#include <ostream>
 #include <queue>
 #include <string>
 #include <thread>
 #include <vector>
 
 using std::list;
-using std::ostream;
 using std::queue;
 using std::string;
 using std::thread;

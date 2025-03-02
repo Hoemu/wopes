@@ -1,5 +1,6 @@
 #include "a_file_system.h"
 #include <iostream>
+#include "a_dir.h"
 
 AFileSystem::AFileSystem(const string &targetPath) : filePath(targetPath) {}
 
@@ -10,6 +11,13 @@ void AFileSystem::setPath(const string &targetPath)
 
 bool AFileSystem::createFilePath(const string &var)
 {
+    if (ADir::isExitsPath(filePath) == false)
+    {
+        ADir adir(filePath);
+        adir.mMkdir();
+        // TODO 创建相关文件夹
+    }
+
     fp = fopen(filePath.c_str(), var.c_str());
 
     if (fp == NULL)
@@ -34,16 +42,5 @@ bool AFileSystem::closeFile()
 
 bool AFileSystem::isExist()
 {
-    return true;
-}
-
-bool AFileSystem::isExitsPath()
-{
-    FILE *tFp = fopen(filePath.c_str(), "r");
-    if (tFp == NULL)
-    {
-        return false;
-    }
-    fclose(tFp);
     return true;
 }

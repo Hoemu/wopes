@@ -6,36 +6,30 @@
 #include "log_system.h"
 
 #if defined(HAS_FILE_INFO)
-#define LOG_INFO(x)                                                     \
+#define LOG_INFO                                                        \
     LogSystem::instance()->setLogMsg(__FILE__, __FUNCTION__, __LINE__); \
     LogSystem::instance()->setLogModel(LOG_LEVEL::LOG_INFO);            \
-    LogSystem::instance()->setMsg(x);                                   \
-    LogSystem::instance()->getControllerObject()
-#define LOG_DEBUG(x)                                                    \
+    LogSystem::instance()->setMsg
+#define LOG_DEBUG                                                       \
     LogSystem::instance()->setLogMsg(__FILE__, __FUNCTION__, __LINE__); \
     LogSystem::instance()->setLogModel(LOG_LEVEL::LOG_DEBUG);           \
-    LogSystem::instance()->setMsg(x);                                   \
-    LogSystem::instance()->getControllerObject()
-#define LOG_DETUALT(x)                                                  \
+    LogSystem::instance()->setMsg
+#define LOG_DETUALT                                                     \
     LogSystem::instance()->setLogMsg(__FILE__, __FUNCTION__, __LINE__); \
     LogSystem::instance()->setLogModel(LOG_LEVEL::LOG_DETUALT);         \
-    LogSystem::instance()->setMsg(x);                                   \
-    LogSystem::instance()->getControllerObject()
-#define LOG_WARN(x)                                                     \
+    LogSystem::instance()->setMsg
+#define LOG_WARN                                                        \
     LogSystem::instance()->setLogMsg(__FILE__, __FUNCTION__, __LINE__); \
     LogSystem::instance()->setLogModel(LOG_LEVEL::LOG_WARN);            \
-    LogSystem::instance()->setMsg(x);                                   \
-    LogSystem::instance()->getControllerObject()
-#define LOG_ERROR(x)                                                    \
+    LogSystem::instance()->setMsg
+#define LOG_ERROR                                                       \
     LogSystem::instance()->setLogMsg(__FILE__, __FUNCTION__, __LINE__); \
     LogSystem::instance()->setLogModel(LOG_LEVEL::LOG_ERROR);           \
-    LogSystem::instance()->setMsg(x);                                   \
-    LogSystem::instance()->getControllerObject()
-#define LOG_FATAL(x)                                                    \
+    LogSystem::instance()->setMsg
+#define LOG_FATAL                                                       \
     LogSystem::instance()->setLogMsg(__FILE__, __FUNCTION__, __LINE__); \
     LogSystem::instance()->setLogModel(LOG_LEVEL::LOG_FATAL);           \
-    LogSystem::instance()->setMsg(x);                                   \
-    LogSystem::instance()->getControllerObject()
+    LogSystem::instance()->setMsg
 #else
 #define LOG_INFO(x)                                          \
     LogSystem::instance()->setLogModel(LOG_LEVEL::LOG_INFO); \

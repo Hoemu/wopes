@@ -8,4 +8,9 @@ ACore::ACore()
     LOG_INFO("Init Log System.");
 }
 
+LogController *ACore::getLogController()
+{
+    return LogSystem::instance()->getControllerObject();
+}
+
 } // namespace acore

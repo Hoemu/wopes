@@ -10,6 +10,11 @@ class ACORE_EXPORT ACore
 {
 public:
     ACore();
+
+    /**
+     * @brief 获取日志控制器
+     */
+    static LogController *getLogController();
 };
 } // namespace acore
 
