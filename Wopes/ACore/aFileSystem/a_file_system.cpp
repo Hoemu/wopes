@@ -11,12 +11,10 @@ void AFileSystem::setPath(const string &targetPath)
 
 bool AFileSystem::createFilePath(const string &var)
 {
-    if (ADir::isExitsPath(filePath) == false)
-    {
-        ADir adir(filePath);
-        adir.mMkdir();
-        // TODO 创建相关文件夹
-    }
+    // std::cout << "create file path:" << filePath << std::endl;
+
+    ADir dir(filePath);
+    // dir.mMkdir();
 
     fp = fopen(filePath.c_str(), var.c_str());
 
@@ -26,6 +24,7 @@ bool AFileSystem::createFilePath(const string &var)
         std::cerr << "Warning: file open fail:" << filePath << std::endl;
         return false;
     }
+
     return true;
 }
 

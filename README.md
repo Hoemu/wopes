@@ -24,9 +24,9 @@ Qt 框架版本：Qt6.8
 
 ## 使用说明
 
-1. 日志库（已完成）[点击跳转到接口使用文档](./doc/Log.md)
-2. 文件系统，进行中
+1. 日志库[点击跳转到接口使用文档](./doc/zh/Log.md)
+2. 文件系统[点击跳转到接口使用文档](./doc/zh/fileSystem.md)
 
 ## 编程规范
 
-详细编程规范点击跳转[编程规范文档](./doc/ProgrammingStandards.md)
+详细编程规范点击跳转[编程规范文档](./doc/zh/ProgrammingStandards.md)

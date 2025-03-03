@@ -3,14 +3,24 @@
 
 #include <sys/stat.h>
 #include <list>
+#include <queue>
 #include <string>
 #include "../ACore_global.h"
+
+#ifdef _WIN32
+#include <direct.h> // Windows 专用头文件
+#include <windows.h>
+#else
+#include <linux/limits.h>
+
+#include <unistd.h>
+#endif
 
 using std::list;
 using std::string;
 
 /**
- * @brief 目录处理类，当前支持 '/' 目录
+ * @brief 目录处理类，当前支持 '/' 目录（只对目录进行处理）
  */
 class A_DECL_EXPORT ADir
 {
@@ -38,10 +48,9 @@ public:
 
     string getFileName() const;
 
-    /**
-     *  @brief 判断路径是否存在
-     */
-    static bool isExitsPath(const string &path);
+    bool isExitsPath(const string &path);
+
+    string getExecutableDir();
 
 protected:
     /**
@@ -53,6 +62,10 @@ private:
     string mFilePath;
     string mFileDir;
     string mFileName;
+    string mExeDir;
+
+    bool isDir;
+    bool isPath;
 
     list<string> listSingleDir;
 };
