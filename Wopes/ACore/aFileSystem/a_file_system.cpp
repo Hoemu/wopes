@@ -14,9 +14,8 @@ bool AFileSystem::createFilePath(const string &var)
     // std::cout << "create file path:" << filePath << std::endl;
 
     ADir dir(filePath);
-    // dir.mMkdir();
 
-    fp = fopen(filePath.c_str(), var.c_str());
+    fp = fopen(dir.getFilePath().c_str(), var.c_str());
 
     if (fp == NULL)
     {

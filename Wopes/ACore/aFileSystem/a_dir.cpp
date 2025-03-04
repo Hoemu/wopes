@@ -3,42 +3,37 @@
 #include <vector>
 #include "../aUtil/string_util.h"
 
-ADir::ADir(const string &filePath) : mFilePath(filePath)
+ADir::ADir(const string &filePath)
 {
-    int preIndex = 0;
-    int len = 0;
+    string targetString;
+
     isDir = filePath[filePath.size() - 1] == '/';
-    isPath = isExitsPath(filePath); // 判断路径是否存在
-    mExeDir = getExecutableDir();
+    mTargetPath = filePath;
     mBuildPath = getExecutableDir();
 
     listSingleDir = StringUtil::split(filePath, "/");
     listBuildDir = StringUtil::split(mBuildPath, "\\/");
-    std::cout << "ADir:" << filePath << " stat: " << isPath << "\n exe path: " << mBuildPath << std::endl;
 
-    // TODO 需要判断第一个参数是 .. 还是 .
     if (listSingleDir.front() == "..")
     {
         listSingleDir.pop_front();
-        string targetString = StringUtil::combination(listSingleDir, "/");
-        std::cerr << "[ADir 1 is] " << targetString << std::endl;
+        targetString = StringUtil::combination(listSingleDir, "/");
         listBuildDir.pop_back();
-        targetString = StringUtil::combination(listBuildDir, "/") + targetString;
-
-        std::cerr << "[ADir 2 is] " << targetString << std::endl;
-        return;
+        // std::cout << "[ADir:]" << filePath << " stat: " << isPath << "\n exe path: " << mBuildPath << std::endl;
     }
     else if (listSingleDir.front() == ".")
     {
         listSingleDir.pop_front();
-        string targetString = StringUtil::combination(listSingleDir, "/");
-        std::cerr << "[ADir 1 is] " << targetString << std::endl;
-        targetString = StringUtil::combination(listBuildDir, "/") + targetString;
+        targetString = StringUtil::combination(listSingleDir, "/");
 
-        std::cerr << "[ADir 2 is] " << targetString << std::endl;
+        // std::cout << "[ADir:]" << filePath << " stat: " << isPath << "\n exe path: " << mBuildPath << std::endl;
     }
 
-    createDir(filePath);
+    // TODO 需要单独判断文件路径是否存在？
+    isPath = isExitsPath(mTargetPath); // 判断路径是否存在
+    mTargetPath = StringUtil::combination(listBuildDir, "/", !isDir) + targetString;
+
+    createDir(mTargetPath);
 }
 
 ADir::~ADir() {}
@@ -142,6 +137,17 @@ string ADir::getExecutableDir()
     }
 }
 
+string ADir::getFilePath() const
+{
+    if (!mTargetPath.empty())
+    {
+        std::cout << "[get file path]" << mTargetPath << std::endl;
+        return mTargetPath;
+    }
+    std::cerr << "Geting file path is empty." << std::endl;
+    return "";
+}
+
 bool ADir::createDir(const string &filePath)
 {
     // 判断是否是目录
@@ -157,14 +163,14 @@ bool ADir::createDir(const string &filePath)
         mFileDir = filePath.substr(0, index + 1);
     }
 
-    // 是不是路径 filePath
+    // 文件路径是否存在？
     if (isPath == false && isDir) // 注意：这里不会创建文件（只需要创建目录）
     {
         return makeDir(filePath);
     }
     else
     {
-        std::cerr << "Target path is filePath, don't switch to dir." << std::endl;
+        std::clog << "[Warning]:Target path is filePath, don't switch to dir." << std::endl;
         return false;
     }
 }

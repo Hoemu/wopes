@@ -53,6 +53,8 @@ public:
 
     string getExecutableDir();
 
+    string getFilePath() const;
+
 protected:
     /**
      *  @brief 判断路径是否存在
@@ -67,11 +69,10 @@ protected:
     bool createDir(const string &filePath);
 
 private:
-    string mFilePath;
     string mFileDir;
     string mFileName;
-    string mExeDir;
     string mBuildPath;
+    string mTargetDir;
 
     bool isDir;
     bool isPath;
