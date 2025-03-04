@@ -19,7 +19,8 @@ if(IS_GENERAT_LIBRARY)
     target_compile_definitions(ACore PRIVATE ACORE_LIBRARY)
     message(STATUS "create lib")
 else()
-    add_executable(ACore ${SRCS} main.cpp)
+    add_executable(ACore ${SRCS} main.cpp
+        aFileSystem/a_abstract_dir.h aFileSystem/a_abstract_dir.cpp)
     message(STATUS "create exe")
 endif()
 

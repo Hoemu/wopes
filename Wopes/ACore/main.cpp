@@ -3,10 +3,13 @@
 #include "./aUtil/string_util.h"
 #include "aFileSystem/a_dir.h"
 
+using std::cout;
+using std::endl;
+
 const string BEGING_STRING = "-------------------- insterface --------------------";
 const string END_STRING = "-------------------- insterface END --------------------";
-const string var = "C:/Users/Muiiii/Desktop/generalFile/GitRepertory";
-const string var2 = "./CUre";
+const string var = "C:/Users/Muiiii/Desktop/generalFile/GitRepertory/TEST/";
+const string var2 = "./CUre/";
 
 void interfaceTest(string var)
 {
@@ -19,16 +22,15 @@ void interfaceTest(string var)
 
 int main()
 {
-    LOG_INFO("main:");
+    // LOG_INFO("main:");
 
-    ADir initDir(var);
+    ADir initDir(var2);
     // // StringUtil::split(var, "/");
     initDir.printDir();
     // interfaceTest(var);
     std::cout << "dir is exist:" << initDir.isExitsPath("C:/cc") << std::endl;
     std::cout << "FileName is: " << initDir.getFileName() << "\nIs exist dir: " << initDir.currentDir() << std::endl;
 
-    // initDir.cd();
     while (1) {} // 需要线程保持运行
     return 0;
 }

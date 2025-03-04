@@ -31,10 +31,11 @@ public:
     void cd();
 
     /**
-     * @brief 创建文件夹
+     * @brief makeDir 创建目录
+     * @param filePath
      * @return bool
      */
-    bool mMkdir(const string &dir = nullptr);
+    bool makeDir(const string &filePath);
 
     void printDir();
 
@@ -58,16 +59,25 @@ protected:
      */
     // constexpr bool isExitsPath() {};
 
+    /**
+     * @brief createDir 创建目录，为内部创建目录，更加完善判断
+     * @param filePath
+     * @return bool
+     */
+    bool createDir(const string &filePath);
+
 private:
     string mFilePath;
     string mFileDir;
     string mFileName;
     string mExeDir;
+    string mBuildPath;
 
     bool isDir;
     bool isPath;
 
     list<string> listSingleDir;
+    list<string> listBuildDir;
 };
 
 #endif // A_DIR_H

@@ -25,3 +25,13 @@ list<string> StringUtil::split(const string &var, const string &splitCondition, 
 
     return listStr;
 }
+
+string StringUtil::combination(const list<string> &stringList, const string &addtionString)
+{
+    string backString;
+    for (const string &var : stringList)
+    {
+        backString = backString + var + addtionString;
+    }
+    return backString;
+}
