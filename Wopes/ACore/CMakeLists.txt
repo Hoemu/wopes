@@ -3,13 +3,14 @@ cmake_minimum_required(VERSION 3.16)
 project(ACore LANGUAGES CXX)
 
 include(./ConfigFile/cmake/ACoreBaseConfig.cmake)
+include(./ConfigFile/cmake/ACorePackageConfig.cmake)
 # message(STATUS "Generating '${PROJECT_BINARY_DIR}/ConfigFile/ACoreBaseConfig.cmake'")
 
 find_configure_file(${PROJECT_SOURCE_DIR}/ConfigFile)
 generate_head_file(${CMAKE_CURRENT_SOURCE_DIR})
 find_source_code(SRCS)
 
-  message(STATUS "PROJECT_VERSION: ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
+message(STATUS "PROJECT_VERSION: ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 
 if(IS_GENERAT_LIBRARY)
     add_library(ACore SHARED
@@ -19,8 +20,8 @@ if(IS_GENERAT_LIBRARY)
     target_compile_definitions(ACore PRIVATE ACORE_LIBRARY)
     message(STATUS "create lib")
 else()
-    add_executable(ACore ${SRCS} main.cpp
-        aFileSystem/a_abstract_dir.h aFileSystem/a_abstract_dir.cpp)
+    add_executable(ACore ${SRCS} main.cpp)
+    target_link_libraries(ACore ${GTestLib})
     message(STATUS "create exe")
 endif()
 

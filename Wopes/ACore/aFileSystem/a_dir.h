@@ -72,7 +72,7 @@ private:
     string mFileDir;
     string mFileName;
     string mBuildPath;
-    string mTargetDir;
+    string mTargetPath;
 
     bool isDir;
     bool isPath;

@@ -2,7 +2,6 @@
 message(STATUS "Begin ACoreBaseConfig")
 
 include(./ConfigFile/cmake/ACore.cmake)
-include(./ConfigFile/cmake/ACorePackageConfig.cmake)
 include(./ConfigFile/cmake/ACoreUtil.cmake)
 include(./ConfigFile/cmake/ACoreVersionUtil.cmake)
 # include(./ConfigFile/cmake/ACoreTargets.cmake)
@@ -69,6 +68,11 @@ function(find_depends_src OUTPUT_VAR TARGET_DIR)
             # message("append value " ${file_dir})
         endif()
     endforeach()
+    set(${OUTPUT_VAR} ${fileList} PARENT_SCOPE)
+endfunction()
+
+function(find_lib_file OUTPUT_VAR TARGET_DIR)
+    file(GLOB_RECURSE fileList "${TARGET_DIR}/*.a")
     set(${OUTPUT_VAR} ${fileList} PARENT_SCOPE)
 endfunction()
 
