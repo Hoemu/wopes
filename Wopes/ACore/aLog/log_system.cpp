@@ -49,7 +49,7 @@ LogSystem::LogSystem()
     work_console = new std::thread(&LogSystem::log, this);
     controller = new LogController();
     // 设置默认路径
-    controller->setFilePath({ "../Input_log", "../Error_log", "../Waring_log" }); // 设置默认路径
+    controller->setFilePath({ "../Log/Input_log", "../Log/Error_log", "../Log/Waring_log" }); // 设置默认路径
 }
 
 LogSystem::~LogSystem()

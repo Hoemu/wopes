@@ -22,6 +22,8 @@ if(IS_GENERAT_LIBRARY)
 else()
     add_executable(ACore ${SRCS} main.cpp)
     target_link_libraries(ACore ${GTestLib})
+    enable_testing()
+    add_test(NAME ACore COMMAND ACore)
     message(STATUS "create exe")
 endif()
 

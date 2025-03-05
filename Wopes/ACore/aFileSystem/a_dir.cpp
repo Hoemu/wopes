@@ -8,12 +8,13 @@ ADir::ADir(const string &filePath)
     string targetString;
 
     isDir = filePath[filePath.size() - 1] == '/';
-    mTargetPath = filePath;
+    mAcceptPath = filePath;
     mBuildPath = getExecutableDir();
 
     listSingleDir = StringUtil::split(filePath, "/");
     listBuildDir = StringUtil::split(mBuildPath, "\\/");
 
+    // TODO 此时为相对路径，还需要单独判断绝对路径
     if (listSingleDir.front() == "..")
     {
         listSingleDir.pop_front();
@@ -30,10 +31,10 @@ ADir::ADir(const string &filePath)
     }
 
     // TODO 需要单独判断文件路径是否存在？
-    isPath = isExitsPath(mTargetPath); // 判断路径是否存在
-    mTargetPath = StringUtil::combination(listBuildDir, "/", !isDir) + targetString;
+    isPath = isExitsPath(mAcceptPath); // 判断路径是否存在
+    mAcceptPath = StringUtil::combination(listBuildDir, "/", !isDir) + targetString;
 
-    createDir(mTargetPath);
+    createDir(mAcceptPath);
 }
 
 ADir::~ADir() {}
@@ -139,10 +140,10 @@ string ADir::getExecutableDir()
 
 string ADir::getFilePath() const
 {
-    if (!mTargetPath.empty())
+    if (!mAcceptPath.empty())
     {
-        std::cout << "[get file path]" << mTargetPath << std::endl;
-        return mTargetPath;
+        std::cout << "[get file path]" << mAcceptPath << std::endl;
+        return mAcceptPath;
     }
     std::cerr << "Geting file path is empty." << std::endl;
     return "";

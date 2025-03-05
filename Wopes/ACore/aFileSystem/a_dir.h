@@ -6,6 +6,7 @@
 #include <queue>
 #include <string>
 #include "../ACore_global.h"
+#include "./a_abstract_dir.h"
 
 #ifdef _WIN32
 #include <direct.h> // Windows 专用头文件
@@ -22,7 +23,7 @@ using std::string;
 /**
  * @brief 目录处理类，当前支持 '/' 目录（只对目录进行处理）
  */
-class A_DECL_EXPORT ADir
+class A_DECL_EXPORT ADir : public AAbstractDir
 {
 public:
     explicit ADir(const string &filePath);
@@ -69,10 +70,22 @@ protected:
     bool createDir(const string &filePath);
 
 private:
+    /**
+     * @brief 当前目录
+     */
     string mFileDir;
+
     string mFileName;
+
+    /**
+     * @brief 构建路径（exe文件路径）
+     */
     string mBuildPath;
-    string mTargetPath;
+
+    /**
+     * @brief 类接收的文件路径
+     */
+    string mAcceptPath;
 
     bool isDir;
     bool isPath;

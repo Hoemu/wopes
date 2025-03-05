@@ -12,10 +12,17 @@ const string END_STRING = "-------------------- insterface END -----------------
 const string var = "C:/Users/Muiiii/Desktop/generalFile/GitRepertory/TEST/";
 const string var2 = "./CUre/cc";
 
-TEST(ExampleTest, BasicAssertions)
+int add(int a, int b)
 {
-    EXPECT_EQ(1 + 1, 2); // 非致命断言（失败继续执行）
-    ASSERT_NE(5, 0);     // 致命断言（失败终止测试）
+    return a + b;
+}
+
+TEST(ADir, isExistDir)
+{
+    ADir initDir(var);
+
+    // EXPECT_EQ(initDir.isExistDir(), true); // 非致命断言（失败继续执行）
+    ASSERT_NE(initDir.isExistDir(), false); // 致命断言（失败终止测试）
 }
 
 void interfaceTest(string var)
@@ -30,8 +37,8 @@ void interfaceTest(string var)
 int main(int argc, char** argv)
 {
     testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
     LOG_INFO("main:");
+    return RUN_ALL_TESTS();
 
     // ADir initDir(var2);
     // // StringUtil::split(var, "/");
