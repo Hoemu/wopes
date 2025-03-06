@@ -30,8 +30,8 @@ bool AFileSystem::createFilePath(const string &var)
 
 void AFileSystem::appendLine(const string &var)
 {
-    string tempVar = var + "\n";
-    fputs(tempVar.c_str(), fp);
+    fputs(var.c_str(), fp);
+    fputs("\n", fp);
 }
 
 bool AFileSystem::closeFile()

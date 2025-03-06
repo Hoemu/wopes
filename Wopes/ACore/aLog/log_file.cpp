@@ -28,7 +28,7 @@ void LogFile::setFilePath(list<string> var)
 
 void LogFile::push(const MsgData &data)
 {
-    for (functionData fuc : vecThread)
+    for (functionData &fuc : vecThread)
     {
         fuc.ptrDataParam.get()->push(data);
     }
@@ -36,7 +36,7 @@ void LogFile::push(const MsgData &data)
 
 void LogFile::pushString(const string &data)
 {
-    for (functionData fuc : vecThread)
+    for (functionData &fuc : vecThread)
     {
         fuc.ptrDataParam.get()->pushString(data);
     }
@@ -54,7 +54,7 @@ void LogFile::runThread(const functionData &var)
         {
             vecThread[var.threadID].dataFlag = true;
             string dataMsg = vecThread[var.threadID].ptrDataParam.get()->frontString();
-            //            std::cout << "thread [" << var.threadID << "] " << da.date << "." << da.ms << "=" << da.msg << std::endl;
+            // std::cout << "thread [" << var.threadID << "] " << dataMsg << std::endl;
             mFileSystem.appendLine(dataMsg);
             vecThread[var.threadID].ptrDataParam.get()->pop();
         }

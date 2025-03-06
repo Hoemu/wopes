@@ -48,7 +48,7 @@ bool ADir::createFileDir(const string &filePath)
     {
         listSingleDir.pop_front();
         mAcceptPath = StringUtil::combination(listSingleDir, "/");
-        for (const string singleVar : listSingleDir)
+        for (const string &singleVar : listSingleDir)
         {
             if (singleVar != "..")
             {
@@ -79,13 +79,19 @@ bool ADir::createFileDir(const string &filePath)
         for (const string &singleVar : listSingleDir)
         {
             listPathAppend.push_back(singleVar);
+
+            if (listPathAppend.size() == 1)
+            {
+                continue;
+            }
+
             string noFilePath = StringUtil::combination(listPathAppend, "/", true);
             res = makeDir(noFilePath);
             mAcceptPath = noFilePath + fName;
         }
     }
     // 得到完整路径后，判断路径是否存在
-    std::cout << "completePath is " << mAcceptPath << std::endl;
+    // std::cout << "completePath is " << mAcceptPath << std::endl;
 
     return res;
 }
