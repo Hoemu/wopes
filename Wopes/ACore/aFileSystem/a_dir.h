@@ -3,7 +3,6 @@
 
 #include <sys/stat.h>
 #include <list>
-#include <queue>
 #include <string>
 #include "../ACore_global.h"
 #include "./a_abstract_dir.h"
@@ -26,10 +25,8 @@ using std::string;
 class A_DECL_EXPORT ADir : public AAbstractDir
 {
 public:
-    explicit ADir(const string &filePath);
+    explicit ADir(const string &filePath = "");
     ~ADir();
-
-    void cd();
 
     /**
      * @brief makeDir 创建目录
@@ -38,15 +35,7 @@ public:
      */
     bool makeDir(const string &filePath);
 
-    void printDir();
-
-    string currentDir() const;
-
-    /**
-     * @brief 是否存在目录
-     * @return bool
-     */
-    bool isExistDir();
+    bool createFileDir(const string &filePath);
 
     string getFileName() const;
 
@@ -56,25 +45,7 @@ public:
 
     string getFilePath() const;
 
-protected:
-    /**
-     *  @brief 判断路径是否存在
-     */
-    // constexpr bool isExitsPath() {};
-
-    /**
-     * @brief createDir 创建目录，为内部创建目录，更加完善判断
-     * @param filePath
-     * @return bool
-     */
-    bool createDir(const string &filePath);
-
 private:
-    /**
-     * @brief 当前目录
-     */
-    string mFileDir;
-
     string mFileName;
 
     /**
@@ -86,9 +57,6 @@ private:
      * @brief 类接收的文件路径
      */
     string mAcceptPath;
-
-    bool isDir;
-    bool isPath;
 
     list<string> listSingleDir;
     list<string> listBuildDir;

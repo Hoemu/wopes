@@ -13,7 +13,8 @@ bool AFileSystem::createFilePath(const string &var)
 {
     // std::cout << "create file path:" << filePath << std::endl;
 
-    ADir dir(filePath);
+    ADir dir;
+    dir.createFileDir(filePath);
 
     fp = fopen(dir.getFilePath().c_str(), var.c_str());
 

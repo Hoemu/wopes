@@ -6,50 +6,12 @@
 ADir::ADir(const string &filePath)
 {
     string targetString;
-
-    isDir = filePath[filePath.size() - 1] == '/';
-    mAcceptPath = filePath;
-    mBuildPath = getExecutableDir();
-
-    listSingleDir = StringUtil::split(filePath, "/");
-    listBuildDir = StringUtil::split(mBuildPath, "\\/");
-
-    // TODO 此时为相对路径，还需要单独判断绝对路径
-    if (listSingleDir.front() == "..")
-    {
-        listSingleDir.pop_front();
-        targetString = StringUtil::combination(listSingleDir, "/");
-        listBuildDir.pop_back();
-        // std::cout << "[ADir:]" << filePath << " stat: " << isPath << "\n exe path: " << mBuildPath << std::endl;
-    }
-    else if (listSingleDir.front() == ".")
-    {
-        listSingleDir.pop_front();
-        targetString = StringUtil::combination(listSingleDir, "/");
-
-        // std::cout << "[ADir:]" << filePath << " stat: " << isPath << "\n exe path: " << mBuildPath << std::endl;
-    }
-
-    // TODO 需要单独判断文件路径是否存在？
-    isPath = isExitsPath(mAcceptPath); // 判断路径是否存在
-    mAcceptPath = StringUtil::combination(listBuildDir, "/", !isDir) + targetString;
-
-    createDir(mAcceptPath);
 }
 
 ADir::~ADir() {}
 
-void ADir::cd()
-{
-    std::cout << "cd.." << std::endl;
-}
-
 bool ADir::makeDir(const string &filePath)
 {
-    if (isDir == false)
-    {
-        return false;
-    }
 #ifdef _WIN32
     // Windows 模式 (支持正斜杠路径)
     return _mkdir(filePath.c_str()) == 0;
@@ -59,27 +21,73 @@ bool ADir::makeDir(const string &filePath)
 #endif
 }
 
-void ADir::printDir()
+bool ADir::createFileDir(const string &filePath)
 {
-    std::cout << "-------------------" << __FUNCTION__ << "-------------------" << std::endl;
-    for (const string &var : listBuildDir)
+    bool isDir = filePath[filePath.size() - 1] == '/';
+    bool res = false;
+
+    if (isDir == true) // 为目录，会创建失败
     {
-        std::cout << var << "\n";
+        return res;
     }
-    std::cout << "\n";
-    std::cout << "-------------------"
-              << "END"
-              << "-------------------" << std::endl;
-}
 
-string ADir::currentDir() const
-{
-    return mFileDir;
-}
+    mAcceptPath = filePath;
+    mBuildPath = getExecutableDir();
 
-bool ADir::isExistDir()
-{
-    return _access(mFileDir.c_str(), 0) == 0;
+    listSingleDir = StringUtil::split(filePath, "/");
+    listBuildDir = StringUtil::split(mBuildPath, "\\/");
+
+    if (mBuildPath.empty())
+    {
+        std::cerr << "m build path is empty." << std::endl;
+        return res;
+    }
+
+    // 如果为相对路径，需要单独加上绝对路径，得到完整路径
+    if (listSingleDir.front() == "..")
+    {
+        listSingleDir.pop_front();
+        mAcceptPath = StringUtil::combination(listSingleDir, "/");
+        for (const string singleVar : listSingleDir)
+        {
+            if (singleVar != "..")
+            {
+                break;
+            }
+            else
+            {
+                listBuildDir.pop_back();
+            }
+        }
+    }
+    else if (listSingleDir.front() == ".")
+    {
+        listSingleDir.pop_front();
+        mAcceptPath = StringUtil::combination(listSingleDir, "/");
+    }
+
+    mAcceptPath = StringUtil::combination(listBuildDir, "/", true) + mAcceptPath;
+    bool isPath = isExitsPath(mAcceptPath); // 判断路径是否存在
+
+    if (isPath == false)
+    {
+        listSingleDir = StringUtil::split(mAcceptPath, "/"); // 转化成目录
+        string fName = listSingleDir.back();
+        list<string> listPathAppend;
+        listSingleDir.pop_back();
+
+        for (const string &singleVar : listSingleDir)
+        {
+            listPathAppend.push_back(singleVar);
+            string noFilePath = StringUtil::combination(listPathAppend, "/", true);
+            res = makeDir(noFilePath);
+            mAcceptPath = noFilePath + fName;
+        }
+    }
+    // 得到完整路径后，判断路径是否存在
+    std::cout << "completePath is " << mAcceptPath << std::endl;
+
+    return res;
 }
 
 string ADir::getFileName() const
@@ -92,7 +100,7 @@ bool ADir::isExitsPath(const string &path)
     struct stat info;
     if (stat(path.c_str(), &info) != 0)
     {
-        std::cerr << "Target path don't exists, parameter of function is : " << path << std::endl;
+        // std::cerr << "[Warning]:Target path don't exists, parameter of function is : " << path << std::endl;
         return false; // 路径不存在或不可访问
     }
     return (info.st_mode & S_IFDIR) != 0; // 检查是否为目录
@@ -142,36 +150,9 @@ string ADir::getFilePath() const
 {
     if (!mAcceptPath.empty())
     {
-        std::cout << "[get file path]" << mAcceptPath << std::endl;
+        // std::cout << "[get file path]" << mAcceptPath << std::endl;
         return mAcceptPath;
     }
     std::cerr << "Geting file path is empty." << std::endl;
     return "";
-}
-
-bool ADir::createDir(const string &filePath)
-{
-    // 判断是否是目录
-    if (isDir)
-    {
-        mFileName = "";
-    }
-    else
-    {
-        mFileName = listSingleDir.back();
-        listSingleDir.pop_back();
-        int index = filePath.find_last_of("/");
-        mFileDir = filePath.substr(0, index + 1);
-    }
-
-    // 文件路径是否存在？
-    if (isPath == false && isDir) // 注意：这里不会创建文件（只需要创建目录）
-    {
-        return makeDir(filePath);
-    }
-    else
-    {
-        std::clog << "[Warning]:Target path is filePath, don't switch to dir." << std::endl;
-        return false;
-    }
 }
