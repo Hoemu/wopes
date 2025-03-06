@@ -12,6 +12,8 @@ LogFile::~LogFile()
 void LogFile::setFilePath(list<string> var)
 {
     logFilePath = var;
+    // TODO 重新设置需要结束线程
+    exitThread();
 
     for (const string &path : logFilePath)
     {
@@ -28,6 +30,21 @@ void LogFile::setFilePath(list<string> var)
 
 void LogFile::push(const MsgData &data)
 {
+    if (vecThread.empty())
+    {
+        bufferData.push(data);
+    }
+    else if (!vecThread.empty() && !bufferData.empty())
+    {
+        while (!bufferData.empty())
+        {
+            for (functionData &fuc : vecThread)
+            {
+                fuc.ptrDataParam.get()->push(bufferData.front());
+            }
+            bufferData.pop();
+        }
+    }
     for (functionData &fuc : vecThread)
     {
         fuc.ptrDataParam.get()->push(data);
@@ -40,6 +57,11 @@ void LogFile::pushString(const string &data)
     {
         fuc.ptrDataParam.get()->pushString(data);
     }
+}
+
+int LogFile::logPathVector() const
+{
+    return vecThread.size();
 }
 
 void LogFile::runThread(const functionData &var)
@@ -61,4 +83,16 @@ void LogFile::runThread(const functionData &var)
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
     mFileSystem.closeFile();
+}
+
+bool LogFile::exitThread()
+{
+    for (int i = 0; i < vecThread.size(); i++)
+    {
+        vecThread[i].isRunning = false;
+        vecThread[i].th->detach();
+        std::cout << "[clear]" << vecThread[i].filePath << std::endl;
+    }
+    vecThread.clear();
+    return true;
 }

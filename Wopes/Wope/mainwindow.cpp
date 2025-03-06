@@ -6,8 +6,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     // a.print();
     acore::ACore acoreInit;
+    acoreInit.getLogController()->setFilePath({ "../../Log/Warning_LOG" });
 
-    list<string> var = { "./test_1", "./test_2" };
     LOG_INFO("输出日志");
     LOG_ERROR("ERROR");
     qDebug();

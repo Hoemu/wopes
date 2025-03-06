@@ -1,4 +1,5 @@
 #include "log_controller.h"
+#include <iostream>
 
 LogController::LogController()
 {
@@ -26,6 +27,12 @@ bool LogController::getDateLog() const
 
 void LogController::push(const MsgData &var)
 {
+    if (isSettingLogFilePath() == false)
+    {
+        std::cerr << "[WARNING]:Don't set log path. " << var.msg << std::endl;
+        return;
+    }
+
     dataBuffer->push(var);
     logFile->push(var); // 这里是两块不同的内存，控制台日志和文件日志需要分开
 }
@@ -40,6 +47,10 @@ void LogController::setFilePath(list<string> var)
     logFile->setFilePath(var);
 }
 
+bool LogController::isSettingLogFilePath()
+{
+    return logFile->logPathVector() > 0;
+}
 LogDataParam *LogController::getDataBufferObject() const
 {
     return dataBuffer;

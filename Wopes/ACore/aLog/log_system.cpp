@@ -49,7 +49,7 @@ LogSystem::LogSystem()
     work_console = new std::thread(&LogSystem::log, this);
     controller = new LogController();
     // 设置默认路径
-    controller->setFilePath({ "../../LI/Log/Input_log", "../../LI/Log/Error_log", "../../LI/Log/Waring_log" }); // 设置默认路径
+    // controller->setFilePath({ "../Log/Input_log", "../../Log/Error_log", "../Log/Waring_log" }); // 设置默认路径
 }
 
 LogSystem::~LogSystem()
@@ -81,6 +81,7 @@ void LogSystem::setMsg(std::string msg)
     {
         msg = "Warning:LogNone";
     }
+
     data.msg = msg;
     controller->push(data);
 }

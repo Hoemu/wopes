@@ -24,6 +24,12 @@ public:
 
     LogDataParam* getDataBufferObject() const;
 
+    /**
+     * @brief 是否设置日志目录
+     * @return bool
+     */
+    bool isSettingLogFilePath();
+
 private:
     bool dateLogTemp;
 

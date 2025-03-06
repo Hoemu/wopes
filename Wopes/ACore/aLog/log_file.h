@@ -33,18 +33,20 @@ public:
 
     void pushString(const string& data);
 
+    int logPathVector() const;
+
 protected:
     void runThread(const functionData& var);
+
+    bool exitThread();
 
 private:
     /** 日志路径 */
     list<string> logFilePath;
 
-    list<FILE*> fileList;
-
-    AFileSystem* file;
-
     vector<functionData> vecThread;
+
+    queue<MsgData> bufferData;
 };
 
 #endif // LOGFILE_H
