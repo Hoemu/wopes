@@ -45,17 +45,18 @@ void LogSystem::log()
 
 LogSystem::LogSystem()
 {
-    std::ios::sync_with_stdio(false); // 输出优化
-    work_console = new std::thread(&LogSystem::log, this);
-    controller = new LogController();
     // 设置默认路径
+    std::ios::sync_with_stdio(false); // 输出优化
+    controller = new LogController();
+    workConsole = new std::thread(&LogSystem::log, this);
     // controller->setFilePath({ "../Log/Input_log", "../../Log/Error_log", "../Log/Waring_log" }); // 设置默认路径
+    workConsole->detach();
 }
 
 LogSystem::~LogSystem()
 {
     threadStatus = false;
-    delete work_console;
+    delete workConsole;
     delete controller;
 }
 

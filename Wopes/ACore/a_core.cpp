@@ -8,6 +8,11 @@ ACore::ACore()
     LOG_INFO("Init Log System.");
 }
 
+ACore::~ACore()
+{
+    LogSystem::destroy();
+}
+
 LogController *ACore::getLogController()
 {
     return LogSystem::instance()->getControllerObject();

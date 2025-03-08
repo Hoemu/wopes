@@ -6,6 +6,11 @@ LogFile::LogFile() {}
 
 LogFile::~LogFile()
 {
+    if (!vecThread.empty())
+    {
+        while (vecThread[0].ptrDataParam->size()) {}
+    }
+    exitThread();
     std::cout << "LogFile delete." << std::endl;
 }
 
@@ -22,7 +27,7 @@ void LogFile::setFilePath(list<string> var)
         data.threadID = vecThread.size();
         data.isRunning = true;
         data.filePath = path;
-        data.th = new thread(&LogFile::runThread, this, data);
+        data.th = std::make_unique<thread>(&LogFile::runThread, this, data);
         vecThread.push_back(data);
     }
     // std::cout << "var size is:" << logFilePath.size() << std::endl;
@@ -47,6 +52,7 @@ void LogFile::push(const MsgData &data)
     }
     for (functionData &fuc : vecThread)
     {
+        std::cout << "push log input :" << data.msg << std::endl;
         fuc.ptrDataParam.get()->push(data);
     }
 }
@@ -76,7 +82,6 @@ void LogFile::runThread(const functionData &var)
         {
             vecThread[var.threadID].dataFlag = true;
             string dataMsg = vecThread[var.threadID].ptrDataParam.get()->frontString();
-            // std::cout << "thread [" << var.threadID << "] " << dataMsg << std::endl;
             mFileSystem.appendLine(dataMsg);
             vecThread[var.threadID].ptrDataParam.get()->pop();
         }

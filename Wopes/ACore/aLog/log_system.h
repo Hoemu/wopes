@@ -45,7 +45,7 @@ private:
 
     std::mutex mMutex;
 
-    std::thread* work_console;
+    thread* workConsole;
 
     LogController* controller;
 };

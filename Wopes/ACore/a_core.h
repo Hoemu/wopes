@@ -10,6 +10,7 @@ class ACORE_EXPORT ACore
 {
 public:
     ACore();
+    ~ACore();
 
     /**
      * @brief 获取日志控制器

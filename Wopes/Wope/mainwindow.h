@@ -26,5 +26,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+    acore::ACore acoreInit;
 };
 #endif // MAINWINDOW_H

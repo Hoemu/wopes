@@ -25,6 +25,8 @@ bool ADir::createDir(const string &filePath)
 {
     bool isDir = filePath[filePath.size() - 1] == '/';
     bool res = false;
+    bool isPath = false;
+    string noFilePathDir; // 没有文件的一个目录（去掉文件后的目录）
 
     if (isDir == true) // 为目录，会创建失败
     {
@@ -36,6 +38,7 @@ bool ADir::createDir(const string &filePath)
 
     listSingleDir = StringUtil::split(filePath, "/");
     listBuildDir = StringUtil::split(mBuildPath, "\\/");
+    mFileName = listSingleDir.back();
 
     if (mBuildPath.empty())
     {
@@ -43,11 +46,10 @@ bool ADir::createDir(const string &filePath)
         return res;
     }
 
-    // 如果为相对路径，需要单独加上绝对路径，得到完整路径
+    // 如果为相对路径，需要单独加上绝对路径，得到完整绝对路径
     if (listSingleDir.front() == "..")
     {
-        listSingleDir.pop_front();
-        mAcceptPath = StringUtil::combination(listSingleDir, "/");
+        int towPointCount = 0; // 两个点的计数
         for (const string &singleVar : listSingleDir)
         {
             if (singleVar != "..")
@@ -57,8 +59,15 @@ bool ADir::createDir(const string &filePath)
             else
             {
                 listBuildDir.pop_back();
+                towPointCount++;
             }
         }
+
+        while (towPointCount--)
+        {
+            listSingleDir.pop_front();
+        }
+        mAcceptPath = StringUtil::combination(listSingleDir, "/");
     }
     else if (listSingleDir.front() == ".")
     {
@@ -68,7 +77,7 @@ bool ADir::createDir(const string &filePath)
     else // 此时必然是绝对路径
     {
         list<string> listPathAppend;
-        string fName = listSingleDir.back();
+        listSingleDir.pop_back();
         for (const string &singleVar : listSingleDir)
         {
             listPathAppend.push_back(singleVar);
@@ -78,24 +87,20 @@ bool ADir::createDir(const string &filePath)
                 continue;
             }
 
-            string noFilePath = StringUtil::combination(listPathAppend, "/", true);
-            res = makeDir(noFilePath);
-            if (res == false)
-            {
-                break;
-            }
-            mAcceptPath = noFilePath + fName;
+            noFilePathDir = StringUtil::combination(listPathAppend, "/", true);
+            makeDir(noFilePathDir);
+            mAcceptPath = noFilePathDir + mFileName;
         }
+        res = isExitsPath(noFilePathDir);
         return res;
     }
 
-    mAcceptPath = StringUtil::combination(listBuildDir, "/", true) + mAcceptPath;
-    bool isPath = isExitsPath(mAcceptPath); // 判断路径是否存在
+    mAcceptPath = StringUtil::combination(listBuildDir, "/", true) + mAcceptPath; // 写入完整目录
+    isPath = isExitsPath(mAcceptPath);                                            // 判断路径是否存在
 
     if (isPath == false)
     {
-        listSingleDir = StringUtil::split(mAcceptPath, "/"); // 转化成目录
-        string fName = listSingleDir.back();
+        listSingleDir = StringUtil::split(mAcceptPath, "/"); // 转化成目录 list（需要把文件先 pop 出去）
         list<string> listPathAppend;
         listSingleDir.pop_back();
 
@@ -108,12 +113,13 @@ bool ADir::createDir(const string &filePath)
                 continue;
             }
 
-            string noFilePath = StringUtil::combination(listPathAppend, "/", true);
-            res = makeDir(noFilePath);
-            mAcceptPath = noFilePath + fName;
+            noFilePathDir = StringUtil::combination(listPathAppend, "/", true);
+            makeDir(noFilePathDir);
+            mAcceptPath = noFilePathDir + mFileName;
         }
     }
 
+    res = isExitsPath(noFilePathDir);
     return res;
 }
 

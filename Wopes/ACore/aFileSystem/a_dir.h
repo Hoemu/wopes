@@ -36,7 +36,7 @@ public:
     bool makeDir(const string &filePath);
 
     /**
-     * @brief createDir 创建一个目录（需要自带文件名称才能创建成功）
+     * @brief createDir 创建一个目录（需要自带文件名称才能创建成功，注意：如果文件路径已经存在了，也可能创建失败）
      * @param filePath
      * @return bool
      */

@@ -13,7 +13,7 @@ struct functionData
     //    void (LogFile::*callback)();
     unsigned int threadID = 0x0000;
     string filePath;
-    thread* th;
+    std::shared_ptr<thread> th;
     bool isRunning;
     bool dataFlag = false;
     std::shared_ptr<LogDataParam> ptrDataParam;
