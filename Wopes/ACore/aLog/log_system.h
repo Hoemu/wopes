@@ -10,7 +10,6 @@
 class LogBaseSystem
 {
 public:
-    virtual void setMsg(std::string msg) = 0;
 };
 
 class ACORE_EXPORT LogSystem : public LogBaseSystem
@@ -22,7 +21,7 @@ public:
 
     void setLogMsg(std::string file, std::string functionName, int line);
 
-    virtual void setMsg(std::string msg) override;
+    void setMsg(std::string msg);
 
     void setMsg(int msg);
 

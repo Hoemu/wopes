@@ -1,7 +1,7 @@
 # 当前页面主要写一些函数和宏定义
-message(STATUS "Begin ACoreBaseConfig")
+message(STATUS "Begin ACoreBaseConfig.")
 
-include(./ConfigFile/cmake/ACore.cmake)
+include(./ConfigFile/cmake/ACoreSetting.cmake)
 include(./ConfigFile/cmake/ACoreUtil.cmake)
 include(./ConfigFile/cmake/ACoreVersionUtil.cmake)
 # include(./ConfigFile/cmake/ACoreTargets.cmake)
@@ -59,9 +59,10 @@ function(find_source_code OUTPUT_VAR)
     # message(STATUS "[end src] " ${fileList})
 endfunction()
 
-# 添加依赖文件
+function(find_static_lib_file OUTPUT_VAR_LIB TARGET_DIR)
+    file(GLOB_RECURSE fileList "${TARGET_DIR}/*.a")
+    set(${OUTPUT_VAR_LIB} ${fileList} PARENT_SCOPE)
+    # message("output_var_lib " ${fileList})
+endfunction()
 
-
-include(./ACore)
-
-message(STATUS "End ACoreBaseConfig")
+message(STATUS "End ACoreBaseConfig.")

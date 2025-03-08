@@ -35,7 +35,12 @@ public:
      */
     bool makeDir(const string &filePath);
 
-    bool createFileDir(const string &filePath);
+    /**
+     * @brief createDir 创建一个目录（需要自带文件名称才能创建成功）
+     * @param filePath
+     * @return bool
+     */
+    bool createDir(const string &filePath);
 
     string getFileName() const;
 
