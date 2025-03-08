@@ -5,3 +5,4 @@ ACore/*.user
 # 目录
 build/
 ACore/build/
+Depends/
