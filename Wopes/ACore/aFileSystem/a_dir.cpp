@@ -3,10 +3,7 @@
 #include <vector>
 #include "../aUtil/string_util.h"
 
-ADir::ADir(const string &filePath)
-{
-    string targetString;
-}
+ADir::ADir(const string &filePath) {}
 
 ADir::~ADir() {}
 

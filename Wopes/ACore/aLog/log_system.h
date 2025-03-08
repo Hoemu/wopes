@@ -1,9 +1,8 @@
 #ifndef LOG_SYSTEM_H
 #define LOG_SYSTEM_H
 
-#include <iostream>
+#include <condition_variable>
 #include <mutex>
-#include <thread>
 #include "log_controller.h"
 #include "log_data_param.h"
 
@@ -25,6 +24,8 @@ public:
 
     void setMsg(int msg);
 
+    void setMsg(...);
+
     void setLogModel(LOG_LEVEL model);
 
     LogController* getControllerObject() const;
@@ -42,6 +43,8 @@ private:
 
     /** true 为运行状态， false 为关闭状态 */
     bool threadStatus;
+
+    std::condition_variable condConsumer;
 
     std::mutex mMutex;
 

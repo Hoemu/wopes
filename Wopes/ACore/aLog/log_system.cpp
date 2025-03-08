@@ -1,5 +1,6 @@
 #include "log_system.h"
 #include <time.h>
+#include <iostream>
 
 LogSystem* LogSystem::mInstance = nullptr;
 
@@ -28,18 +29,13 @@ void LogSystem::log()
 
     while (threadStatus)
     {
-        if (dataBuffer->size() > 0)
+        std::unique_lock<std::mutex> lock(mMutex);
+        while (dataBuffer->size() == 0)
         {
-            mMutex.lock();
-            std::cout << dataBuffer->frontString() << std::endl;
-            dataBuffer->pop();
-            mMutex.unlock();
+            condConsumer.wait(lock); // 等待缓冲区不空
         }
-        else
-        {
-            // TODO 需要优化
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        }
+        std::cout << dataBuffer->frontString() << std::endl;
+        dataBuffer->pop();
     }
 }
 
@@ -85,6 +81,7 @@ void LogSystem::setMsg(std::string msg)
 
     data.msg = msg;
     controller->push(data);
+    condConsumer.notify_one();
 }
 
 void LogSystem::setLogModel(LOG_LEVEL model)
@@ -96,7 +93,10 @@ void LogSystem::setMsg(int msg)
 {
     data.msg = std::to_string(msg);
     controller->push(data);
+    condConsumer.notify_one();
 }
+
+void LogSystem::setMsg(...) {}
 
 LogController* LogSystem::getControllerObject() const
 {
