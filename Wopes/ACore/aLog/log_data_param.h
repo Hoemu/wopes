@@ -13,6 +13,8 @@ using std::string;
 using std::thread;
 using std::vector;
 
+#define BufferArea 1024
+
 /** 日志异常 */
 enum class LOG_LEVEL
 {
@@ -39,11 +41,13 @@ struct MsgData
 class LogDataParam
 {
 public:
-    queue<MsgData> &getDataBuffer();
+    LogDataParam();
+    ~LogDataParam();
+    queue<MsgData *> &getDataBuffer();
 
     const vector<string> &getLogLevel() const;
 
-    void push(const MsgData &var);
+    void push(MsgData *var);
 
     void pushString(const string &str);
 
@@ -51,12 +55,12 @@ public:
 
     size_t size();
 
-    MsgData front() const;
+    MsgData *front() const;
 
     string frontString() const;
 
 private:
-    queue<MsgData> data;
+    queue<MsgData *> data;
 
     queue<string> dataString;
 

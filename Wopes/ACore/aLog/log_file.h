@@ -41,7 +41,7 @@ public:
     /** 设置文件路径，只能初始化一次 */
     void setFilePath(list<string> var);
 
-    void push(const MsgData& data);
+    void push(MsgData* data);
 
     void pushString(const string& data);
 
@@ -60,7 +60,7 @@ private:
 
     vector<ThreadCondition*> vecThreadCondition;
 
-    queue<MsgData> bufferData;
+    queue<MsgData*> bufferData;
 };
 
 #endif // LOGFILE_H

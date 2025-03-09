@@ -23,12 +23,23 @@ TEST(ADir, isExistDir)
     ASSERT_NE(initDir.isExitsPath("./Dir"), true); // 致命断言（失败终止测试）
 }
 
-TEST(ALOG, instace)
+TEST(LogThroughputTest, SingleThreadPerformance)
 {
-    acore::ACore aInit;
-    aInit.getLogController()->setFilePath({ "../Log/Info_Log" });
-    LOG_INFO("test");
-    while (1) {}
+    const int kLogCount = 100000;
+    acore::ACore aLogInit;
+    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG", "../Log/WARNING_LOG" });
+    aLogInit.getLogController()->setConsoleCondition(false);
+    auto start = std::chrono::high_resolution_clock::now();
+
+    for (int i = 0; i < kLogCount; ++i)
+    {
+        LOG_INFO("Test log message: " + std::to_string(i));
+    }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    double duration = std::chrono::duration<double>(end - start).count();
+
+    std::cout << "A thread throughput is: /n" << kLogCount / duration << " logs/sec\n";
 }
 
 int main(int argc, char** argv)

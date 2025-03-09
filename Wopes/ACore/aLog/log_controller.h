@@ -15,7 +15,11 @@ public:
 
     bool getDateLog() const;
 
-    void push(const MsgData& var);
+    bool getConsoleCondition() const;
+
+    void setConsoleCondition(const bool& condition);
+
+    void push(MsgData* var);
 
     /** 临时使用，需要手挡修改回去 */
     void useDateLogTemp(bool var);
@@ -34,6 +38,9 @@ private:
     bool dateLogTemp;
 
     bool dateLogLongUse;
+
+    /** true 为运行状态， false 为关闭状态 */
+    bool consoleThread;
 
     // 这个数据才是一段一段的
     LogDataParam* dataBuffer;

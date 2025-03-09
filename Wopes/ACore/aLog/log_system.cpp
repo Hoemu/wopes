@@ -25,9 +25,8 @@ void LogSystem::destroy()
 void LogSystem::log()
 {
     LogDataParam* dataBuffer = controller->getDataBufferObject();
-    threadStatus = true;
 
-    while (threadStatus)
+    while (controller->getConsoleCondition())
     {
         std::unique_lock<std::mutex> lock(mMutex);
         while (dataBuffer->size() == 0)
@@ -51,16 +50,16 @@ LogSystem::LogSystem()
 
 LogSystem::~LogSystem()
 {
-    threadStatus = false;
     delete workConsole;
     delete controller;
 }
 
 void LogSystem::setLogMsg(std::string file, std::string functionName, int line)
 {
-    data.file = file;
-    data.functionName = functionName;
-    data.line = line;
+    data = new MsgData;
+    data->file = file;
+    data->functionName = functionName;
+    data->line = line;
 
     std::chrono::system_clock::time_point now_ = std::chrono::system_clock::now();
     std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(now_.time_since_epoch()) % 1000;
@@ -68,8 +67,8 @@ void LogSystem::setLogMsg(std::string file, std::string functionName, int line)
 
     struct tm* local_tm = localtime(&now);
 
-    data.ms = ms.count();
-    strftime(data.date, sizeof(data.date), "%Y-%m-%d %H:%M:%S", local_tm);
+    data->ms = ms.count();
+    strftime(data->date, sizeof(data->date), "%Y-%m-%d %H:%M:%S", local_tm);
 }
 
 void LogSystem::setMsg(std::string msg)
@@ -79,24 +78,23 @@ void LogSystem::setMsg(std::string msg)
         msg = "Warning:LogNone";
     }
 
-    data.msg = msg;
+    data->msg = msg;
     controller->push(data);
     condConsumer.notify_one();
 }
 
 void LogSystem::setLogModel(LOG_LEVEL model)
 {
-    data.model = model;
+    data->model = model;
 }
 
 void LogSystem::setMsg(int msg)
 {
-    data.msg = std::to_string(msg);
+    data = new MsgData;
+    data->msg = std::to_string(msg);
     controller->push(data);
     condConsumer.notify_one();
 }
-
-void LogSystem::setMsg(...) {}
 
 LogController* LogSystem::getControllerObject() const
 {

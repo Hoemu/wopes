@@ -24,8 +24,6 @@ public:
 
     void setMsg(int msg);
 
-    void setMsg(...);
-
     void setLogModel(LOG_LEVEL model);
 
     LogController* getControllerObject() const;
@@ -37,12 +35,9 @@ private:
     LogSystem();
     ~LogSystem();
 
-    MsgData data;
+    MsgData* data;
 
     static LogSystem* mInstance;
-
-    /** true 为运行状态， false 为关闭状态 */
-    bool threadStatus;
 
     std::condition_variable condConsumer;
 

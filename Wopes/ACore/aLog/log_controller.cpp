@@ -5,12 +5,14 @@ LogController::LogController()
 {
     dateLogLongUse = true;
     dateLogTemp = true;
+    consoleThread = true;
     dataBuffer = new LogDataParam;
     logFile = new LogFile;
 }
 
 LogController::~LogController()
 {
+    consoleThread = false;
     delete dataBuffer;
     delete logFile;
 }
@@ -25,11 +27,21 @@ bool LogController::getDateLog() const
     return dateLogLongUse & dateLogTemp;
 }
 
-void LogController::push(const MsgData &var)
+bool LogController::getConsoleCondition() const
+{
+    return consoleThread;
+}
+
+void LogController::setConsoleCondition(const bool &condition)
+{
+    consoleThread = condition;
+}
+
+void LogController::push(MsgData *var)
 {
     if (isSettingLogFilePath() == false)
     {
-        std::cerr << "[WARNING]:Don't set log path. " << var.msg << std::endl;
+        std::cerr << "[WARNING]:Don't set log path. " << var->msg << std::endl;
         return;
     }
 
