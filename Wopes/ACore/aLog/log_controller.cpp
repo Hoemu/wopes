@@ -6,6 +6,8 @@ LogController::LogController()
     dateLogLongUse = true;
     dateLogTemp = true;
     consoleThread = true;
+    isfoldFilePath = false;
+    dirTool = new ADir;
     dataBuffer = new LogDataParam;
     logFile = new LogFile;
 }
@@ -15,6 +17,7 @@ LogController::~LogController()
     consoleThread = false;
     delete dataBuffer;
     delete logFile;
+    delete dirTool;
 }
 
 void LogController::useDateLog(bool var)
@@ -37,12 +40,23 @@ void LogController::setConsoleCondition(const bool &condition)
     consoleThread = condition;
 }
 
+void LogController::setFoldFilePath(const bool &var)
+{
+    isfoldFilePath = var;
+    // std::cout << "test:" << isfoldFilePath << std::endl;
+}
+
 void LogController::push(MsgData *var)
 {
     if (isSettingLogFilePath() == false)
     {
         std::cerr << "[WARNING]:Don't set log path. " << var->msg << std::endl;
         return;
+    }
+
+    if (var != nullptr && isfoldFilePath == true)
+    {
+        var->file = dirTool->getTheFileByThePath(var->file);
     }
 
     dataBuffer->push(var);

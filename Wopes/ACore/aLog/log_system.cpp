@@ -50,11 +50,17 @@ LogSystem::LogSystem()
 
 LogSystem::~LogSystem()
 {
+    controller->setConsoleCondition(false);
+    LogDataParam* dataBuffer = controller->getDataBufferObject();
+    while (dataBuffer->size() != 0)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+    }
     delete workConsole;
     delete controller;
 }
 
-void LogSystem::setLogMsg(std::string file, std::string functionName, int line)
+void LogSystem::setLogMsg(string file, string functionName, int line)
 {
     data = new MsgData;
     data->file = file;

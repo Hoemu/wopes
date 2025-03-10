@@ -20,7 +20,7 @@ public:
 
     void setLogMsg(std::string file, std::string functionName, int line);
 
-    void setMsg(std::string msg);
+    void setMsg(string msg);
 
     void setMsg(int msg);
 

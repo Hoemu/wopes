@@ -3,7 +3,22 @@
 #include <vector>
 #include "../aUtil/string_util.h"
 
-ADir::ADir(const string &filePath) {}
+ADir::ADir(const string &filePath)
+{
+    if (filePath.empty())
+    {
+        return;
+    }
+
+    bool isDir = filePath[filePath.size() - 1] == '/';
+    if (isDir == true)
+    {
+        mFileName = "";
+        return;
+    }
+    listSingleDir = StringUtil::split(filePath, "\\/");
+    mFileName = listSingleDir.back();
+}
 
 ADir::~ADir() {}
 
@@ -18,8 +33,22 @@ bool ADir::makeDir(const string &filePath)
 #endif
 }
 
+string ADir::getTheFileByThePath(const string &filePath)
+{
+    bool isDir = filePath[filePath.size() - 1] == '/';
+    if (isDir == true)
+    {
+        return "";
+    }
+    list<string> listDirRank = StringUtil::split(filePath, "\\/");
+    return listDirRank.back();
+}
+
 bool ADir::createDir(const string &filePath)
 {
+    listSingleDir.clear();
+    mBuildPath.clear();
+
     bool isDir = filePath[filePath.size() - 1] == '/';
     bool res = false;
     bool isPath = false;

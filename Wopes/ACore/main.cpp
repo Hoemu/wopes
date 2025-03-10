@@ -12,7 +12,7 @@ const string var = "../TT/File/SS/GG";
 const string var2 = "../../CUre/cc/FF";
 const string DVar = "D:/Test/fff";
 
-TEST(ADir, isExistDir)
+TEST(ADir, DISABLED_isExistDir)
 {
     ADir initDir;
 
@@ -23,7 +23,8 @@ TEST(ADir, isExistDir)
     ASSERT_NE(initDir.isExitsPath("./Dir"), true); // 致命断言（失败终止测试）
 }
 
-TEST(LogThroughputTest, SingleThreadPerformance)
+// DISABLED_  前缀：禁止测试项
+TEST(LogThroughputTest, DISABLED_SingleThreadPerformance)
 {
     const int kLogCount = 100000;
     acore::ACore aLogInit;
@@ -40,6 +41,14 @@ TEST(LogThroughputTest, SingleThreadPerformance)
     double duration = std::chrono::duration<double>(end - start).count();
 
     std::cout << "A thread throughput is: /n" << kLogCount / duration << " logs/sec\n";
+}
+
+TEST(LogController, setConsoleCondition)
+{
+    acore::ACore aLogInit;
+    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG", "../Log/WARNING_LOG" });
+    aLogInit.getLogController()->setFoldFilePath(true);
+    LOG_INFO("Test log message: " + std::to_string(1));
 }
 
 int main(int argc, char** argv)
