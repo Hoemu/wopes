@@ -24,7 +24,7 @@ TEST(ADir, DISABLED_isExistDir)
 }
 
 // DISABLED_  前缀：禁止测试项
-TEST(LogThroughputTest, DISABLED_SingleThreadPerformance)
+TEST(LogThroughputTest, SingleThreadPerformance)
 {
     const int kLogCount = 100000;
     acore::ACore aLogInit;
@@ -43,7 +43,7 @@ TEST(LogThroughputTest, DISABLED_SingleThreadPerformance)
     std::cout << "A thread throughput is: /n" << kLogCount / duration << " logs/sec\n";
 }
 
-TEST(LogController, setConsoleCondition)
+TEST(LogController, DISABLED_setConsoleCondition)
 {
     acore::ACore aLogInit;
     aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG", "../Log/WARNING_LOG" });

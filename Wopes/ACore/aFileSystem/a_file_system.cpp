@@ -2,7 +2,19 @@
 #include <iostream>
 #include "a_dir.h"
 
-AFileSystem::AFileSystem(const string &targetPath) : filePath(targetPath) {}
+AFileSystem::AFileSystem(const string &targetPath) : filePath(targetPath)
+{
+    dir = new ADir;
+}
+
+AFileSystem::~AFileSystem()
+{
+    if (dir != nullptr)
+    {
+        delete dir;
+        dir = nullptr;
+    }
+}
 
 void AFileSystem::setPath(const string &targetPath)
 {
@@ -13,10 +25,9 @@ bool AFileSystem::createFilePath(const string &var)
 {
     // std::cout << "create file path:" << filePath << std::endl;
 
-    ADir dir;
-    dir.createDir(filePath);
+    dir->createDir(filePath);
 
-    fp = fopen(dir.getFilePath().c_str(), var.c_str());
+    fp = fopen(dir->getFilePath().c_str(), var.c_str());
 
     if (fp == NULL)
     {

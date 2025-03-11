@@ -54,12 +54,10 @@ void LogController::push(MsgData *var)
         return;
     }
 
-    if (var != nullptr && isfoldFilePath == true)
+    if (consoleThread == false)
     {
-        var->file = dirTool->getTheFileByThePath(var->file);
+        dataBuffer->push(var);
     }
-
-    dataBuffer->push(var);
     logFile->push(var); // 这里是两块不同的内存，控制台日志和文件日志需要分开
 }
 

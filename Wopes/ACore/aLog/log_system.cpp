@@ -33,6 +33,10 @@ void LogSystem::log()
         {
             condConsumer.wait(lock); // 等待缓冲区不空
         }
+        if (!controller->getConsoleCondition())
+        {
+            break;
+        }
         std::cout << dataBuffer->frontString() << std::endl;
         dataBuffer->pop();
     }
@@ -43,6 +47,7 @@ LogSystem::LogSystem()
     // 设置默认路径
     std::ios::sync_with_stdio(false); // 输出优化
     controller = new LogController();
+    dirTool = new ADir;
     workConsole = new std::thread(&LogSystem::log, this);
     // controller->setFilePath({ "../Log/Input_log", "../../Log/Error_log", "../Log/Waring_log" }); // 设置默认路径
     workConsole->detach();
@@ -50,21 +55,35 @@ LogSystem::LogSystem()
 
 LogSystem::~LogSystem()
 {
-    controller->setConsoleCondition(false);
     LogDataParam* dataBuffer = controller->getDataBufferObject();
     while (dataBuffer->size() != 0)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+        if (controller->getConsoleCondition() == false)
+        {
+            dataBuffer->pop();
+        }
     }
+
     delete workConsole;
     delete controller;
+    delete dirTool;
 }
 
 void LogSystem::setLogMsg(string file, string functionName, int line)
 {
     data = new MsgData;
-    data->file = file;
+
     data->functionName = functionName;
+
+    if (controller->getConsoleCondition() == false)
+    {
+        data->file = dirTool->getTheFileByThePath(data->file);
+    }
+    else
+    {
+        data->file = file;
+    }
+
     data->line = line;
 
     std::chrono::system_clock::time_point now_ = std::chrono::system_clock::now();
@@ -96,7 +115,6 @@ void LogSystem::setLogModel(LOG_LEVEL model)
 
 void LogSystem::setMsg(int msg)
 {
-    data = new MsgData;
     data->msg = std::to_string(msg);
     controller->push(data);
     condConsumer.notify_one();

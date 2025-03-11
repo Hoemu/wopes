@@ -17,9 +17,6 @@ struct ThreadData
     string filePath;
     std::shared_ptr<thread> threadPtr;
     bool isRunning;
-    bool dataFlag = false;
-    // std::mutex mMutex;
-    // std::condition_variable condConsumer;
 
     std::shared_ptr<LogDataParam> ptrDataParam;
 };
@@ -47,20 +44,22 @@ public:
 
     int logPathVector() const;
 
+    bool isSettingPath() const;
+
 protected:
     void runThread(const ThreadData& var);
 
     bool exitThread();
 
 private:
-    /** 日志路径 */
-    list<string> logFilePath;
-
     vector<ThreadData> vecThread;
 
     vector<ThreadCondition*> vecThreadCondition;
 
     queue<MsgData*> bufferData;
+
+    /** 文件路径个数 */
+    int filePathNumber;
 };
 
 #endif // LOGFILE_H

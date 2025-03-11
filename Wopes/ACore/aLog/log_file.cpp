@@ -2,29 +2,31 @@
 #include <iostream>
 #include <thread>
 
-LogFile::LogFile() {}
+LogFile::LogFile()
+{
+    filePathNumber = 0;
+}
 
 LogFile::~LogFile()
 {
-    if (!vecThread.empty())
+    for (int i = 0; i < vecThread.size(); i++)
     {
-        while (vecThread[0].ptrDataParam->size())
+        while (vecThread[i].ptrDataParam->size())
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(300));
+            vecThreadCondition[vecThread[i].threadID]->condConsumer.notify_one();
         }
-        exitThread();
     }
 
+    exitThread();
     std::cout << "LogFile delete." << std::endl;
 }
 
 void LogFile::setFilePath(list<string> var)
 {
-    logFilePath = var;
-    // TODO 重新设置需要结束线程
+    filePathNumber = var.size();
     exitThread();
 
-    for (const string &path : logFilePath)
+    for (const string &path : var)
     {
         ThreadData data;
         ThreadCondition *condition = new ThreadCondition;
@@ -78,27 +80,39 @@ int LogFile::logPathVector() const
     return vecThread.size();
 }
 
+bool LogFile::isSettingPath() const
+{
+    return filePathNumber > 0;
+}
+
 void LogFile::runThread(const ThreadData &var)
 {
-    AFileSystem mFileSystem(var.filePath);
-    mFileSystem.createFilePath("a");
+    AFileSystem *mFileSystem = new AFileSystem(var.filePath);
+
+    mFileSystem->createFilePath("a");
     while (var.isRunning)
     {
         std::unique_lock<std::mutex> lock(vecThreadCondition[var.threadID]->mMutex);
         while (vecThread[var.threadID].ptrDataParam.get()->size() == 0)
         {
-            mFileSystem.closeFile();
-            mFileSystem.createFilePath("a");
+            mFileSystem->closeFile();
+            mFileSystem->createFilePath("a");
             vecThreadCondition[var.threadID]->condConsumer.wait(lock); // 等待缓冲区不空
         }
 
-        vecThread[var.threadID].dataFlag = true;
         string dataMsg = vecThread[var.threadID].ptrDataParam.get()->frontString();
-        mFileSystem.appendLine(dataMsg);
+        mFileSystem->appendLine(dataMsg);
         vecThread[var.threadID].ptrDataParam.get()->pop();
         // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
-    mFileSystem.closeFile();
+
+    mFileSystem->closeFile();
+
+    if (mFileSystem != nullptr)
+    {
+        delete mFileSystem;
+        mFileSystem = nullptr;
+    }
 }
 
 bool LogFile::exitThread()

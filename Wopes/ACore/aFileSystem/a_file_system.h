@@ -3,6 +3,7 @@
 
 #include <string>
 #include "../ACore_global.h"
+#include "a_dir.h"
 
 using std::string;
 
@@ -10,6 +11,7 @@ class A_DECL_EXPORT AFileSystem
 {
 public:
     AFileSystem(const string &targetPath = nullptr);
+    ~AFileSystem();
 
     void setPath(const string &targetPath);
 
@@ -33,6 +35,8 @@ private:
     string filePath;
 
     FILE *fp;
+
+    ADir *dir;
 };
 
 #endif // A_FILE_SYSTEM_H

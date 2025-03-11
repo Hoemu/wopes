@@ -46,6 +46,8 @@ private:
     thread* workConsole;
 
     LogController* controller;
+
+    ADir* dirTool;
 };
 
 #endif // LOG_SYSTEM_H
