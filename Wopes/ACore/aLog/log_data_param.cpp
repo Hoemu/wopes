@@ -5,24 +5,10 @@ LogDataParam::LogDataParam() {}
 
 LogDataParam::~LogDataParam()
 {
-    while (!data.empty())
-    {
-        if (data.front() != nullptr)
-        {
-            delete data.front();
-            data.front() = nullptr;
-            data.pop();
-        }
-    }
     while (!dataString.empty())
     {
         dataString.pop();
     }
-}
-
-queue<MsgData *> &LogDataParam::getDataBuffer()
-{
-    return data;
 }
 
 const vector<string> &LogDataParam::getLogLevel() const
@@ -38,8 +24,8 @@ void LogDataParam::push(MsgData *var)
     dataTemp = dataTemp + logLevel[(int)var->model] + " ";
     dataTemp = dataTemp + var->file + ":(" + var->functionName + ")@";
     dataTemp = dataTemp + std::to_string(var->line) + " " + var->msg;
+
     dataString.push(dataTemp);
-    data.push(var);
 }
 
 void LogDataParam::pushString(const string &str)
@@ -51,23 +37,18 @@ void LogDataParam::pushString(const string &str)
 
 void LogDataParam::pop()
 {
-    if (data.empty() || dataString.empty())
+    if (dataString.empty())
     {
         std::cerr << "queue is empty." << std::endl;
         return;
     }
+
     dataString.pop();
-    data.pop();
 }
 
 size_t LogDataParam::size()
 {
-    return data.size();
-}
-
-MsgData *LogDataParam::front() const
-{
-    return data.front();
+    return dataString.size();
 }
 
 string LogDataParam::frontString() const

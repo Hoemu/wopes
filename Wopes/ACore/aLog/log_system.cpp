@@ -46,10 +46,10 @@ LogSystem::LogSystem()
 {
     // 设置默认路径
     std::ios::sync_with_stdio(false); // 输出优化
+    data = new MsgData;
     controller = new LogController();
     dirTool = new ADir;
     workConsole = new std::thread(&LogSystem::log, this);
-    // controller->setFilePath({ "../Log/Input_log", "../../Log/Error_log", "../Log/Waring_log" }); // 设置默认路径
     workConsole->detach();
 }
 
@@ -67,12 +67,11 @@ LogSystem::~LogSystem()
     delete workConsole;
     delete controller;
     delete dirTool;
+    delete data;
 }
 
 void LogSystem::setLogMsg(string file, string functionName, int line)
 {
-    data = new MsgData;
-
     data->functionName = functionName;
 
     if (controller->getConsoleCondition() == false)

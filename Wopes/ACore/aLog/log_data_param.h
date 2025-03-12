@@ -43,7 +43,6 @@ class LogDataParam
 public:
     LogDataParam();
     ~LogDataParam();
-    queue<MsgData *> &getDataBuffer();
 
     const vector<string> &getLogLevel() const;
 
@@ -55,13 +54,9 @@ public:
 
     size_t size();
 
-    MsgData *front() const;
-
     string frontString() const;
 
 private:
-    queue<MsgData *> data;
-
     queue<string> dataString;
 
     const vector<string> logLevel = { "LOG_INFO", "LOG_DEBUG", "LOG_DETUALT", "LOG_WARN", "LOG_ERROR", "LOG_FATAL" };

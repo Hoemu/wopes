@@ -26,13 +26,13 @@ TEST(ADir, DISABLED_isExistDir)
 // DISABLED_  前缀：禁止测试项
 TEST(LogThroughputTest, SingleThreadPerformance)
 {
-    const int kLogCount = 100000;
+    const long long kLogCount = 100000000;
     acore::ACore aLogInit;
     aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG", "../Log/WARNING_LOG" });
     aLogInit.getLogController()->setConsoleCondition(false);
     auto start = std::chrono::high_resolution_clock::now();
 
-    for (int i = 0; i < kLogCount; ++i)
+    for (long long i = 0; i < kLogCount; ++i)
     {
         LOG_INFO("Test log message: " + std::to_string(i));
     }
