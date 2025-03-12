@@ -9,6 +9,7 @@ LogFile::LogFile()
 
 LogFile::~LogFile()
 {
+    // 确保日志完全写入文件
     for (int i = 0; i < vecThread.size(); i++)
     {
         while (vecThread[i].ptrDataParam->size())
