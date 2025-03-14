@@ -3,6 +3,7 @@
 #include "../ACore_global.h"
 #include "../aFileSystem/a_dir.h"
 #include "log_file.h"
+
 /** 日志控制器 */
 class ACORE_EXPORT LogController
 {

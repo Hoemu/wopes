@@ -33,10 +33,6 @@ void LogSystem::log()
         {
             condConsumer.wait(lock); // 等待缓冲区不空
         }
-        if (!controller->getConsoleCondition())
-        {
-            break;
-        }
         std::cout << dataBuffer->frontString() << std::endl;
         dataBuffer->pop();
     }

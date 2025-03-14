@@ -34,6 +34,7 @@ TEST(LogThroughputTest, SingleThreadPerformance)
 
     for (long long i = 0; i < kLogCount; ++i)
     {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         LOG_INFO("Test log message: " + std::to_string(i));
     }
 
