@@ -44,8 +44,6 @@ public:
 
     int logPathVector() const;
 
-    bool isSettingPath() const;
-
 protected:
     void runThread(const ThreadData& var);
 

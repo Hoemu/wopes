@@ -22,22 +22,6 @@ void LogSystem::destroy()
     }
 }
 
-void LogSystem::log()
-{
-    LogDataParam* dataBuffer = controller->getDataBufferObject();
-
-    while (controller->getConsoleCondition())
-    {
-        std::unique_lock<std::mutex> lock(mMutex);
-        while (dataBuffer->size() == 0)
-        {
-            condConsumer.wait(lock); // 等待缓冲区不空
-        }
-        std::cout << dataBuffer->frontString() << std::endl;
-        dataBuffer->pop();
-    }
-}
-
 LogSystem::LogSystem()
 {
     // 设置默认路径
@@ -103,6 +87,13 @@ void LogSystem::setMsg(std::string msg)
     condConsumer.notify_one();
 }
 
+void LogSystem::setMsg(unsigned int msg)
+{
+    data->msg = std::to_string(msg);
+    controller->push(data);
+    condConsumer.notify_one();
+}
+
 void LogSystem::setLogModel(LOG_LEVEL model)
 {
     data->model = model;
@@ -115,7 +106,51 @@ void LogSystem::setMsg(int msg)
     condConsumer.notify_one();
 }
 
+void LogSystem::setMsg(unsigned long long msg)
+{
+    data->msg = std::to_string(msg);
+    controller->push(data);
+    condConsumer.notify_one();
+}
+
+void LogSystem::setMsg(long long msg)
+{
+    data->msg = std::to_string(msg);
+    controller->push(data);
+    condConsumer.notify_one();
+}
+
+void LogSystem::setMsg(unsigned short msg)
+{
+    data->msg = std::to_string(msg);
+    controller->push(data);
+    condConsumer.notify_one();
+}
+
+void LogSystem::setMsg(short msg)
+{
+    data->msg = std::to_string(msg);
+    controller->push(data);
+    condConsumer.notify_one();
+}
+
 LogController* LogSystem::getControllerObject() const
 {
     return controller;
+}
+
+void LogSystem::log()
+{
+    LogDataParam* dataBuffer = controller->getDataBufferObject();
+
+    while (controller->getConsoleCondition())
+    {
+        std::unique_lock<std::mutex> lock(mMutex);
+        while (dataBuffer->size() == 0)
+        {
+            condConsumer.wait(lock); // 等待缓冲区不空
+        }
+        std::cout << dataBuffer->frontString() << std::endl;
+        dataBuffer->pop();
+    }
 }
