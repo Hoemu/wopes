@@ -128,6 +128,10 @@ void LogFile::threadHelperFunction()
     {
         for (ThreadData &fuc : vecThread)
         {
+            if (vecThread.empty())
+            {
+                break;
+            }
             if (fuc.ptrDataParam->size() > 0)
             {
                 vecThreadCondition[fuc.threadID]->condConsumer.notify_all();

@@ -23,12 +23,49 @@ TEST(ADir, DISABLED_isExistDir)
     ASSERT_NE(initDir.isExitsPath("./Dir"), true); // 致命断言（失败终止测试）
 }
 
+void TestThread(const int& threadNumber, const int& end) {}
+
+TEST(LogThroughputTest, DISABLED_AtomicIncrement)
+{
+    acore::ACore aLogInit;
+    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_TEST" });
+    aLogInit.getLogController()->setConsoleCondition(false);
+
+    constexpr int kThreads = 10;
+    constexpr int kIncrementsPerThread = 10000;
+    auto start = std::chrono::high_resolution_clock::now();
+
+    std::vector<std::thread> threads;
+    for (int i = 0; i < kThreads; ++i)
+    {
+        threads.emplace_back([=]() {
+            for (int j = 0; j < kIncrementsPerThread; ++j)
+            {
+                LOG_INFO("Test thread message: [" + std::to_string(i) + "] " + std::to_string(j));
+            }
+        });
+    }
+
+    for (auto& t : threads)
+    {
+        t.join();
+    }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = end - start;
+
+    // 输出性能指标
+    std::cout << "File with buffer: " << duration.count() / (kThreads * kIncrementsPerThread) << " ns/op\n";
+
+    // EXPECT_EQ(counter.GetCount(), kThreads * kIncrementsPerThread);
+}
+
 // DISABLED_  前缀：禁止测试项
 TEST(LogThroughputTest, SingleThreadPerformance)
 {
     const long long kLogCount = 1000000;
     acore::ACore aLogInit;
-    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG", "../Log/WARNING_LOG" });
+    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG" });
     aLogInit.getLogController()->setConsoleCondition(false);
     auto start = std::chrono::high_resolution_clock::now();
 

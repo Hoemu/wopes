@@ -18,6 +18,7 @@ const vector<string> &LogDataParam::getLogLevel() const
 
 void LogDataParam::push(MsgData *var)
 {
+    mInputMutex.lock();
     string dataTemp = "[";
     dataTemp.insert(1, var->date);
     dataTemp = dataTemp + "." + std::to_string(var->ms % 1000) + "] ";
@@ -26,6 +27,7 @@ void LogDataParam::push(MsgData *var)
     dataTemp = dataTemp + std::to_string(var->line) + " " + var->msg;
 
     dataString.push(dataTemp);
+    mInputMutex.unlock();
 }
 
 void LogDataParam::pushString(const string &str)
@@ -37,6 +39,7 @@ void LogDataParam::pushString(const string &str)
 
 void LogDataParam::pop()
 {
+    mInputMutex.lock();
     if (dataString.empty())
     {
         std::cerr << "queue is empty." << std::endl;
@@ -44,6 +47,7 @@ void LogDataParam::pop()
     }
 
     dataString.pop();
+    mInputMutex.unlock();
 }
 
 size_t LogDataParam::size()

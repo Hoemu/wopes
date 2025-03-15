@@ -2,12 +2,14 @@
 #define LOG_DATAPARAM_H
 
 #include <list>
+#include <mutex>
 #include <queue>
 #include <string>
 #include <thread>
 #include <vector>
 
 using std::list;
+using std::mutex;
 using std::queue;
 using std::string;
 using std::thread;
@@ -58,6 +60,8 @@ public:
 
 private:
     queue<string> dataString;
+
+    mutex mInputMutex;
 
     const vector<string> logLevel = { "LOG_INFO", "LOG_DEBUG", "LOG_DETUALT", "LOG_WARN", "LOG_ERROR", "LOG_FATAL" };
 };
