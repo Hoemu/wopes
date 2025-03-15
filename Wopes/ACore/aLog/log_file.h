@@ -51,12 +51,20 @@ protected:
 
     bool exitThread();
 
+    /** 线程助手（一秒钟查看一次线程） */
+    void threadHelperFunction();
+
+    void wakeThread();
+
 private:
     vector<ThreadData> vecThread;
 
     vector<ThreadCondition*> vecThreadCondition;
 
     queue<MsgData*> bufferData;
+
+    std::shared_ptr<thread> threadHelper;
+    bool isRunningThreadHelper;
 
     /** 文件路径个数 */
     int filePathNumber;

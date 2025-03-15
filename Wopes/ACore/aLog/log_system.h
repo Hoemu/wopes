@@ -41,6 +41,8 @@ private:
 
     std::condition_variable condConsumer;
 
+    std::condition_variable condProducer;
+
     std::mutex mMutex;
 
     thread* workConsole;

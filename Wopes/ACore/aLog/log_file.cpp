@@ -1,10 +1,10 @@
 #include "log_file.h"
 #include <iostream>
-#include <thread>
 
 LogFile::LogFile()
 {
     filePathNumber = 0;
+    threadHelper = std::make_unique<thread>(&LogFile::threadHelperFunction, this);
 }
 
 LogFile::~LogFile()
@@ -55,6 +55,7 @@ void LogFile::push(MsgData *data)
             for (ThreadData &fuc : vecThread)
             {
                 fuc.ptrDataParam.get()->push(bufferData.front());
+                vecThreadCondition[fuc.threadID]->condConsumer.notify_one();
             }
             bufferData.pop();
         }
@@ -64,7 +65,7 @@ void LogFile::push(MsgData *data)
     {
         // std::cout << "push log input :" << data.msg << std::endl;
         fuc.ptrDataParam.get()->push(data);
-        vecThreadCondition[fuc.threadID]->condConsumer.notify_one();
+        vecThreadCondition[fuc.threadID]->condConsumer.notify_all();
     }
 }
 
@@ -101,9 +102,12 @@ void LogFile::runThread(const ThreadData &var)
             vecThreadCondition[var.threadID]->condConsumer.wait(lock); // 等待缓冲区不空
         }
 
-        string dataMsg = vecThread[var.threadID].ptrDataParam.get()->frontString();
-        mFileSystem->appendLine(dataMsg);
-        vecThread[var.threadID].ptrDataParam.get()->pop();
+        while (vecThread[var.threadID].ptrDataParam.get()->size() != 0)
+        {
+            mFileSystem->appendLine(vecThread[var.threadID].ptrDataParam.get()->frontString());
+            vecThread[var.threadID].ptrDataParam.get()->pop();
+        }
+
         // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 
@@ -127,3 +131,20 @@ bool LogFile::exitThread()
     vecThread.clear();
     return true;
 }
+
+void LogFile::threadHelperFunction()
+{
+    while (isRunningThreadHelper)
+    {
+        for (ThreadData &fuc : vecThread)
+        {
+            if (fuc.ptrDataParam->size() > 0)
+            {
+                vecThreadCondition[fuc.threadID]->condConsumer.notify_all();
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        }
+    }
+}
+
+void LogFile::wakeThread() {}
