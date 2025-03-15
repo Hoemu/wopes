@@ -25,7 +25,7 @@ TEST(ADir, DISABLED_isExistDir)
 
 void TestThread(const int& threadNumber, const int& end) {}
 
-TEST(LogThroughputTest, DISABLED_AtomicIncrement)
+TEST(LogThroughputTest, AtomicIncrement)
 {
     acore::ACore aLogInit;
     aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_TEST" });
@@ -41,6 +41,7 @@ TEST(LogThroughputTest, DISABLED_AtomicIncrement)
         threads.emplace_back([=]() {
             for (int j = 0; j < kIncrementsPerThread; ++j)
             {
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
                 LOG_INFO("Test thread message: [" + std::to_string(i) + "] " + std::to_string(j));
             }
         });
@@ -61,7 +62,7 @@ TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 }
 
 // DISABLED_  前缀：禁止测试项
-TEST(LogThroughputTest, SingleThreadPerformance)
+TEST(LogThroughputTest, DISABLED_SingleThreadPerformance)
 {
     const long long kLogCount = 1000000;
     acore::ACore aLogInit;

@@ -23,7 +23,11 @@ public:
 
     void appendLine(const string &var);
 
+    void clearContents();
+
     bool closeFile();
+
+    void autoSaveFile(const int &fileMax);
 
     /**
      * @brief 文件是否存在
@@ -34,9 +38,13 @@ public:
 private:
     string filePath;
 
+    string fileContents;
+
     FILE *fp;
 
     ADir *dir;
+
+    const char *backEnter = "\n";
 };
 
 #endif // A_FILE_SYSTEM_H

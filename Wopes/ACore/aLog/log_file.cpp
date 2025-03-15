@@ -89,6 +89,7 @@ void LogFile::runThread(const ThreadData &var)
         {
             mFileSystem->closeFile();
             mFileSystem->createFilePath("a");
+            // mFileSystem->autoSaveFile();
             vecThreadCondition[var.threadID]->condConsumer.wait(lock); // 等待缓冲区不空
         }
 
@@ -116,7 +117,7 @@ bool LogFile::exitThread()
     {
         vecThread[i].isRunning = false;
         vecThread[i].threadPtr->detach();
-        std::cout << "[clear]" << vecThread[i].filePath << std::endl;
+        std::cout << "[clear] " << vecThread[i].filePath << std::endl;
     }
     vecThread.clear();
     return true;
@@ -134,11 +135,9 @@ void LogFile::threadHelperFunction()
             }
             if (fuc.ptrDataParam->size() > 0)
             {
-                vecThreadCondition[fuc.threadID]->condConsumer.notify_all();
+                vecThreadCondition[fuc.threadID]->condConsumer.notify_one();
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         }
     }
 }
-
-void LogFile::wakeThread() {}

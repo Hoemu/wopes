@@ -4,6 +4,7 @@
 
 AFileSystem::AFileSystem(const string &targetPath) : filePath(targetPath)
 {
+    fileContents = "";
     dir = new ADir;
 }
 
@@ -41,13 +42,29 @@ bool AFileSystem::createFilePath(const string &var)
 
 void AFileSystem::appendLine(const string &var)
 {
-    fputs(var.c_str(), fp);
-    fputs("\n", fp);
+    fwrite(var.c_str(), var.size(), 1, fp);
+    fwrite(backEnter, strlen(backEnter), 1, fp);
+}
+
+void AFileSystem::clearContents()
+{
+    fileContents.clear();
 }
 
 bool AFileSystem::closeFile()
 {
     return std::fclose(fp);
+}
+
+void AFileSystem::autoSaveFile(const int &fileMax)
+{
+    fseeko(fp, 0, SEEK_END);
+
+    if (ftello(fp) % fileMax == fileMax)
+    {
+        closeFile();
+        createFilePath("a");
+    }
 }
 
 bool AFileSystem::isExist()

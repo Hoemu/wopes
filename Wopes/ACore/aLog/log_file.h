@@ -52,8 +52,6 @@ protected:
     /** 线程助手（一秒钟查看一次线程） */
     void threadHelperFunction();
 
-    void wakeThread();
-
 private:
     vector<ThreadData> vecThread;
 

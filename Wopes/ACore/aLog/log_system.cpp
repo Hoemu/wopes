@@ -52,6 +52,7 @@ LogSystem::~LogSystem()
 
 void LogSystem::setLogMsg(string file, string functionName, int line)
 {
+    mInputMutex.lock();
     data->functionName = functionName;
 
     if (controller->getConsoleCondition() == false)
@@ -73,10 +74,12 @@ void LogSystem::setLogMsg(string file, string functionName, int line)
 
     data->ms = ms.count();
     strftime(data->date, sizeof(data->date), "%Y-%m-%d %H:%M:%S", local_tm);
+    mInputMutex.unlock();
 }
 
 void LogSystem::setMsg(std::string msg)
 {
+    mInputMutex.lock();
     if (msg.empty())
     {
         msg = "Warning:LogNone";
@@ -85,13 +88,16 @@ void LogSystem::setMsg(std::string msg)
     data->msg = msg;
     controller->push(data);
     condConsumer.notify_one();
+    mInputMutex.unlock();
 }
 
 void LogSystem::setMsg(unsigned int msg)
 {
+    mInputMutex.lock();
     data->msg = std::to_string(msg);
     controller->push(data);
     condConsumer.notify_one();
+    mInputMutex.unlock();
 }
 
 void LogSystem::setLogModel(LOG_LEVEL model)
@@ -101,37 +107,47 @@ void LogSystem::setLogModel(LOG_LEVEL model)
 
 void LogSystem::setMsg(int msg)
 {
+    mInputMutex.lock();
     data->msg = std::to_string(msg);
     controller->push(data);
     condConsumer.notify_one();
+    mInputMutex.unlock();
 }
 
 void LogSystem::setMsg(unsigned long long msg)
 {
+    mInputMutex.lock();
     data->msg = std::to_string(msg);
     controller->push(data);
     condConsumer.notify_one();
+    mInputMutex.unlock();
 }
 
 void LogSystem::setMsg(long long msg)
 {
+    mInputMutex.lock();
     data->msg = std::to_string(msg);
     controller->push(data);
     condConsumer.notify_one();
+    mInputMutex.unlock();
 }
 
 void LogSystem::setMsg(unsigned short msg)
 {
+    mInputMutex.lock();
     data->msg = std::to_string(msg);
     controller->push(data);
     condConsumer.notify_one();
+    mInputMutex.unlock();
 }
 
 void LogSystem::setMsg(short msg)
 {
+    mInputMutex.lock();
     data->msg = std::to_string(msg);
     controller->push(data);
     condConsumer.notify_one();
+    mInputMutex.unlock();
 }
 
 LogController* LogSystem::getControllerObject() const

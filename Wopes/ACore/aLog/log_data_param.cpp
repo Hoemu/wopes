@@ -26,7 +26,8 @@ void LogDataParam::push(MsgData *var)
     dataTemp = dataTemp + var->file + ":(" + var->functionName + ")@";
     dataTemp = dataTemp + std::to_string(var->line) + " " + var->msg;
 
-    dataString.push(dataTemp);
+    dataString.emplace(dataTemp);
+    // dataString.push(dataTemp);
     mInputMutex.unlock();
 }
 
