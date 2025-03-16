@@ -1,6 +1,7 @@
 #ifndef A_FILE_SYSTEM_H
 #define A_FILE_SYSTEM_H
 
+#include <mutex>
 #include <string>
 #include "../ACore_global.h"
 #include "a_dir.h"
@@ -39,6 +40,12 @@ private:
     string filePath;
 
     string fileContents;
+
+    unsigned int chCount;
+
+    unsigned int maxContents;
+
+    std::mutex mMutex;
 
     FILE *fp;
 

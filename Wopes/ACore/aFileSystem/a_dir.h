@@ -5,7 +5,6 @@
 #include <list>
 #include <string>
 #include "../ACore_global.h"
-#include "./a_abstract_dir.h"
 
 #ifdef _WIN32
 #include <direct.h> // Windows 专用头文件
@@ -22,7 +21,7 @@ using std::string;
 /**
  * @brief 目录处理类，当前支持 '/' 目录（只对目录进行处理）
  */
-class A_DECL_EXPORT ADir : public AAbstractDir
+class A_DECL_EXPORT ADir
 {
 public:
     explicit ADir(const string &filePath = "");

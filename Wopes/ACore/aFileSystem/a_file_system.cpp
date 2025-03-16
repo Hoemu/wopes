@@ -4,6 +4,7 @@
 
 AFileSystem::AFileSystem(const string &targetPath) : filePath(targetPath)
 {
+    maxContents = 0;
     fileContents = "";
     dir = new ADir;
 }

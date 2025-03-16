@@ -89,7 +89,7 @@ void LogFile::runThread(const ThreadData &var)
         {
             mFileSystem->closeFile();
             mFileSystem->createFilePath("a");
-            // mFileSystem->autoSaveFile();
+            // mFileSystem->autoSaveFile(1000);
             vecThreadCondition[var.threadID]->condConsumer.wait(lock); // 等待缓冲区不空
         }
 

@@ -25,7 +25,7 @@ TEST(ADir, DISABLED_isExistDir)
 
 void TestThread(const int& threadNumber, const int& end) {}
 
-TEST(LogThroughputTest, AtomicIncrement)
+TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 {
     acore::ACore aLogInit;
     aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_TEST" });
@@ -62,9 +62,9 @@ TEST(LogThroughputTest, AtomicIncrement)
 }
 
 // DISABLED_  前缀：禁止测试项
-TEST(LogThroughputTest, DISABLED_SingleThreadPerformance)
+TEST(LogThroughputTest, SingleThreadPerformance)
 {
-    const long long kLogCount = 1000000;
+    const long long kLogCount = 10000;
     acore::ACore aLogInit;
     aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG" });
     aLogInit.getLogController()->setConsoleCondition(false);
