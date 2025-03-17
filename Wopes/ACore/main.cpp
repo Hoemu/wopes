@@ -1,4 +1,7 @@
 #include <gtest/gtest.h>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/spdlog.h>
 #include <iostream>
 #include "./aLog/log_define.h"
 #include "./aUtil/string_util.h"
@@ -23,7 +26,27 @@ TEST(ADir, DISABLED_isExistDir)
     ASSERT_NE(initDir.isExitsPath("./Dir"), true); // 致命断言（失败终止测试）
 }
 
-void TestThread(const int& threadNumber, const int& end) {}
+TEST(spdlog, DISABLED_spdlog_test)
+{
+    const long long kLogCount = 10000000;
+
+    auto file_logger = spdlog::basic_logger_mt("file_only", "../logs/app.log");
+
+    // 替换默认日志器（可选）
+    spdlog::set_default_logger(file_logger);
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    for (long long i = 0; i < kLogCount; ++i)
+    {
+        spdlog::info("Welcome to info spdlog!");
+    }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    double duration = std::chrono::duration<double>(end - start).count();
+
+    std::cout << "A thread throughput is: /n" << kLogCount / duration << " logs/sec\n";
+}
 
 TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 {
@@ -64,7 +87,7 @@ TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 // DISABLED_  前缀：禁止测试项
 TEST(LogThroughputTest, SingleThreadPerformance)
 {
-    const long long kLogCount = 10000;
+    const long long kLogCount = 10000000;
     acore::ACore aLogInit;
     aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG" });
     aLogInit.getLogController()->setConsoleCondition(false);
@@ -72,14 +95,14 @@ TEST(LogThroughputTest, SingleThreadPerformance)
 
     for (long long i = 0; i < kLogCount; ++i)
     {
-        // std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        // std::this_thread::sleep_for(std::chrono::milliseconds(50));
         LOG_INFO("Test log message: " + std::to_string(i));
     }
 
     auto end = std::chrono::high_resolution_clock::now();
     double duration = std::chrono::duration<double>(end - start).count();
 
-    std::cout << "A thread throughput is: /n" << kLogCount / duration << " logs/sec\n";
+    std::cout << "A thread throughput is: /n " << kLogCount / duration << " logs/sec\n";
 }
 
 TEST(LogController, DISABLED_setConsoleCondition)

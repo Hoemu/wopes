@@ -53,11 +53,8 @@ void LogDataParam::pop()
 
 size_t LogDataParam::size()
 {
-    if (dataString.empty())
-    {
-        return 0;
-    }
-    return dataString.size();
+    size_t si = dataString.size();
+    return si;
 }
 
 string LogDataParam::frontString() const

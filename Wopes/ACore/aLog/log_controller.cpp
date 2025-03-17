@@ -5,17 +5,15 @@ LogController::LogController()
 {
     dateLogLongUse = true;
     dateLogTemp = true;
-    consoleThread = true;
+    isConsoleOutput = true;
+    isSettingLogFileCurrent = false;
     isfoldFilePath = false;
     dirTool = new ADir;
-    dataBuffer = new LogDataParam;
     logFile = new LogFile;
 }
 
 LogController::~LogController()
 {
-    consoleThread = false;
-    delete dataBuffer;
     delete logFile;
     delete dirTool;
 }
@@ -32,12 +30,12 @@ bool LogController::getDateLog() const
 
 bool LogController::getConsoleCondition() const
 {
-    return consoleThread;
+    return isConsoleOutput;
 }
 
-void LogController::setConsoleCondition(const bool &condition)
+void LogController::setConsoleCondition(const bool &consoleCondition)
 {
-    consoleThread = condition;
+    isConsoleOutput = consoleCondition;
 }
 
 void LogController::setFoldFilePath(const bool &var)
@@ -46,19 +44,31 @@ void LogController::setFoldFilePath(const bool &var)
     // std::cout << "test:" << isfoldFilePath << std::endl;
 }
 
+bool LogController::getIsFoldFilePath() const
+{
+    return isfoldFilePath;
+}
+
 void LogController::push(MsgData *var)
 {
-    if (isSettingLogFilePath() == false)
+    if (!isSettingLogFileCurrent)
     {
         std::cerr << "[WARNING]:Don't set log path. " << var->msg << std::endl;
         return;
     }
 
-    if (consoleThread == false)
-    {
-        dataBuffer->push(var);
-    }
+    consoleLogPush(var, isConsoleOutput);
+
     logFile->push(var); // 这里是两块不同的内存，控制台日志和文件日志需要分开
+}
+
+void LogController::consoleLogPush(MsgData *var, const bool &isPush)
+{
+    if (!isPush)
+    {
+        return;
+    }
+    dataBuffer->push(var);
 }
 
 void LogController::useDateLogTemp(bool var)
@@ -68,14 +78,24 @@ void LogController::useDateLogTemp(bool var)
 
 void LogController::setFilePath(list<string> var)
 {
+    if (var.size() > 0)
+    {
+        isSettingLogFileCurrent = true;
+    }
+    else
+    {
+        isSettingLogFileCurrent = false;
+    }
+
     logFile->setFilePath(var);
+}
+
+LogDataParam *LogController::getDataBufferObject() const
+{
+    return dataBuffer;
 }
 
 bool LogController::isSettingLogFilePath()
 {
     return logFile->logPathVector() > 0;
-}
-LogDataParam *LogController::getDataBufferObject() const
-{
-    return dataBuffer;
 }

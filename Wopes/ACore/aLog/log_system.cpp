@@ -36,11 +36,15 @@ LogSystem::LogSystem()
 LogSystem::~LogSystem()
 {
     LogDataParam* dataBuffer = controller->getDataBufferObject();
-    while (dataBuffer->size() != 0)
+    while (controller->getConsoleCondition())
     {
         if (controller->getConsoleCondition() == false)
         {
-            dataBuffer->pop();
+            condConsumer.notify_one();
+        }
+        if (dataBuffer->size() == 0)
+        {
+            break;
         }
     }
 
@@ -55,7 +59,7 @@ void LogSystem::setLogMsg(string file, string functionName, int line)
     mInputMutex.lock();
     data->functionName = functionName;
 
-    if (controller->getConsoleCondition() == false)
+    if (controller->getIsFoldFilePath() == false)
     {
         data->file = dirTool->getTheFileByThePath(data->file);
     }

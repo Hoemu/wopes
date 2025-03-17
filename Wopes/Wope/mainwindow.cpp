@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
     // a.print();
+    ts = new ThreadTtest(this);
     std::cout << __FUNCTION__ << std::endl;
     acoreInit.getLogController()->setFilePath({ "./LogF/Warning_log" });
     acoreInit.getLogController()->setFoldFilePath(true);
@@ -21,4 +22,15 @@ MainWindow::~MainWindow()
 void MainWindow::on_btn_test_clicked()
 {
     LOG_DEBUG("test");
+    ;
+}
+
+void MainWindow::on_btn_begin_clicked()
+{
+    ts->begin();
+}
+
+void MainWindow::on_btn_end_clicked()
+{
+    ts->end();
 }

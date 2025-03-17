@@ -17,10 +17,12 @@ public:
 
     bool getConsoleCondition() const;
 
-    void setConsoleCondition(const bool& condition);
+    void setConsoleCondition(const bool& consoleCondition);
 
     /** 是否折叠输出的文件路径 */
     void setFoldFilePath(const bool& var);
+
+    bool getIsFoldFilePath() const;
 
     void push(MsgData* var);
 
@@ -37,6 +39,9 @@ public:
      */
     bool isSettingLogFilePath();
 
+protected:
+    void consoleLogPush(MsgData* var, const bool& isPush);
+
 private:
     bool dateLogTemp;
 
@@ -44,16 +49,17 @@ private:
 
     ADir* dirTool;
 
+    bool isConsoleOutput;
+
+    bool isSettingLogFileCurrent;
+
     /** 是否折叠文件路径 */
     bool isfoldFilePath;
 
-    /** 控制台输出控制， true 为运行状态， false 为关闭状态 */
-    bool consoleThread;
-
     // 这个数据才是一段一段的
-    LogDataParam* dataBuffer;
-
     LogFile* logFile;
+
+    LogDataParam* dataBuffer;
 };
 
 #endif // LOGCONTROLLER_H
