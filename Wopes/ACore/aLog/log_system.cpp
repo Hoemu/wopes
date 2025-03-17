@@ -166,7 +166,7 @@ void LogSystem::log()
     while (controller->getConsoleCondition())
     {
         std::unique_lock<std::mutex> lock(mMutex);
-        while (dataBuffer->size() == 0)
+        while (controller->getConsoleCondition() && dataBuffer->size() == 0)
         {
             condConsumer.wait(lock); // 等待缓冲区不空
         }

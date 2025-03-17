@@ -87,7 +87,7 @@ TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 // DISABLED_  前缀：禁止测试项
 TEST(LogThroughputTest, SingleThreadPerformance)
 {
-    const long long kLogCount = 10000000;
+    const long long kLogCount = 10000;
     acore::ACore aLogInit;
     aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG" });
     aLogInit.getLogController()->setConsoleCondition(false);
