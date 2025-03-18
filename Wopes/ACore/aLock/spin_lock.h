@@ -2,13 +2,9 @@
 #define SPIN_LOCK_H
 
 #include <atomic>
-#include <thread>
 
 class SpinLock
 {
-private:
-    std::atomic_flag flag = ATOMIC_FLAG_INIT;
-
 public:
     SpinLock() = default;
     SpinLock(const SpinLock&) = delete;
@@ -31,6 +27,9 @@ public:
     {
         flag.clear(std::memory_order_release);
     }
+
+private:
+    std::atomic_flag flag = ATOMIC_FLAG_INIT;
 };
 
 #endif // SPIN_LOCK_H

@@ -29,7 +29,7 @@ TEST(ADir, DISABLED_isExistDir)
 /** psdlog 测试 */
 TEST(spdlog, DISABLED_spdlog_test)
 {
-    const long long kLogCount = 10000000;
+    const long long kLogCount = 100000000;
 
     auto file_logger = spdlog::basic_logger_mt("file_only", "../logs/app.log");
 
