@@ -26,6 +26,7 @@ TEST(ADir, DISABLED_isExistDir)
     ASSERT_NE(initDir.isExitsPath("./Dir"), true); // 致命断言（失败终止测试）
 }
 
+/** psdlog 测试 */
 TEST(spdlog, DISABLED_spdlog_test)
 {
     const long long kLogCount = 10000000;
@@ -48,6 +49,7 @@ TEST(spdlog, DISABLED_spdlog_test)
     std::cout << "A thread throughput is: /n" << kLogCount / duration << " logs/sec\n";
 }
 
+/** 多线程测试 */
 TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 {
     acore::ACore aLogInit;
@@ -87,7 +89,7 @@ TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 // DISABLED_  前缀：禁止测试项
 TEST(LogThroughputTest, SingleThreadPerformance)
 {
-    const long long kLogCount = 10000;
+    const long long kLogCount = 1000000;
     acore::ACore aLogInit;
     aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG" });
     aLogInit.getLogController()->setConsoleCondition(false);
@@ -95,7 +97,6 @@ TEST(LogThroughputTest, SingleThreadPerformance)
 
     for (long long i = 0; i < kLogCount; ++i)
     {
-        // std::this_thread::sleep_for(std::chrono::milliseconds(50));
         LOG_INFO("Test log message: " + std::to_string(i));
     }
 

@@ -49,7 +49,7 @@ protected:
 
     bool exitThread();
 
-    /** 线程助手（一秒钟查看一次线程） */
+    /** 线程助手（一毫秒查看一次线程） */
     void threadHelperFunction();
 
 private:
@@ -60,6 +60,7 @@ private:
     queue<MsgData*> bufferData;
 
     std::shared_ptr<thread> threadHelper;
+
     bool isRunningThreadHelper;
 
     /** 文件路径个数 */

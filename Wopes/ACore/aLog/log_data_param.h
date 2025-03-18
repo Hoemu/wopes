@@ -7,6 +7,7 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include "../aLock/spin_lock.h"
 
 using std::list;
 using std::mutex;
@@ -61,7 +62,7 @@ public:
 private:
     queue<string> dataString;
 
-    mutex mInputMutex;
+    SpinLock mInputMutex;
 
     const vector<string> logLevel = { "LOG_INFO", "LOG_DEBUG", "LOG_DETUALT", "LOG_WARN", "LOG_ERROR", "LOG_FATAL" };
 };

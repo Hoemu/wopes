@@ -53,7 +53,7 @@ private:
 
     mutex mMutex;
 
-    mutex mInputMutex;
+    SpinLock mInputMutex;
 
     thread* workConsole;
 
