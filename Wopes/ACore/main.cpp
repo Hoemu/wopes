@@ -6,6 +6,7 @@
 #include "./aLog/log_define.h"
 #include "./aUtil/string_util.h"
 #include "aFileSystem/a_dir.h"
+#include "aString/a_char.h"
 #include "a_core.h"
 
 using std::cout;
@@ -106,12 +107,12 @@ TEST(LogThroughputTest, SingleThreadPerformance)
     std::cout << "A thread throughput is: /n " << kLogCount / duration << " logs/sec\n";
 }
 
+void testPrint(...) {}
+
 TEST(LogController, DISABLED_setConsoleCondition)
 {
-    acore::ACore aLogInit;
-    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG", "../Log/WARNING_LOG" });
-    aLogInit.getLogController()->setFoldFilePath(true);
-    LOG_INFO("Test log message: " + std::to_string(1));
+    string a;
+    aString str;
 }
 
 int main(int argc, char** argv)
