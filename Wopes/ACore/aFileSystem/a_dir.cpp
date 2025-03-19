@@ -149,12 +149,12 @@ bool ADir::createDir(const string &filePath)
     return res;
 }
 
-string ADir::getFileName() const
+inline string ADir::getFileName() const
 {
     return mFileName;
 }
 
-bool ADir::isExitsPath(const string &path)
+inline bool ADir::isExitsPath(const string &path)
 {
     struct stat info;
     if (stat(path.c_str(), &info) != 0)
@@ -205,7 +205,7 @@ string ADir::getExecutableDir()
     }
 }
 
-string ADir::getFilePath() const
+inline string ADir::getFilePath() const
 {
     if (!mAcceptPath.empty())
     {

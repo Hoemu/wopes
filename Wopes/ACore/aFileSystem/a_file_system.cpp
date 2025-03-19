@@ -18,12 +18,12 @@ AFileSystem::~AFileSystem()
     }
 }
 
-void AFileSystem::setPath(const string &targetPath)
+inline void AFileSystem::setPath(const string &targetPath)
 {
     this->filePath = targetPath;
 }
 
-bool AFileSystem::createFilePath(const string &var)
+inline bool AFileSystem::createFilePath(const string &var)
 {
     // std::cout << "create file path:" << filePath << std::endl;
 
@@ -41,23 +41,23 @@ bool AFileSystem::createFilePath(const string &var)
     return true;
 }
 
-void AFileSystem::appendLine(const string &var)
+inline void AFileSystem::appendLine(const string &var)
 {
     fwrite(var.c_str(), var.size(), 1, fp);
     fwrite(backEnter, strlen(backEnter), 1, fp);
 }
 
-void AFileSystem::clearContents()
+inline void AFileSystem::clearContents()
 {
     fileContents.clear();
 }
 
-bool AFileSystem::closeFile()
+inline bool AFileSystem::closeFile()
 {
     return std::fclose(fp);
 }
 
-void AFileSystem::autoSaveFile(const int &fileMax)
+inline void AFileSystem::autoSaveFile(const int &fileMax)
 {
     fseeko(fp, 0, SEEK_END);
 
@@ -68,7 +68,7 @@ void AFileSystem::autoSaveFile(const int &fileMax)
     }
 }
 
-bool AFileSystem::isExist()
+inline bool AFileSystem::isExist()
 {
     return true;
 }

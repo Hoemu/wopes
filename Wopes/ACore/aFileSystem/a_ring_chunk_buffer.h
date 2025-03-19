@@ -14,6 +14,9 @@
 
 using std::vector;
 
+/**
+ * @brief 内存块
+ */
 struct Chunk
 {
     uint32_t m_u32Cap;
@@ -33,12 +36,15 @@ struct Chunk
             if (m_cMemory != nullptr)
             {
                 delete m_cMemory;
-                (m_cMemory) = nullptr;
+                m_cMemory = nullptr;
             }
         } while (false);
     }
 };
 
+/**
+ * @brief 环形类
+ */
 class aRingChunkBuffer
 {
 public:

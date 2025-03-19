@@ -112,7 +112,7 @@ void testPrint(...) {}
 TEST(LogController, DISABLED_setConsoleCondition)
 {
     string a;
-    aString str;
+    // aString str;
 }
 
 int main(int argc, char** argv)

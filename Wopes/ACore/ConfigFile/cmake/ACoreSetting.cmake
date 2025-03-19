@@ -34,7 +34,7 @@ endif()
 
 # include(./CMakePackageConfigHelpers)# TODO 需要自动定位 ACore_DIRS 时放开注释
 
-# set(IS_GENERAT_LIBRARY OFF) # 是否生成库/或者是调试模式
+set(IS_GENERAT_LIBRARY OFF) # 是否生成库/或者是调试模式
 set(IS_GOOGLE_TEST ON) # 是否开启 googleTest
 set(IS_SPDLOG ON)
 set(BUILD_PATH "build")      # 构建路径（相对当前源文件）
