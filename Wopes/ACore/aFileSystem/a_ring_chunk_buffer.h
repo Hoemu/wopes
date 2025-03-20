@@ -7,6 +7,7 @@
 
 #include <semaphore.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <cstdint>
 #include <vector>
 
@@ -17,26 +18,24 @@ using std::vector;
  */
 struct Chunk
 {
-    uint32_t m_u32Cap;
-    uint32_t m_u32Used;
-    bool m_u32Flag;
-    char *m_cMemory;
+    uint8_t *buffer;   // 缓冲区指针
+    size_t writePtr;   // 写指针
+    size_t readPtr;    // 读指针
+    size_t bufferSize; // 缓冲区大小
+    bool full;         // 缓冲区是否已满
 
-    Chunk() : m_u32Cap(CHUNKMEMSIZE), m_u32Used(0), m_u32Flag(false)
+    Chunk(size_t bufferSize_)
     {
-        m_cMemory = new char[CHUNKMEMSIZE];
+        bufferSize = bufferSize_;
+        writePtr = 0;
+        readPtr = 0;
+        full = false;
+        buffer = (uint8_t *)malloc(bufferSize_);
     }
 
     ~Chunk()
     {
-        do
-        {
-            if (m_cMemory != nullptr)
-            {
-                delete m_cMemory;
-                m_cMemory = nullptr;
-            }
-        } while (false);
+        free(buffer);
     }
 };
 
@@ -46,33 +45,16 @@ struct Chunk
 class aRingChunkBuffer
 {
 public:
-    explicit aRingChunkBuffer(const int size = RINGBUFFSIZE);
+    explicit aRingChunkBuffer(const int &size);
 
     ~aRingChunkBuffer();
 
-    int getProducePos();
-
-    int getConsumerPos();
-
-    void incProducePos();
-
-    void incConsumerPos();
-
-    void appendToBuff(const char *data, const int length);
-
-    void writeToDisk(FILE *fp);
-
-    /** 强制写入（在程序结束的时候使用） */
-    void forceWriteToDisk(FILE *fp);
-
-    sem_t &getSemWriteToDisk();
-
 private:
     /** 内存缓冲向量 */
-    vector<Chunk> memoryBufferVector;
-    int m_nProducePos;  // 更改只在appendToBuf,而该函数进入前是上锁的
-    int m_nConsumerPos; // 单线程改变
-    int m_nBuffSize;
+    vector<Chunk> memoryBufferVector; // 需要初始环状大小
+    int m_nProducePos;                // 更改只在appendToBuf,而该函数进入前是上锁的
+    int m_nConsumerPos;               // 单线程改变
+    int m_nBuffSize;                  // 缓冲大小
 
     sem_t m_semWriteToDisk;
 };
