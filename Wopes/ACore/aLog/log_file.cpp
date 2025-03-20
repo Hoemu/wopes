@@ -60,6 +60,7 @@ void LogFile::push(MsgData *data)
     {
         // std::cout << "push log input :" << data.msg << std::endl;
         fuc.ptrDataParam.get()->push(data);
+
         vecThreadCondition[fuc.threadID]->condConsumer.notify_all();
     }
 }

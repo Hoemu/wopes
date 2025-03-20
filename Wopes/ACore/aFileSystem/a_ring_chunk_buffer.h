@@ -4,8 +4,6 @@
 // 一定是2的n次幂
 #define RINGBUFFSIZE 64
 #define CHUNKMEMSIZE (1024 * 256)
-#define FULL 1
-#define NOTFULL 0
 
 #include <semaphore.h>
 #include <stdio.h>
@@ -21,10 +19,10 @@ struct Chunk
 {
     uint32_t m_u32Cap;
     uint32_t m_u32Used;
-    uint32_t m_u32Flag;
+    bool m_u32Flag;
     char *m_cMemory;
 
-    Chunk() : m_u32Cap(CHUNKMEMSIZE), m_u32Used(0), m_u32Flag(NOTFULL)
+    Chunk() : m_u32Cap(CHUNKMEMSIZE), m_u32Used(0), m_u32Flag(false)
     {
         m_cMemory = new char[CHUNKMEMSIZE];
     }
@@ -64,12 +62,14 @@ public:
 
     void writeToDisk(FILE *fp);
 
+    /** 强制写入（在程序结束的时候使用） */
     void forceWriteToDisk(FILE *fp);
 
     sem_t &getSemWriteToDisk();
 
 private:
-    std::vector<Chunk> m_vecBuff;
+    /** 内存缓冲向量 */
+    vector<Chunk> memoryBufferVector;
     int m_nProducePos;  // 更改只在appendToBuf,而该函数进入前是上锁的
     int m_nConsumerPos; // 单线程改变
     int m_nBuffSize;
