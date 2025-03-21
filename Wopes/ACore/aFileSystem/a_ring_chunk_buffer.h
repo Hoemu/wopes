@@ -3,12 +3,14 @@
 
 // 一定是2的n次幂
 #define RINGBUFFSIZE 64
-#define CHUNKMEMSIZE (1024 * 256)
+#define CHUNK_SIZE (1024 * 256)
 
 #include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <cstdint>
+#include <memory>
 #include <vector>
 
 using std::vector;
@@ -49,12 +51,15 @@ public:
 
     ~aRingChunkBuffer();
 
+    void append_buffer(char *var);
+
 private:
     /** 内存缓冲向量 */
-    vector<Chunk> memoryBufferVector; // 需要初始环状大小
-    int m_nProducePos;                // 更改只在appendToBuf,而该函数进入前是上锁的
-    int m_nConsumerPos;               // 单线程改变
-    int m_nBuffSize;                  // 缓冲大小
+    vector<std::unique_ptr<Chunk>> memoryBufferVector; // 需要初始环状大小
+    int writePos;                                      // 更改只在appendToBuf,而该函数进入前是上锁的
+    int readPos;                                       // 单线程改变
+    int bufferBitSize;                                 // 缓冲大小
+    int bufferLen;
 
     sem_t m_semWriteToDisk;
 };
