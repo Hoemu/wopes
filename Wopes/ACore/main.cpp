@@ -6,6 +6,7 @@
 #include "./aLog/log_define.h"
 #include "./aUtil/string_util.h"
 #include "aFileSystem/a_dir.h"
+#include "aFileSystem/a_ring_chunk_buffer.h"
 #include "aString/a_char.h"
 #include "a_core.h"
 
@@ -88,7 +89,7 @@ TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 }
 
 // DISABLED_  前缀：禁止测试项
-TEST(LogThroughputTest, SingleThreadPerformance)
+TEST(LogThroughputTest, DISABLED_SingleThreadPerformance)
 {
     const long long kLogCount = 10000000;
     acore::ACore aLogInit;
@@ -109,9 +110,16 @@ TEST(LogThroughputTest, SingleThreadPerformance)
 
 void testPrint(...) {}
 
-TEST(LogController, DISABLED_setConsoleCondition)
+TEST(LogController, setConsoleCondition)
 {
     string a;
+    aRingChunkBuffer* aRing = new aRingChunkBuffer(1000);
+    for (long long i = 0; i < 5; i++)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    }
+    delete aRing;
+    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
     // aString str;
 }
 

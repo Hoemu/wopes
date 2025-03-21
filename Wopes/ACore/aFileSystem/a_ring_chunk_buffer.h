@@ -20,19 +20,23 @@ using std::vector;
  */
 struct Chunk
 {
-    uint8_t *buffer;   // 缓冲区指针
-    size_t writePtr;   // 写指针
-    size_t readPtr;    // 读指针
-    size_t bufferSize; // 缓冲区大小
-    bool full;         // 缓冲区是否已满
+    uint8_t *buffer; // 缓冲区指针
+    size_t used;     // 被使用
+    size_t capacity; // 缓冲区大小
+    bool full;       // 缓冲区是否已满
 
-    Chunk(size_t bufferSize_)
+    /** 当前内存块剩余内存 */
+    size_t remainder() const
     {
-        bufferSize = bufferSize_;
-        writePtr = 0;
-        readPtr = 0;
+        return capacity - used;
+    };
+
+    Chunk(size_t capacity_)
+    {
+        capacity = capacity_;
+        used = 0;
         full = false;
-        buffer = (uint8_t *)malloc(bufferSize_);
+        buffer = (uint8_t *)malloc(capacity);
     }
 
     ~Chunk()
@@ -51,13 +55,19 @@ public:
 
     ~aRingChunkBuffer();
 
-    void append_buffer(char *var);
+    void append_buffer(const char *var);
+
+    bool writeToDisk(FILE *fp);
+
+protected:
+    /** 内存拷贝 */
+    void memoryCopy(const char *var, const size_t &len);
 
 private:
     /** 内存缓冲向量 */
     vector<std::unique_ptr<Chunk>> memoryBufferVector; // 需要初始环状大小
-    int writePos;                                      // 更改只在appendToBuf,而该函数进入前是上锁的
-    int readPos;                                       // 单线程改变
+    int producer;                                      // 内存生产者
+    int consumer;                                      // 内存消费者
     int bufferBitSize;                                 // 缓冲大小
     int bufferLen;
 

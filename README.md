@@ -7,7 +7,7 @@
 
 系统环境：当前仅在 `windows11` 上运行
 
-编译环境：WinGW32
+编译环境：MinGW32
 
 编程语言版本：最高支持 `cpp17`
 
@@ -28,7 +28,3 @@ Qt 框架版本：Qt6.8
 
 1. 日志库[点击跳转到接口使用文档](./doc/zh/Log.md)
 2. 文件系统[点击跳转到接口使用文档](./doc/zh/fileSystem.md)
-
-## 编程规范
-
-详细编程规范点击跳转[编程规范文档](./doc/zh/ProgrammingStandards.md)
