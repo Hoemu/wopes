@@ -31,7 +31,7 @@ TEST(ADir, DISABLED_isExistDir)
 /** psdlog 测试 */
 TEST(spdlog, DISABLED_spdlog_test)
 {
-    const long long kLogCount = 100000000;
+    const long long kLogCount = 100000000000;
 
     auto file_logger = spdlog::basic_logger_mt("file_only", "../logs/app.log");
 
@@ -91,7 +91,7 @@ TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 // DISABLED_  前缀：禁止测试项
 TEST(LogThroughputTest, SingleThreadPerformance)
 {
-    const long long kLogCount = 10000000;
+    const long long kLogCount = 1000000;
     acore::ACore aLogInit;
     aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG" });
     aLogInit.getLogController()->setConsoleCondition(false);

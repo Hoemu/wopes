@@ -21,13 +21,6 @@ struct ThreadData
     std::shared_ptr<LogDataParam> ptrDataParam;
 };
 
-struct ThreadCondition
-{
-    unsigned int threadID = 0x0000;
-    std::mutex mMutex;
-    std::condition_variable condConsumer;
-};
-
 class LogFile
 {
 public:
@@ -49,17 +42,8 @@ protected:
 
     bool exitThread();
 
-    /** 线程助手（一毫秒查看一次线程） */
-    void threadHelperFunction();
-
 private:
     vector<ThreadData> vecThread;
-
-    vector<ThreadCondition*> vecThreadCondition;
-
-    queue<MsgData*> bufferData;
-
-    std::shared_ptr<thread> threadHelper;
 
     bool isRunningThreadHelper;
 
