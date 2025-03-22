@@ -1,7 +1,6 @@
 #include "a_ring_chunk_buffer.h"
 
-template<typename T>
-inline aRingChunkBuffer<T>::aRingChunkBuffer(const int &bufferArrarySize)
+aRingChunkBuffer::aRingChunkBuffer(const int &bufferArrarySize)
 {
     producer = 0;
     consumer = 0;
@@ -13,38 +12,18 @@ inline aRingChunkBuffer<T>::aRingChunkBuffer(const int &bufferArrarySize)
     }
 }
 
-template<typename T>
-aRingChunkBuffer<T>::~aRingChunkBuffer()
+aRingChunkBuffer::~aRingChunkBuffer()
 {
     memoryBufferVector.clear();
 }
 
-template<typename T>
-void aRingChunkBuffer<T>::push(const char *var)
-{
-    int len = strlen(var);
+bool aRingChunkBuffer::try_push(const char *var) {}
 
-    // TODO 注意需要判断内存已经满了，是否还需要继续进行读取
+char *aRingChunkBuffer::pop() {}
 
-    if (len < memoryBufferVector[producer]->remainder()) // 考虑情况，当写入内存小于一个内存块的时候
-    {
-        memoryCopy(var, len);
-    }
-    else
-    {
-        memoryBufferVector[producer]->full = true;
-        producer = (producer + 1) % bufferLen;
-        if (memoryBufferVector[producer]->full == true)
-        {
-            // 此时内存已经满了（要么进行延长等待，要么新加入一块内存）
-            return;
-        }
-        memoryCopy(var, len);
-    }
-}
+char *aRingChunkBuffer::try_pop() {}
 
-template<typename T>
-bool aRingChunkBuffer<T>::writeToDisk(FILE *fp)
+bool aRingChunkBuffer::writeToDisk(FILE *fp)
 {
     if (memoryBufferVector[consumer]->full == true)
     {
@@ -63,15 +42,13 @@ bool aRingChunkBuffer<T>::writeToDisk(FILE *fp)
     return true;
 }
 
-template<typename T>
-inline void aRingChunkBuffer<T>::memoryCopy(const char *var, const size_t &len)
+inline void aRingChunkBuffer::memoryCopy(const char *var, const size_t &len)
 {
     memcpy(memoryBufferVector[producer]->buffer + memoryBufferVector[producer]->used, var, len);
     memoryBufferVector[producer]->used += len;
 }
 
-template<typename T>
-inline size_t aRingChunkBuffer<T>::nearestPowerOfTwo(size_t n) const
+inline size_t aRingChunkBuffer::nearestPowerOfTwo(size_t n) const
 {
     if (n & (n - 1))
     {

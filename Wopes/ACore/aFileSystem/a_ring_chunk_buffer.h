@@ -46,16 +46,13 @@ struct Chunk
 /**
  * @brief 环形类
  */
-template<typename T>
 class aRingChunkBuffer
 {
 public:
     /** 默认有一个内存块 */
-    explicit aRingChunkBuffer(const int &bufferArrarySize = 1);
+    explicit aRingChunkBuffer(const int &bufferArrarySize);
 
     ~aRingChunkBuffer();
-
-    void test();
 
     /** 阻塞写入 */
     void push(const char *var);
