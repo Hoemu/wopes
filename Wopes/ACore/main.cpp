@@ -113,13 +113,16 @@ void testPrint(...) {}
 TEST(LogController, setConsoleCondition)
 {
     string a;
-    aRingChunkBuffer* aRing = new aRingChunkBuffer(1000);
-    for (long long i = 0; i < 5; i++)
-    {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    }
-    delete aRing;
-    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+    aRingChunkBuffer* buffer = new aRingChunkBuffer(100);
+
+    // for (long long i = 0; i < 5; i++)
+    // {
+    //     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    // }
+    buffer.push(4321);
+    std::cout << buffer.pop();
+
+    // std::this_thread::sleep_for(std::chrono::milliseconds(3000));
     // aString str;
 }
 

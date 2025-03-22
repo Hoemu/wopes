@@ -1,10 +1,6 @@
 #ifndef A_RING_CHUNK_BUFFER_H
 #define A_RING_CHUNK_BUFFER_H
 
-// 一定是2的n次幂
-#define RINGBUFFSIZE 64
-#define CHUNK_SIZE (1024 * 256)
-
 #include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,6 +10,8 @@
 #include <vector>
 
 using std::vector;
+
+// 参考公式：a % 2^n = a & (2^n - 1)
 
 /**
  * @brief 内存块
@@ -48,14 +46,28 @@ struct Chunk
 /**
  * @brief 环形类
  */
+template<typename T>
 class aRingChunkBuffer
 {
 public:
-    explicit aRingChunkBuffer(const int &size);
+    /** 默认有一个内存块 */
+    explicit aRingChunkBuffer(const int &bufferArrarySize = 1);
 
     ~aRingChunkBuffer();
 
-    void append_buffer(const char *var);
+    void test();
+
+    /** 阻塞写入 */
+    void push(const char *var);
+
+    /** 非阻塞写入 */
+    bool try_push(const char *var);
+
+    /** 阻塞式读取 */
+    char *pop();
+
+    /** 非阻塞式读取 */
+    char *try_pop();
 
     bool writeToDisk(FILE *fp);
 
@@ -63,12 +75,15 @@ protected:
     /** 内存拷贝 */
     void memoryCopy(const char *var, const size_t &len);
 
+    /** 计算最近的2的幂次方容量（优化位运算性能） */
+    size_t nearestPowerOfTwo(size_t n) const;
+
 private:
     /** 内存缓冲向量 */
     vector<std::unique_ptr<Chunk>> memoryBufferVector; // 需要初始环状大小
     int producer;                                      // 内存生产者
     int consumer;                                      // 内存消费者
-    int bufferBitSize;                                 // 缓冲大小
+    int chunkSize;                                     // 缓冲大小
     int bufferLen;
 
     sem_t m_semWriteToDisk;

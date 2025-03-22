@@ -1,23 +1,26 @@
 #include "a_ring_chunk_buffer.h"
 
-aRingChunkBuffer::aRingChunkBuffer(const int &size)
+template<typename T>
+inline aRingChunkBuffer<T>::aRingChunkBuffer(const int &bufferArrarySize)
 {
     producer = 0;
     consumer = 0;
-    bufferBitSize = size * CHUNK_SIZE;
-    bufferLen = size;
+    chunkSize = nearestPowerOfTwo(bufferArrarySize);
+    bufferLen = bufferArrarySize;
     for (int i = 0; i < bufferLen; ++i)
     {
-        memoryBufferVector.emplace_back(std::make_unique<Chunk>(CHUNK_SIZE));
+        memoryBufferVector.emplace_back(std::make_unique<Chunk>(chunkSize));
     }
 }
 
-aRingChunkBuffer::~aRingChunkBuffer()
+template<typename T>
+aRingChunkBuffer<T>::~aRingChunkBuffer()
 {
     memoryBufferVector.clear();
 }
 
-void aRingChunkBuffer::append_buffer(const char *var)
+template<typename T>
+void aRingChunkBuffer<T>::push(const char *var)
 {
     int len = strlen(var);
 
@@ -40,7 +43,8 @@ void aRingChunkBuffer::append_buffer(const char *var)
     }
 }
 
-bool aRingChunkBuffer::writeToDisk(FILE *fp)
+template<typename T>
+bool aRingChunkBuffer<T>::writeToDisk(FILE *fp)
 {
     if (memoryBufferVector[consumer]->full == true)
     {
@@ -59,8 +63,24 @@ bool aRingChunkBuffer::writeToDisk(FILE *fp)
     return true;
 }
 
-void aRingChunkBuffer::memoryCopy(const char *var, const size_t &len)
+template<typename T>
+inline void aRingChunkBuffer<T>::memoryCopy(const char *var, const size_t &len)
 {
     memcpy(memoryBufferVector[producer]->buffer + memoryBufferVector[producer]->used, var, len);
     memoryBufferVector[producer]->used += len;
+}
+
+template<typename T>
+inline size_t aRingChunkBuffer<T>::nearestPowerOfTwo(size_t n) const
+{
+    if (n & (n - 1))
+    {
+        n |= n >> 1;
+        n |= n >> 2;
+        n |= n >> 4;
+        n |= n >> 8;
+        n |= n >> 16;
+        return n + 1;
+    }
+    return n;
 }
