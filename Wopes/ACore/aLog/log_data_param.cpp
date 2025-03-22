@@ -31,13 +31,6 @@ void LogDataParam::push(MsgData *var)
     mInputMutex.unlock();
 }
 
-void LogDataParam::pushString(const string &str)
-{
-    dataString.push(str);
-    for (int i = 0; i < str.size(); i++) {}
-    // TODO 以字符串的形式 push 也需要解析
-}
-
 void LogDataParam::pop()
 {
     mInputMutex.lock();
@@ -53,8 +46,7 @@ void LogDataParam::pop()
 
 size_t LogDataParam::size()
 {
-    size_t si = dataString.size();
-    return si;
+    return dataString.size();
 }
 
 string LogDataParam::frontString() const

@@ -51,8 +51,6 @@ public:
 
     void push(MsgData *var);
 
-    void pushString(const string &str);
-
     void pop();
 
     size_t size();

@@ -6,7 +6,7 @@
 #include "./aLog/log_define.h"
 #include "./aUtil/string_util.h"
 #include "aFileSystem/a_dir.h"
-#include "aFileSystem/a_ring_chunk_buffer.h"
+// #include "aFileSystem/a_ring_chunk_buffer.h"
 #include "aString/a_char.h"
 #include "a_core.h"
 
@@ -55,7 +55,7 @@ TEST(spdlog, DISABLED_spdlog_test)
 TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 {
     acore::ACore aLogInit;
-    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_TEST" });
+    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_1", "../Log/INFO_LOG_2" });
     aLogInit.getLogController()->setConsoleCondition(false);
 
     constexpr int kThreads = 10;
@@ -93,7 +93,7 @@ TEST(LogThroughputTest, SingleThreadPerformance)
 {
     const long long kLogCount = 1000000;
     acore::ACore aLogInit;
-    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG" });
+    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_1" });
     aLogInit.getLogController()->setConsoleCondition(false);
     auto start = std::chrono::high_resolution_clock::now();
 

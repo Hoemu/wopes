@@ -9,7 +9,6 @@ LogFile::LogFile()
 LogFile::~LogFile()
 {
     // 确保日志完全写入文件
-
     exitThread();
     std::cout << "LogFile delete." << std::endl;
 }
@@ -38,14 +37,6 @@ void LogFile::push(MsgData *data)
     {
         // std::cout << "push log input :" << data.msg << std::endl;
         fuc.ptrDataParam.get()->push(data);
-    }
-}
-
-void LogFile::pushString(const string &data)
-{
-    for (ThreadData &fuc : vecThread)
-    {
-        fuc.ptrDataParam.get()->pushString(data);
     }
 }
 
@@ -82,6 +73,11 @@ bool LogFile::exitThread()
 {
     for (int i = 0; i < vecThread.size(); i++)
     {
+        if (vecThread[i].ptrDataParam->size() != 0)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+
         vecThread[i].isRunning = false;
         vecThread[i].threadPtr->detach();
         std::cout << "[clear] " << vecThread[i].filePath << std::endl;

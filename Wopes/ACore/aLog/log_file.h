@@ -2,9 +2,7 @@
 #define LOGFILE_H
 #define unint unsigned int
 
-#include <condition_variable>
 #include <memory>
-#include <mutex>
 #include "../aFileSystem/a_file_system.h"
 #include "log_data_param.h"
 
@@ -32,8 +30,6 @@ public:
     void setFilePath(list<string> var);
 
     void push(MsgData* data);
-
-    void pushString(const string& data);
 
     int logPathVector() const;
 
