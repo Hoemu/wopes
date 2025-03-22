@@ -7,10 +7,10 @@
 #include <string.h>
 #include <cstdint>
 #include <memory>
+#include <mutex>
 #include <vector>
 
 using std::vector;
-
 // 参考公式：a % 2^n = a & (2^n - 1)
 
 /**

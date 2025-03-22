@@ -25,6 +25,7 @@ char *aRingChunkBuffer::try_pop() {}
 
 bool aRingChunkBuffer::writeToDisk(FILE *fp)
 {
+    std::unique_lock<std::mutex> lock(std::unique_ptr<std::mutex>());
     if (memoryBufferVector[consumer]->full == true)
     {
         uint32_t wt_len = fwrite(memoryBufferVector[consumer]->buffer, 1, memoryBufferVector[consumer]->used, fp);

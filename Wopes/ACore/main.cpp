@@ -89,7 +89,7 @@ TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 }
 
 // DISABLED_  前缀：禁止测试项
-TEST(LogThroughputTest, DISABLED_SingleThreadPerformance)
+TEST(LogThroughputTest, SingleThreadPerformance)
 {
     const long long kLogCount = 10000000;
     acore::ACore aLogInit;
@@ -110,11 +110,11 @@ TEST(LogThroughputTest, DISABLED_SingleThreadPerformance)
 
 void testPrint(...) {}
 
-TEST(LogController, setConsoleCondition)
+TEST(LogController, DISABLED_setConsoleCondition)
 {
     string a;
     // aRingChunkBuffer<int> buffer(1000);
-    aRingChunkBuffer* buffer = new aRingChunkBuffer(100);
+    // aRingChunkBuffer* buffer = new aRingChunkBuffer(100);
 
     // for (long long i = 0; i < 5; i++)
     // {
