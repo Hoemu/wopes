@@ -1,6 +1,7 @@
 # 文件
 *.user
 ACore/*.user
+TestLib/*.user
 
 # 目录
 build/
@@ -8,3 +9,4 @@ ACore/build/
 Env/
 Depends/
 refer_to_doc/
+TestLib/build/
