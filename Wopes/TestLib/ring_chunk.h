@@ -76,9 +76,4 @@ private:
     vector<unique_ptr<CharChunk>> chunkArray;
 };
 
-class nm
-{
-public:
-};
-
 #endif // RING_CHUNK_H

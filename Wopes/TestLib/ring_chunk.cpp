@@ -3,9 +3,15 @@
 inline void CharChunk::copyMemory(const char *var)
 {
     size_t len = sizeof(var);
+    // 首先需要指向当前内存块的填充位置[1]
+
+    // 如果小于当前内存，先把传送过来的内存拷贝到内存块中，然后设置当前内存块的填充位置[2]
     if (len < memorySize)
     {
         len += 1;
+    }
+    else
+    { // 如果大于当前内存块内存，需要把当前内存装满，并且把装满后剩余内存返回（或者返回一个索引）[3]
     }
     memcpy(memoryChunk, var, len);
     readPtr = len;
@@ -29,10 +35,12 @@ void RingChunk::push(const char *var)
 {
     std::unique_lock<std::mutex> lock(mutex_);
     cvPush.wait(lock, [this] { return !full(); });
-    // TODO 把当前内存写入内存块中
+    // 把当前内存写入内存块中[1]
     CharChunk *ptr;
 
     chunkArray[writeIndex & mask]->copyMemory(var);
+
+    // 如果当前内存块满了，新申请一个内存块 [2]
     writeIndex.fetch_add(1, std::memory_order_release);
     cvPop.notify_one();
 }
