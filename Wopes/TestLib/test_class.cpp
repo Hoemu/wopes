@@ -4,13 +4,20 @@
 
 TestClass::TestClass()
 {
-    char *ch = "123456789";
+    char *ch = "12";
+    char *chr = "34";
+    char *chrr = "56";
+    char *chrT = "123456";
 
-    CharChunk *chTest = new CharChunk(4);
+    CharChunk chTest(4);
 
-    // chTest->copyMemory("ch", 0, strlen(ch));
+    std::cout << "back:" << chTest.copyMemory(chrT, 2, 6) << "]->" << std::endl;
+    // std::cout << "back:" << chTest->copyMemory(chr, 0, 2) << "]->" << std::endl;
+    // std::cout << "back:" << chTest->copyMemory(chrr, 0, 2) << "]->" << std::endl;
 
-    delete chTest;
+    std::cout << chTest.getMemroyChunk() << ",  is full:" << chTest.isFull() << std::endl;
+
+    // delete chTest;
 }
 
 TestClass::~TestClass() {}

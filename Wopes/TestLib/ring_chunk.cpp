@@ -1,33 +1,4 @@
 #include "ring_chunk.h"
-#include <iostream>
-
-inline int CharChunk::copyMemory(char *var, const int &chBeign, const int &chEnd)
-{
-    size_t len = chEnd - chBeign;
-    remainningMemory = memorySize - 1 - readPtr;
-    size_t varRecorder = -1;
-
-    if (len < remainningMemory)
-    {
-        memcpy(memoryChunk + readPtr, var + chEnd, len);
-        readPtr = readPtr + len;
-        // len += 1;
-        std::cout << memoryChunk << std::endl;
-    }
-    else
-    {
-        memcpy(memoryChunk + readPtr, var + chBeign, remainningMemory);
-        varRecorder = chBeign + remainningMemory;
-        readPtr = readPtr + remainningMemory;
-    }
-
-    return varRecorder;
-}
-
-inline bool CharChunk::isFull() const
-{
-    return memorySize == readPtr ? true : false;
-}
 
 RingChunk::RingChunk(const size_t &ringBufferSize)
 {

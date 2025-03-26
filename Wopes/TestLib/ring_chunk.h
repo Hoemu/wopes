@@ -1,46 +1,9 @@
 #ifndef RING_CHUNK_H
 #define RING_CHUNK_H
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <atomic>
 #include <condition_variable>
-#include <memory>
-#include <vector>
-
-using std::make_unique;
-using std::unique_ptr;
-using std::vector;
-
-struct CharChunk
-{
-    CharChunk(size_t len)
-    {
-        remainningMemory = memorySize;
-        memorySize = len;
-        memoryChunk = (char *)malloc(len);
-    };
-    ~CharChunk()
-    {
-        free(memoryChunk);
-    };
-
-    int copyMemory(char *var, const int &chBeign, const int &chEnd);
-
-    bool isFull() const;
-
-    // 变量
-    char *memoryChunk;
-
-    /** 内存大小 */
-    int memorySize;
-
-    /** 读取指针 */
-    int readPtr;
-
-    /** 剩余内存 */
-    int remainningMemory;
-};
+#include "char_chunk.h"
 
 class RingChunk
 {
