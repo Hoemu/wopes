@@ -11,10 +11,12 @@ public:
     explicit RingChunk(const size_t &ringBufferSize);
 
     /** 阻塞式 */
-    void push(const char *var);
+    void push(char *var);
 
     /** 阻塞式 */
     CharChunk *pop();
+
+    unsigned int getStoreSize() const;
 
     /** 写入文件中（阻塞式） */
     bool writeToFile(FILE *fp);
@@ -30,9 +32,14 @@ protected:
 
 private:
     size_t chunkNumber;
+    size_t storeSize;
 
     size_t mask;
     mutable std::mutex mutex_; // 互斥锁
+
+    int readTm = 0;
+    int writeTm = 0;
+    int lenMask;
 
     std::atomic<size_t> readIndex;  // 读指针（原子操作保证可见性）
     std::atomic<size_t> writeIndex; // 写指针

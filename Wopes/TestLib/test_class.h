@@ -8,6 +8,10 @@ class TestClass
 public:
     TestClass();
     ~TestClass();
+
+    void testChunk();
+
+    void testRingChunk();
 };
 
 #endif // TEST_CLASS_H

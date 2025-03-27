@@ -13,7 +13,7 @@ int CharChunk::copyMemory(char *var, const int &chBeign, const int &chEnd)
 {
     if (isFull())
     {
-        return 0;
+        return readPtr;
     }
 
     long long len = chEnd - chBeign;
