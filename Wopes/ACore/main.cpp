@@ -7,7 +7,7 @@
 #include "./aUtil/string_util.h"
 #include "aFileSystem/a_dir.h"
 // #include "aFileSystem/a_ring_chunk_buffer.h"
-#include "aString/a_char.h"
+#include "aFileSystem/ring_chunk.h"
 #include "a_core.h"
 
 using std::cout;
@@ -89,7 +89,7 @@ TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 }
 
 // DISABLED_  前缀：禁止测试项
-TEST(LogThroughputTest, SingleThreadPerformance)
+TEST(LogThroughputTest, DISABLED_SingleThreadPerformance)
 {
     const long long kLogCount = 1000000;
     acore::ACore aLogInit;
@@ -108,23 +108,37 @@ TEST(LogThroughputTest, SingleThreadPerformance)
     std::cout << "A thread throughput is: /n " << kLogCount / duration << " logs/sec\n";
 }
 
-void testPrint(...) {}
-
-TEST(LogController, DISABLED_setConsoleCondition)
+TEST(LogController, setConsoleCondition)
 {
     string a;
-    // aRingChunkBuffer<int> buffer(1000);
-    // aRingChunkBuffer* buffer = new aRingChunkBuffer(100);
+    // RingChunk ring(100);
 
-    // for (long long i = 0; i < 5; i++)
-    // {
-    //     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    // }
-    // buffer.push(4321);
-    // std::cout << buffer.pop();
+    constexpr int kThreads = 2;
+    constexpr int kIncrementsPerThread = 10000;
+    auto start = std::chrono::high_resolution_clock::now();
 
-    // std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-    // aString str;
+    std::vector<std::thread> threads;
+    for (int i = 0; i < kThreads; ++i)
+    {
+        threads.emplace_back([&]() {
+            for (int j = 0; j < kIncrementsPerThread; ++j)
+            {
+                // ring.push("1234");
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            }
+        });
+    }
+
+    for (auto& t : threads)
+    {
+        t.join();
+    }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = end - start;
+
+    // 输出性能指标
+    std::cout << "File with buffer: " << duration.count() / (kThreads * kIncrementsPerThread) << " ns/op\n";
 }
 
 int main(int argc, char** argv)

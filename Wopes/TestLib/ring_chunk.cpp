@@ -5,7 +5,7 @@ RingChunk::RingChunk(const size_t &ringBufferSize)
 {
     readIndex.store(0);
     writeIndex.store(0);
-    mask = 0;
+
     chunkNumber = ringBufferSize;
     for (int i = 0; i < ringBufferSize; i++)
     {
@@ -13,10 +13,11 @@ RingChunk::RingChunk(const size_t &ringBufferSize)
     }
 
     lenMask = chunkNumber;
+    mask = lenMask;
     storeSize = chunkNumber * chunkArray.size();
 }
 
-void RingChunk::push(char *var)
+void RingChunk::push(char *var) noexcept
 {
     // std::unique_lock<std::mutex> lock(mutex_);
     // cvPush.wait(lock, [this] { return !full(); });
@@ -24,16 +25,13 @@ void RingChunk::push(char *var)
     int strBegin = 0;
     int strEnd = strlen(var);
 
-    while (strBegin < storeSize)
+    while (writeIndex < strEnd && strBegin < strEnd)
     {
-        strBegin = chunkArray[writeTm]->copyMemory(var, strBegin, strEnd);
-        // writeIndex.fetch_add(1, std::memory_order_relaxed);
-        writeTm = (writeTm + 1) % lenMask;
-        std::cout << "store is : " << writeIndex << std::endl;
+        strBegin = chunkArray[writeIndex & mask]->copyMemory(var, strBegin, strEnd);
+        writeIndex.fetch_add(1, std::memory_order_release);
     }
 
     // 如果当前内存块满了，新申请一个内存块 [2]
-    // writeIndex.fetch_add(1, std::memory_order_release);
     // cvPop.notify_one();
 }
 
@@ -42,8 +40,9 @@ CharChunk *RingChunk::pop()
     // std::unique_lock<std::mutex> lock(mutex_);
     // cvPop.wait(lock, [this] { return !empty(); });
 
+    readIndex.fetch_add(1, std::memory_order_acquire);
     CharChunk *item = chunkArray[readIndex & mask].get();
-    // readIndex.fetch_add(1, std::memory_order_acquire);
+
     // cvPush.notify_one();
     return item;
 }
@@ -52,8 +51,6 @@ unsigned int RingChunk::getStoreSize() const
 {
     return storeSize;
 }
-
-bool RingChunk::writeToFile(FILE *fp) {}
 
 inline size_t RingChunk::size() const
 {

@@ -11,15 +11,12 @@ public:
     explicit RingChunk(const size_t &ringBufferSize);
 
     /** 阻塞式 */
-    void push(char *var);
+    void push(char *var) noexcept;
 
     /** 阻塞式 */
     CharChunk *pop();
 
     unsigned int getStoreSize() const;
-
-    /** 写入文件中（阻塞式） */
-    bool writeToFile(FILE *fp);
 
     // 当前元素数量（线程安全）
     size_t size() const;

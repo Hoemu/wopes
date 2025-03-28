@@ -17,7 +17,6 @@ int CharChunk::copyMemory(char *var, const int &chBeign, const int &chEnd)
     }
 
     long long len = chEnd - chBeign;
-    remainingMemory = memorySize - readPtr;
     long long varRecorder = -1;
 
     if (len < remainingMemory)
@@ -33,6 +32,7 @@ int CharChunk::copyMemory(char *var, const int &chBeign, const int &chEnd)
         readPtr = readPtr + remainingMemory;
         memoryChunk[readPtr] = '\0';
     }
+    remainingMemory = memorySize - readPtr;
 
     return varRecorder;
 }
