@@ -22,12 +22,12 @@ void RingChunk::push(char *var) noexcept
     // std::unique_lock<std::mutex> lock(mutex_);
     // cvPush.wait(lock, [this] { return !full(); });
 
-    int strBegin = 0;
+    int strPos = 0;
     int strEnd = strlen(var);
 
-    while (writeIndex < strEnd && strBegin < strEnd)
+    while (writeIndex < strEnd && strPos < strEnd)
     {
-        strBegin = chunkArray[writeIndex & mask]->copyMemory(var, strBegin, strEnd);
+        strPos = chunkArray[writeIndex & mask]->copyMemory(var, strPos, strEnd);
         writeIndex.fetch_add(1, std::memory_order_release);
     }
 
