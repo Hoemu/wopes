@@ -1,5 +1,27 @@
 #include "char_chunk.h"
 
+CharChunk::CharChunk(size_t len)
+{
+    memorySize = len;
+    remainingMemory = len;
+    readPtr = 0;
+    memoryChunk = (char *)malloc(len + 1);
+
+    if (!memoryChunk)
+    {
+        throw std::bad_alloc(); // 或通过其他方式处理异常
+    }
+}
+
+CharChunk::~CharChunk()
+{
+    if (memoryChunk)
+    {
+        free(memoryChunk);
+        memoryChunk = nullptr; // 防止重复释放
+    }
+}
+
 CharChunk::CharChunk(const CharChunk &other)
 {
     memorySize = other.memorySize;
@@ -9,7 +31,7 @@ CharChunk::CharChunk(const CharChunk &other)
     memcpy(memoryChunk, other.memoryChunk, memorySize + 1);
 }
 
-int CharChunk::copyMemory(char *var, const int &chBeign, const int &chEnd)
+int CharChunk::copyMemory(const char *var, const int &chBeign, const int &chEnd)
 {
     if (isFull())
     {
@@ -30,14 +52,14 @@ int CharChunk::copyMemory(char *var, const int &chBeign, const int &chEnd)
         memcpy(memoryChunk + readPtr, var + chBeign, remainingMemory);
         varRecorder = chBeign + remainingMemory;
         readPtr = readPtr + remainingMemory;
-        memoryChunk[readPtr] = '\0';
     }
     remainingMemory = memorySize - readPtr;
+    memoryChunk[readPtr] = '\0';
 
     return varRecorder;
 }
 
-char *CharChunk::getMemroyChunk()
+char *CharChunk::getMemroyChunk() const
 {
     return memoryChunk;
 }
@@ -45,4 +67,10 @@ char *CharChunk::getMemroyChunk()
 inline bool CharChunk::isFull() const
 {
     return memorySize == readPtr ? true : false;
+}
+
+void CharChunk::resetMemory()
+{
+    readPtr = 0;
+    remainingMemory = memorySize;
 }

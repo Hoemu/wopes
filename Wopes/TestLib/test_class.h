@@ -12,6 +12,8 @@ public:
     void testChunk();
 
     void testRingChunk();
+
+    void testChar();
 };
 
 #endif // TEST_CLASS_H

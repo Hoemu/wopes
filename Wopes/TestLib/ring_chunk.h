@@ -11,7 +11,7 @@ public:
     explicit RingChunk(const size_t &ringBufferSize);
 
     /** 阻塞式 */
-    void push(char *var) noexcept;
+    void push(const char *var) noexcept;
 
     /** 阻塞式 */
     CharChunk *pop();
@@ -36,10 +36,10 @@ private:
 
     int readTm = 0;
     int writeTm = 0;
-    int lenMask;
 
     std::atomic<size_t> readIndex;  // 读指针（原子操作保证可见性）
     std::atomic<size_t> writeIndex; // 写指针
+    std::atomic<bool> writeEndFill; // 写入最后指针是否为满判断
 
     std::condition_variable cvPush; // 写入条件变量
     std::condition_variable cvPop;  // 读取条件变量

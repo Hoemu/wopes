@@ -6,6 +6,8 @@
 #include <memory>
 #include <vector>
 
+using cstr = const char *; // 增强代码可读性
+
 using std::make_unique;
 using std::unique_ptr;
 using std::vector;
@@ -13,36 +15,21 @@ using std::vector;
 class CharChunk
 {
 public:
-    CharChunk(size_t len)
-    {
-        memorySize = len;
-        remainingMemory = len;
-        readPtr = 0;
-        memoryChunk = (char *)malloc(len + 1);
+    CharChunk(size_t len);
 
-        if (!memoryChunk)
-        {
-            throw std::bad_alloc(); // 或通过其他方式处理异常
-        }
-    };
-    ~CharChunk()
-    {
-        if (memoryChunk)
-        {
-            free(memoryChunk);
-            memoryChunk = nullptr; // 防止重复释放
-        }
-    };
+    ~CharChunk();
 
     /** 深拷贝 */
     CharChunk(const CharChunk &other);
 
     /** 返回读指针，如果字符串读取完毕，返回最后长度 */
-    int copyMemory(char *var, const int &chBeign, const int &chEnd);
+    int copyMemory(const char *var, const int &chBeign, const int &chEnd);
 
-    char *getMemroyChunk();
+    char *getMemroyChunk() const;
 
     bool isFull() const;
+
+    void resetMemory();
 
 private:
     /** 变量 */
