@@ -3,63 +3,67 @@
 
 LogController::LogController()
 {
-    dateLogLongUse = true;
-    dateLogTemp = true;
-    isConsoleOutput = true;
-    isSettingLogFileCurrent = false;
-    isfoldFilePath = false;
+    config.dateLogLongUse = true;
+    config.dateLogTemp = true;
+    config.isConsoleOutput = true;
+    config.isSettingLogFileCurrent = false;
+    config.isfoldFilePath = false;
+    config.isLogClassify = false;
     dirTool = new ADir;
     logFile = new LogFile;
+    dataBuffer = new LogDataParam;
 }
 
 LogController::~LogController()
 {
     delete logFile;
     delete dirTool;
+    delete dataBuffer;
 }
 
 void LogController::useDateLog(bool var)
 {
-    dateLogLongUse = var;
+    config.dateLogLongUse = var;
 }
 
 bool LogController::getDateLog() const
 {
-    return dateLogLongUse & dateLogTemp;
+    return config.dateLogLongUse & config.dateLogTemp;
 }
 
 bool LogController::getConsoleCondition() const
 {
-    return isConsoleOutput;
+    return config.isConsoleOutput;
 }
 
 void LogController::setConsoleCondition(const bool &consoleCondition)
 {
-    isConsoleOutput = consoleCondition;
+    config.isConsoleOutput = consoleCondition;
 }
 
 void LogController::setFoldFilePath(const bool &var)
 {
-    isfoldFilePath = var;
+    config.isfoldFilePath = !var;
     // std::cout << "test:" << isfoldFilePath << std::endl;
 }
 
 bool LogController::getIsFoldFilePath() const
 {
-    return isfoldFilePath;
+    return config.isfoldFilePath;
 }
+
+void LogController::setFileMaxByte(unsigned int max) {}
 
 void LogController::push(MsgData *var)
 {
-    if (!isSettingLogFileCurrent)
+    if (!config.isSettingLogFileCurrent)
     {
         std::cerr << "[WARNING]:Don't set log path. " << var->msg << std::endl;
         return;
     }
 
-    consoleLogPush(var, isConsoleOutput);
-
-    logFile->push(var); // 这里是两块不同的内存，控制台日志和文件日志需要分开
+    consoleLogPush(var, config.isConsoleOutput);
+    logFile->push(var);
 }
 
 void LogController::consoleLogPush(MsgData *var, const bool &isPush)
@@ -73,21 +77,26 @@ void LogController::consoleLogPush(MsgData *var, const bool &isPush)
 
 void LogController::useDateLogTemp(bool var)
 {
-    dateLogTemp = var;
+    config.dateLogTemp = var;
 }
 
 void LogController::setFilePath(list<string> var)
 {
     if (var.size() > 0)
     {
-        isSettingLogFileCurrent = true;
+        config.isSettingLogFileCurrent = true;
     }
     else
     {
-        isSettingLogFileCurrent = false;
+        config.isSettingLogFileCurrent = false;
     }
 
     logFile->setFilePath(var);
+}
+
+BaseConfigController LogController::queryBaseConfig()
+{
+    return config;
 }
 
 LogDataParam *LogController::getDataBufferObject() const

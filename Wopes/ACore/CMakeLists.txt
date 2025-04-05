@@ -16,6 +16,7 @@ if(IS_GENERAT_LIBRARY)
     add_library(ACore SHARED
         ${SRCS}
         ${ACore_Version}
+        net/tcp.h net/tcp.cpp
         )
     target_compile_definitions(ACore PRIVATE ACORE_LIBRARY)
     message(STATUS "create lib.")

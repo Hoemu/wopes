@@ -5,17 +5,17 @@
 TestClass::TestClass()
 {
     // delete chTest;
-    // testRingChunk();
+    testRingChunk();
     // testChunk();
 
-    testChar();
+    // testChar();
 }
 
 TestClass::~TestClass() {}
 
 void TestClass::testRingChunk()
 {
-    RingChunk ringChunk(3);
+    RingChunk ringChunk(10);
 
     const char *ch = "123456";
     char *tptr = nullptr;
@@ -28,20 +28,17 @@ void TestClass::testRingChunk()
     int getSize = ringChunk.getStoreSize();
 
     std::cout << "------------[begin]----------" << std::endl;
-    std::cout << " size:" << ringChunk.size() << " " << ringChunk.pop()->getMemroyChunk() << std::endl;
-    std::cout << " size:" << ringChunk.size() << " " << ringChunk.pop()->getMemroyChunk() << std::endl;
-    std::cout << " size:" << ringChunk.size() << " " << ringChunk.pop()->getMemroyChunk() << std::endl;
-    std::cout << " size:" << ringChunk.size() << " " << ringChunk.pop()->getMemroyChunk() << std::endl;
-    std::cout << " size:" << ringChunk.size() << " " << ringChunk.pop()->getMemroyChunk() << std::endl;
+    std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
+    std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
+    std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
+    std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
+    std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
     std::cout << "-------------[end]-----------" << std::endl;
 }
 
 void TestClass::testChar()
 {
-    CChar ch("134");
-    CChar cr = "143";
-
-    std::cout << cr.getCChar();
+    // std::cout << cr.getCChar();
 }
 
 void TestClass::testChunk()

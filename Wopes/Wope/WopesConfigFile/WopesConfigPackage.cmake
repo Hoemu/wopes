@@ -8,7 +8,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 # 寻找其他包
 
 # TODO 手动指定安装位置
-set(ACore_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../ACore/build/install")
+set(ACore_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../ACore/build/ACore")
 set(ACore_DIR_LIB ${ACore_DIR}/bin/libacore.dll)
 set(ACore_DIR_INCLUDE ${ACore_DIR}/include)
 

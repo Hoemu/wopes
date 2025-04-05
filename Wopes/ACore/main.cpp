@@ -89,7 +89,7 @@ TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 }
 
 // DISABLED_  前缀：禁止测试项
-TEST(LogThroughputTest, DISABLED_SingleThreadPerformance)
+TEST(LogThroughputTest, SingleThreadPerformance)
 {
     const long long kLogCount = 1000000;
     acore::ACore aLogInit;
@@ -108,7 +108,17 @@ TEST(LogThroughputTest, DISABLED_SingleThreadPerformance)
     std::cout << "A thread throughput is: /n " << kLogCount / duration << " logs/sec\n";
 }
 
-TEST(LogController, setConsoleCondition)
+TEST(LogThroughputTest, DISABLED_BaseTest)
+{
+    acore::ACore aLogInit;
+    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_4" });
+    aLogInit.getLogController()->setConsoleCondition(true);
+    aLogInit.getLogController()->setFoldFilePath(true);
+
+    LOG_INFO("test");
+}
+
+TEST(LogController, DISABLED_setConsoleCondition)
 {
     string a;
     // RingChunk ring(100);

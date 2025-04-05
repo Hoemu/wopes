@@ -22,6 +22,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void printQuery();
+
 private slots:
     void on_btn_test_clicked();
 
