@@ -12,6 +12,3 @@ function(get_no_sufix_dir OUTPUT_VAR_NO_SUFIC_DIR TARGET_PATH)
     # message("target file " ${TARGET_PATH} "   " ${OUTPUT_VAR_NO_SUFIC_DIR})
 endfunction()
 
-function(link_depends_dir OUTPUT_VAR_LINK_DIR)
-
-endfunction()

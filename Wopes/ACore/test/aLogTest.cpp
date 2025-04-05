@@ -3,12 +3,9 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
 #include <iostream>
-#include "./aLog/log_define.h"
-#include "./aUtil/string_util.h"
-#include "aFileSystem/a_dir.h"
 // #include "aFileSystem/a_ring_chunk_buffer.h"
 // #include "aFileSystem/ring_chunk.h"
-#include "a_core.h"
+#include "../a_core.h"
 
 using std::cout;
 using std::endl;

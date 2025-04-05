@@ -7,7 +7,7 @@ LogController::LogController()
     config.dateLogTemp = true;
     config.isConsoleOutput = true;
     config.isSettingLogFileCurrent = false;
-    config.isfoldFilePath = false;
+    config.isfoldFilePath = true;
     config.isLogClassify = false;
     dirTool = new ADir;
     logFile = new LogFile;

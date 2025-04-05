@@ -16,12 +16,11 @@ if(IS_GENERAT_LIBRARY)
     add_library(ACore SHARED
         ${SRCS}
         ${ACore_Version}
-        net/tcp.h net/tcp.cpp
         )
     target_compile_definitions(ACore PRIVATE ACORE_LIBRARY)
     message(STATUS "create lib.")
 else()
-    add_executable(ACore ${SRCS} main.cpp)
+    add_executable(ACore ${SRCS})
     target_link_libraries(ACore ${GOOLE_TEST_LIB})
     enable_testing()
     add_test(NAME ACore COMMAND ACore)

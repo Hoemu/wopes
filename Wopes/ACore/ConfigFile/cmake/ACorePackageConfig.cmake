@@ -1,5 +1,6 @@
 set(ACorePackageInfo "配置相关包文件")
 
+#---------------------  以下为手动设置 ---------------------#
 if(NOT IS_GENERAT_LIBRARY)
     if(IS_GOOGLE_TEST)
         set(GOOGLE_TARGET_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Depends/google-test-env/lib)
