@@ -1,26 +1,7 @@
 #include "log_system.h"
 #include <time.h>
 #include <iostream>
-
-LogSystem* LogSystem::mInstance = nullptr;
-
-LogSystem* LogSystem::instance()
-{
-    if (mInstance == nullptr)
-    {
-        mInstance = new LogSystem;
-    }
-    return mInstance;
-}
-
-void LogSystem::destroy()
-{
-    if (mInstance != nullptr)
-    {
-        delete mInstance;
-        mInstance = nullptr;
-    }
-}
+#include <mutex>
 
 LogSystem::LogSystem()
 {
@@ -178,3 +159,14 @@ void LogSystem::log()
         dataBuffer->pop();
     }
 }
+
+void log::setBaseMsg(const string& file, const string& functionName, const int& line)
+{
+    char buff[512];
+    snprintf(buff, sizeof(buff),
+        "[%s %s @%d]"
+        "\n",
+        "[INFO]", __FUNCTION__, __LINE__);
+}
+
+void log::setMessage(const char* format, ...) {}

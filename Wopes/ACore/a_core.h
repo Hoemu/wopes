@@ -16,6 +16,8 @@ public:
      * @brief 获取日志控制器
      */
     static LogController *getLogController();
+
+private:
 };
 } // namespace acore
 

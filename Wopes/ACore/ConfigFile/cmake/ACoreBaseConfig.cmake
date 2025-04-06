@@ -5,8 +5,10 @@ include(./ConfigFile/cmake/ACoreSetting.cmake)
 include(./ConfigFile/cmake/ACoreUtil.cmake)
 include(./ConfigFile/cmake/ACoreVersionUtil.cmake)
 
-if(IS_GOOGLE_TEST)
+if(IS_GENERAT_LIBRARY)
     set(TEST_PATH "test")
+else()
+    set(TEST_PATH "TEST_PATH")
 endif()
 
 # 添加配置文件

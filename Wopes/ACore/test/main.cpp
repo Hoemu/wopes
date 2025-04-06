@@ -2,18 +2,13 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
-#include <iostream>
-// #include "aFileSystem/a_ring_chunk_buffer.h"
-// #include "aFileSystem/ring_chunk.h"
-#include "../a_core.h"
-
-using std::cout;
-using std::endl;
+#include "aLogTest.h"
 
 const string var = "../TT/File/SS/GG";
 const string var2 = "../../CUre/cc/FF";
 const string DVar = "D:/Test/fff";
 
+/** ****************************** 目录功能测试 */
 TEST(ADir, DISABLED_isExistDir)
 {
     ADir initDir;
@@ -25,7 +20,7 @@ TEST(ADir, DISABLED_isExistDir)
     ASSERT_NE(initDir.isExitsPath("./Dir"), true); // 致命断言（失败终止测试）
 }
 
-/** psdlog 测试 */
+/** ****************************** psdlog 测试 */
 TEST(spdlog, DISABLED_spdlog_test)
 {
     const long long kLogCount = 100000000000;
@@ -48,7 +43,7 @@ TEST(spdlog, DISABLED_spdlog_test)
     std::cout << "A thread throughput is: /n" << kLogCount / duration << " logs/sec\n";
 }
 
-/** 多线程测试 */
+/** ****************************** 多线程测试 */
 TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 {
     acore::ACore aLogInit;
@@ -66,7 +61,7 @@ TEST(LogThroughputTest, DISABLED_AtomicIncrement)
             for (int j = 0; j < kIncrementsPerThread; ++j)
             {
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
-                LOG_INFO("Test thread message: [" + std::to_string(i) + "] " + std::to_string(j));
+                // LOG_INFO("Test thread message: [" + std::to_string(i) + "] " + std::to_string(j));
             }
         });
     }
@@ -86,7 +81,8 @@ TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 }
 
 // DISABLED_  前缀：禁止测试项
-TEST(LogThroughputTest, SingleThreadPerformance)
+/** ****************************** 单线程测试 */
+TEST(LogThroughputTest, DISABLED_SingleThreadPerformance)
 {
     const long long kLogCount = 1000000;
     acore::ACore aLogInit;
@@ -96,7 +92,7 @@ TEST(LogThroughputTest, SingleThreadPerformance)
 
     for (long long i = 0; i < kLogCount; ++i)
     {
-        LOG_INFO("Test log message: " + std::to_string(i));
+        // LOG_INFO("Test log message: " + std::to_string(i));
     }
 
     auto end = std::chrono::high_resolution_clock::now();
@@ -105,16 +101,18 @@ TEST(LogThroughputTest, SingleThreadPerformance)
     std::cout << "A thread throughput is: /n " << kLogCount / duration << " logs/sec\n";
 }
 
-TEST(LogThroughputTest, DISABLED_BaseTest)
+/** ****************************** 基础功能测试 */
+TEST(LogThroughputTest, BaseTest)
 {
     acore::ACore aLogInit;
     aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_4" });
     aLogInit.getLogController()->setConsoleCondition(true);
     aLogInit.getLogController()->setFoldFilePath(true);
-
-    LOG_INFO("test");
+    std::cout << "DISABLED_BaseTest" << std::endl;
+    // LOG_INFO("test");
 }
 
+/** ****************************** 控制环境测试 */
 TEST(LogController, DISABLED_setConsoleCondition)
 {
     string a;

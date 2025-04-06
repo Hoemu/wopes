@@ -3,7 +3,21 @@
 
 #define HAS_FILE_INFO
 
+#include <stdio.h>
 #include "log_system.h"
+
+// 注意：每使用一次此宏，都会创建一个 while 循环
+#define TEST_LOG(args...)                              \
+    {                                                  \
+        char buff[512] = { 0 };                        \
+        snprintf(buff, sizeof(buff),                   \
+            "%s[%s:%d]"                                \
+            "\n",                                      \
+            "[INFO]", __FUNCTION__, __LINE__, ##args); \
+        log::instance()->setGeneralLog();              \
+    }
+
+#define LOG_TEST_CLASS log::instance->setMessage(__FILE__, __FUNCTION__, __LINE__, ##args)
 
 #if defined(HAS_FILE_INFO)
 #define LOG_INFO                                                        \

@@ -2,22 +2,14 @@
 #define LOG_SYSTEM_H
 
 #include <condition_variable>
-#include <mutex>
+#include "../aUtil/internal_singleton.h"
 #include "log_controller.h"
 #include "log_data_param.h"
 
-class LogBaseSystem
+class ACORE_EXPORT LogSystem : public InternalSingleton<LogSystem>
 {
 public:
-};
-
-class ACORE_EXPORT LogSystem : public LogBaseSystem
-{
-public:
-    static LogSystem* instance();
-
-    static void destroy();
-
+    friend class InternalSingleton<LogSystem>;
     void setLogMsg(std::string file, std::string functionName, int line);
 
     void setMsg(string msg);
@@ -47,8 +39,6 @@ private:
 
     MsgData* data;
 
-    static LogSystem* mInstance;
-
     std::condition_variable condConsumer;
 
     mutex mMutex;
@@ -60,6 +50,19 @@ private:
     LogController* controller;
 
     ADir* dirTool;
+};
+
+class ACORE_EXPORT log : public LogSystem
+{
+public:
+    friend class InternalSingleton<LogSystem>;
+
+    void setBaseMsg(const string& file, const string& functionName, const int& line);
+
+    void setMessage(const char* format, ...);
+
+private:
+    char msg[512];
 };
 
 #endif // LOG_SYSTEM_H
