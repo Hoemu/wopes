@@ -76,63 +76,9 @@ void LogSystem::setMsg(std::string msg)
     mInputMutex.unlock();
 }
 
-void LogSystem::setMsg(unsigned int msg)
-{
-    mInputMutex.lock();
-    data->msg = std::to_string(msg);
-    controller->push(data);
-    condConsumer.notify_one();
-    mInputMutex.unlock();
-}
-
 void LogSystem::setLogModel(LOG_LEVEL model)
 {
     data->model = model;
-}
-
-void LogSystem::setMsg(int msg)
-{
-    mInputMutex.lock();
-    data->msg = std::to_string(msg);
-    controller->push(data);
-    condConsumer.notify_one();
-    mInputMutex.unlock();
-}
-
-void LogSystem::setMsg(unsigned long long msg)
-{
-    mInputMutex.lock();
-    data->msg = std::to_string(msg);
-    controller->push(data);
-    condConsumer.notify_one();
-    mInputMutex.unlock();
-}
-
-void LogSystem::setMsg(long long msg)
-{
-    mInputMutex.lock();
-    data->msg = std::to_string(msg);
-    controller->push(data);
-    condConsumer.notify_one();
-    mInputMutex.unlock();
-}
-
-void LogSystem::setMsg(unsigned short msg)
-{
-    mInputMutex.lock();
-    data->msg = std::to_string(msg);
-    controller->push(data);
-    condConsumer.notify_one();
-    mInputMutex.unlock();
-}
-
-void LogSystem::setMsg(short msg)
-{
-    mInputMutex.lock();
-    data->msg = std::to_string(msg);
-    controller->push(data);
-    condConsumer.notify_one();
-    mInputMutex.unlock();
 }
 
 LogController* LogSystem::getControllerObject() const

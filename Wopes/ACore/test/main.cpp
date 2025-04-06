@@ -109,7 +109,8 @@ TEST(LogThroughputTest, BaseTest)
     aLogInit.getLogController()->setConsoleCondition(true);
     aLogInit.getLogController()->setFoldFilePath(true);
     std::cout << "DISABLED_BaseTest" << std::endl;
-    // LOG_INFO("test");
+    // TEST_LOG("fdsaf");
+    LOG_INFO("test");
 }
 
 /** ****************************** 控制环境测试 */

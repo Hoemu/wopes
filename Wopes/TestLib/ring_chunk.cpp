@@ -21,8 +21,6 @@ RingChunk::RingChunk(const size_t &ringBufferSize, const size_t &chunkSizeVar)
 
 void RingChunk::push(const char *var) noexcept
 {
-    // std::unique_lock<std::mutex> lock(mutex_);
-    // cvPush.wait(lock, [this] { return !full(); });
     writeIndex.load(std::memory_order_acquire);
     int strPos = 0;
     int strEnd = strlen(var);
@@ -65,14 +63,10 @@ CharChunk *RingChunk::pop()
     }
 
     readIndex.load(std::memory_order_acquire);
-
-    // TODO 需要判断是否已经为空了
     CharChunk *ptr = chunkArray[readIndex & mask].get();
     chunkArray[readIndex & mask]->resetMemory();
-
     readIndex.fetch_add(1, std::memory_order_release);
 
-    // cvPush.notify_one();
     return ptr;
 }
 

@@ -14,18 +14,6 @@ public:
 
     void setMsg(string msg);
 
-    void setMsg(unsigned int msg);
-
-    void setMsg(int msg);
-
-    void setMsg(unsigned long long msg);
-
-    void setMsg(long long msg);
-
-    void setMsg(unsigned short msg);
-
-    void setMsg(short msg);
-
     void setLogModel(LOG_LEVEL model);
 
     LogController* getControllerObject() const;
