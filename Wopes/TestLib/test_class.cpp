@@ -1,39 +1,77 @@
 #include "test_class.h"
-
+#include <iostream>
 #include "ring_chunk.h"
 
 TestClass::TestClass()
 {
+    ringChunk = new RingChunk(3, 4);
+
+    rthead = std::thread(&TestClass::pushTread, this);
+    wthead = std::thread(&TestClass::popThread, this);
     // delete chTest;
-    testRingChunk();
+    // testRingChunk();
     // testChunk();
 
     // testChar();
+    testThread();
 }
 
-TestClass::~TestClass() {}
+TestClass::~TestClass()
+{
+    wthead.detach();
+    rthead.detach();
+}
 
 void TestClass::testRingChunk()
 {
-    RingChunk ringChunk(10);
+    RingChunk ringChunk(3, 4);
 
     const char *ch = "123456";
     char *tptr = nullptr;
 
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 3; i++)
     {
         ringChunk.push(ch);
     }
-
-    int getSize = ringChunk.getStoreSize();
 
     std::cout << "------------[begin]----------" << std::endl;
     std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
     std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
     std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
-    std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
-    std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
+    ringChunk.pop()->getMemroyChunk();
+    ringChunk.pop()->getMemroyChunk();
+    // std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
+    // std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
     std::cout << "-------------[end]-----------" << std::endl;
+}
+
+void TestClass::pushTread()
+{
+    int pushNumber = 100000;
+    std::cout << "push thread begin." << std::endl;
+    const char *ch = "123456";
+    while (1)
+    {
+        ringChunk->push(ch);
+    }
+    // for (int i = 0; i < pushNumber; i++) {}
+    std::cout << "push thread end." << std::endl;
+}
+
+void TestClass::popThread()
+{
+    std::cout << "pop thread begin." << std::endl;
+    while (1)
+    {
+        ringChunk->pop();
+    }
+    std::cout << "pop thread begin." << std::endl;
+}
+
+void TestClass::testThread()
+{
+    pushTread();
+    popThread();
 }
 
 void TestClass::testChar()
