@@ -111,6 +111,7 @@ TEST(LogThroughputTest, BaseTest)
     std::cout << "DISABLED_BaseTest" << std::endl;
     // TEST_LOG("fdsaf");
     LOG_INFO("test");
+    TEST_LOG("[test-> %s", "abcdef");
 }
 
 /** ****************************** 控制环境测试 */

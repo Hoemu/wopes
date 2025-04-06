@@ -40,7 +40,7 @@ void LogSystem::setLogMsg(string file, string functionName, int line)
     mInputMutex.lock();
     data->functionName = functionName;
 
-    if (controller->getIsFoldFilePath() == false)
+    if (controller->getIsFoldFilePath() == true)
     {
         data->file = dirTool->getTheFileByThePath(data->file);
     }
@@ -106,13 +106,33 @@ void LogSystem::log()
     }
 }
 
-void log::setBaseMsg(const string& file, const string& functionName, const int& line)
+void LogSystem::setBaseMsg(char* file, const char* functionName, const int& line, const char* logLevel)
 {
-    char buff[512];
-    snprintf(buff, sizeof(buff),
-        "[%s %s @%d]"
-        "\n",
-        "[INFO]", __FUNCTION__, __LINE__);
+    if (controller->getIsFoldFilePath() == true)
+    {
+        file = "NONE";
+    }
+
+    std::chrono::system_clock::time_point now_ = std::chrono::system_clock::now();
+    std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(now_.time_since_epoch()) % 1000;
+    time_t now = time(NULL);
+    struct tm* local_tm = localtime(&now);
+
+    std::cout << "------------begin------------" << std::endl;
+    data->ms = ms.count();
+    strftime(data->date, sizeof(data->date), "[%Y-%m-%d %H:%M:%S", local_tm);
+    snprintf(data->base, sizeof(data->base), ":%d] [%s] %s:(%s)@%d", ms.count() % 3, logLevel, file, functionName, line);
 }
 
-void log::setMessage(const char* format, ...) {}
+void LogSystem::setMessage(const char* format, ...)
+{
+    int retval;
+    __builtin_va_list local_argv;
+    __builtin_va_start(local_argv, format);
+    // TODO 需要适配 linux，windows 等操作系统
+    retval = __mingw_vsnprintf(data->msgChar, sizeof(data->msgChar), format, local_argv); // 固定大小？
+    __builtin_va_end(local_argv);
+
+    std::cout << data->date << data->base << data->msgChar << std::endl;
+    std::cout << "------------end------------" << std::endl;
+}

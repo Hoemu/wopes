@@ -10,22 +10,31 @@ class ACORE_EXPORT LogSystem : public InternalSingleton<LogSystem>
 {
 public:
     friend class InternalSingleton<LogSystem>;
+
     void setLogMsg(std::string file, std::string functionName, int line);
 
     void setMsg(string msg);
 
     void setLogModel(LOG_LEVEL model);
 
+    void setMessage(const char* format, ...);
+
     LogController* getControllerObject() const;
+
+    void setBaseMsg(char* file, const char* functionName, const int& line, const char* logLevel);
 
 protected:
     void log();
 
+    MsgData* data;
+
+    LogController* controller;
+
+    ADir* dirTool;
+
 private:
     LogSystem();
     ~LogSystem();
-
-    MsgData* data;
 
     std::condition_variable condConsumer;
 
@@ -34,21 +43,11 @@ private:
     SpinLock mInputMutex;
 
     thread* workConsole;
-
-    LogController* controller;
-
-    ADir* dirTool;
 };
 
 class ACORE_EXPORT log : public LogSystem
 {
 public:
-    friend class InternalSingleton<LogSystem>;
-
-    void setBaseMsg(const string& file, const string& functionName, const int& line);
-
-    void setMessage(const char* format, ...);
-
 private:
     char msg[512];
 };

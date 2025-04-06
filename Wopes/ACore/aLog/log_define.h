@@ -5,20 +5,15 @@
 
 #include <stdio.h>
 #include "log_system.h"
-
+extern "C"
+{
 // 注意：每使用一次此宏，都会创建一个 while 循环
-#define TEST_LOG(args...)                                                   \
-    {                                                                       \
-        LogSystem::instance()->setLogMsg(__FILE__, __FUNCTION__, __LINE__); \
-        LogSystem::instance()->setLogModel(LOG_LEVEL::LOG_INFO);            \
-                                                                            \
-        char buff[512] = { 0 };                                             \
-        if (controller->getIsFoldFilePath() == false) {};                   \
-        snprintf(buff, sizeof(buff),                                        \
-            "%s[%s:%d]"                                                     \
-            "\n",                                                           \
-            "[INFO]", __FUNCTION__, __LINE__, ##args);                      \
+#define TEST_LOG(fmt, args...)                                                              \
+    {                                                                                       \
+        LogSystem::instance()->setBaseMsg(__FILE__, __FUNCTION__, __LINE__, LOG_INFO_CHAR); \
+        LogSystem::instance()->setMessage(fmt, ##args);                                     \
     }
+}
 
 #define LOG_TEST_CLASS log::instance->setMessage(__FILE__, __FUNCTION__, __LINE__, ##args)
 

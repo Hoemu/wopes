@@ -43,7 +43,7 @@ void LogController::setConsoleCondition(const bool &consoleCondition)
 
 void LogController::setFoldFilePath(const bool &var)
 {
-    config.isfoldFilePath = !var;
+    config.isfoldFilePath = var;
     // std::cout << "test:" << isfoldFilePath << std::endl;
 }
 

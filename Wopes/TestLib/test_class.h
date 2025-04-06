@@ -4,6 +4,10 @@
 #include <thread>
 #include "ring_chunk.h"
 
+const char LOG_INFO[9] = "LOG_INFO";
+const char LOG_DEBUG[10] = "LOG_DEBUG";
+const char LOG_DETUALT[12] = "LOG_DETUALT";
+
 class TestClass
 {
 public:

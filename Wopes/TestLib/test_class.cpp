@@ -6,8 +6,8 @@ TestClass::TestClass()
 {
     ringChunk = new RingChunk(3, 4);
 
-    rthead = std::thread(&TestClass::pushTread, this);
-    wthead = std::thread(&TestClass::popThread, this);
+    // rthead = std::thread(&TestClass::pushTread, this);
+    // wthead = std::thread(&TestClass::popThread, this);
     // delete chTest;
     // testRingChunk();
     // testChunk();
@@ -70,8 +70,9 @@ void TestClass::popThread()
 
 void TestClass::testThread()
 {
-    pushTread();
-    popThread();
+    // pushTread();
+    // popThread();
+    std::cout << LOG_INFO << ":" << std::endl;
 }
 
 void TestClass::testChar()

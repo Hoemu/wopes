@@ -28,6 +28,7 @@ protected:
     ~InternalSingleton() {};
 
     InternalSingleton(const InternalSingleton&) = delete;
+    InternalSingleton(const InternalSingleton&&) = delete;
     void operator=(const InternalSingleton&) = delete;
 
 private:

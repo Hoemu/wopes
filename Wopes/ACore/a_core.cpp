@@ -3,11 +3,7 @@
 
 namespace acore
 {
-ACore::ACore()
-{
-    LogSystem::instance();
-    // TEST_LOG("init acore.");
-}
+ACore::ACore() {}
 
 ACore::~ACore()
 {
@@ -16,7 +12,6 @@ ACore::~ACore()
 
 LogController *ACore::getLogController()
 {
-    std::cout << "get log controller." << std::endl;
     return LogSystem::instance()->getControllerObject();
 }
 
