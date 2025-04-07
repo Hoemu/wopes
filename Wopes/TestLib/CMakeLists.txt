@@ -5,8 +5,8 @@ project(QtTestLib LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-access-control")
-add_definitions(-DUSE_CTEST)
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-access-control")
+# add_definitions(-DUSE_CTEST)
 
 # 通过 FetchContent 自动下载 GTest
 # include(FetchContent)
@@ -18,9 +18,9 @@ add_definitions(-DUSE_CTEST)
 # FetchContent_MakeAvailable(googletest)
 
 # Windows 特殊设置（避免 CRT 冲突）
-if(WIN32)
-  set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-endif()
+# if(WIN32)
+#   set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+# endif()
 
 add_executable(QtTestLib main.cpp
     test_class.h test_class.cpp
@@ -33,7 +33,7 @@ add_executable(QtTestLib main.cpp
 # )
 
 # 启用测试并自动发现用例
-enable_testing()
+# enable_testing()
 
 # enable_testing()
 # add_test(NAME QtTestLib COMMAND QtTestLib)

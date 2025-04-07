@@ -6,6 +6,7 @@ RingChunk::RingChunk(const size_t &ringBufferSize, const size_t &chunkSizeVar)
     readIndex.store(0);
     writeIndex.store(0);
 
+    singleChunk = make_unique<CharChunk>(chunkSizeVar);
     chunkNumber = nearestPowerOfTwo(ringBufferSize);
     for (int i = 0; i < chunkNumber; i++)
     {
@@ -19,15 +20,13 @@ RingChunk::RingChunk(const size_t &ringBufferSize, const size_t &chunkSizeVar)
               << " chunkNumber:" << chunkNumber << " mask:" << mask << ", storeSize:" << storeSize << "\n\n";
 }
 
-void RingChunk::push(const char *var) noexcept
+void RingChunk::try_push(const char *var) noexcept
 {
-    writeIndex.load(std::memory_order_acquire);
+    // writeIndex.load(std::memory_order_acquire);
     int strPos = 0;
     int strEnd = strlen(var);
-    char *ptr = nullptr;
-    int writeIndexCp;
 
-    while (writeIndex < chunkNumber && strPos < strEnd)
+    while ((writeIndex & mask) < chunkNumber && strPos < strEnd)
     {
         strPos = chunkArray[writeIndex & mask]->copyMemory(var, strPos, strEnd);
         std::cout << "push:" << chunkArray[writeIndex & mask].get()->getMemroyChunk() << "\n writeIndex:" << writeIndex << " strPos:" << strPos
@@ -35,39 +34,52 @@ void RingChunk::push(const char *var) noexcept
 
         if (chunkArray[writeIndex & mask]->isFull())
         {
-            writeIndex.fetch_add(1, std::memory_order_release);
-
-            // push 失败，会返回上一个内存块
+            writeIndex.fetch_add(1);
             if (chunkArray[writeIndex & mask]->isFull())
             {
-                readIndex.notify_one();
-                writeIndex.fetch_sub(1);
                 std::cout << "Queue is full, push of back is invalid, read notify, [read]:" << readIndex << std::endl;
-                // throw std::runtime_error("Queue is full, push of back is invalid, [read]:");
-                writeIndex.wait(writeIndex.load(std::memory_order_relaxed));
-                break; // NOTE 可能不生效
+                break;
             }
             std::cout << std::endl;
         }
     }
 }
 
-CharChunk *RingChunk::pop()
+CharChunk *RingChunk::try_pop()
 {
     if (readIndex == writeIndex)
     {
-        writeIndex.notify_one();
         std::cout << "Queue is empty, pop is invalid, write notify, [write]:" << writeIndex << std::endl;
-        // throw std::runtime_error("Queue is empty, pop is invalid!");
-        readIndex.wait(readIndex.load(std::memory_order_relaxed));
+        return nullptr;
     }
 
-    readIndex.load(std::memory_order_acquire);
+    readIndex.fetch_add(1);
     CharChunk *ptr = chunkArray[readIndex & mask].get();
     chunkArray[readIndex & mask]->resetMemory();
-    readIndex.fetch_add(1, std::memory_order_release);
+    // writeIndex.notify_one();
 
     return ptr;
+}
+
+void RingChunk::writeToFile(const char *var, FILE *fp)
+{
+    int strPos = 0;
+    int strEnd = strlen(var);
+
+    while ((writeIndex & mask) < chunkNumber && strPos < strEnd)
+    {
+        strPos = chunkArray[writeIndex & mask]->copyMemory(var, strPos, strEnd);
+
+        if (chunkArray[writeIndex & mask]->isFull())
+        {
+            fwrite(chunkArray[writeIndex & mask]->getMemroyChunk(), chunkArray[writeIndex & mask]->size(), 1, fp);
+            writeIndex.fetch_add(1);
+            if (chunkArray[writeIndex & mask]->isFull())
+            {
+                break;
+            }
+        }
+    }
 }
 
 unsigned int RingChunk::capacity() const
@@ -77,7 +89,7 @@ unsigned int RingChunk::capacity() const
 
 inline size_t RingChunk::size() const
 {
-    return writeIndex.load(std::memory_order_acquire) + chunkArray[writeIndex & mask]->isFull() - readIndex.load(std::memory_order_acquire);
+    return writeIndex.load() + chunkArray[writeIndex & mask]->isFull() - readIndex.load();
 }
 
 bool RingChunk::full() const

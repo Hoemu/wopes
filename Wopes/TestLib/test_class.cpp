@@ -9,17 +9,17 @@ TestClass::TestClass()
     // rthead = std::thread(&TestClass::pushTread, this);
     // wthead = std::thread(&TestClass::popThread, this);
     // delete chTest;
-    // testRingChunk();
+    testRingChunk();
     // testChunk();
 
     // testChar();
-    testThread();
+    // testThread();
 }
 
 TestClass::~TestClass()
 {
-    wthead.detach();
-    rthead.detach();
+    // wthead.detach();
+    // rthead.detach();
 }
 
 void TestClass::testRingChunk()
@@ -29,19 +29,25 @@ void TestClass::testRingChunk()
     const char *ch = "123456";
     char *tptr = nullptr;
 
-    for (int i = 0; i < 3; i++)
-    {
-        ringChunk.push(ch);
-    }
+    // for (int i = 0; i < 3; i++)
+    // {
+    //     ringChunk.try_push(ch);
+    // }
 
     std::cout << "------------[begin]----------" << std::endl;
-    std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
-    std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
-    std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
-    ringChunk.pop()->getMemroyChunk();
-    ringChunk.pop()->getMemroyChunk();
-    // std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
-    // std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.pop()->getMemroyChunk() << std::endl;
+    // std::cout << "pop size:" << ringChunk.size() << "^ " << ringChunk.try_pop()->getMemroyChunk() << std::endl;
+    ringChunk.try_push(ch);
+    std::cout << "pop size:" << ringChunk.size() << "^ " << ringChunk.try_pop()->getMemroyChunk() << std::endl;
+    ringChunk.try_push(ch);
+    ringChunk.try_push(ch);
+    std::cout << "pop size:" << ringChunk.size() << "^ " << ringChunk.try_pop()->getMemroyChunk() << std::endl;
+    std::cout << "pop size:" << ringChunk.size() << "^ " << ringChunk.try_pop()->getMemroyChunk() << std::endl;
+    ringChunk.try_push(ch);
+    std::cout << "pop size:" << ringChunk.size() << "^ " << ringChunk.try_pop()->getMemroyChunk() << std::endl;
+    // std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.try_pop()->getMemroyChunk() << std::endl;
+    // ringChunk.try_pop()->getMemroyChunk();
+    // std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.try_pop()->getMemroyChunk() << std::endl;
+    // std::cout << " size:" << ringChunk.size() << "^ " << ringChunk.try_pop()->getMemroyChunk() << std::endl;
     std::cout << "-------------[end]-----------" << std::endl;
 }
 
@@ -52,7 +58,7 @@ void TestClass::pushTread()
     const char *ch = "123456";
     while (1)
     {
-        ringChunk->push(ch);
+        ringChunk->try_push(ch);
     }
     // for (int i = 0; i < pushNumber; i++) {}
     std::cout << "push thread end." << std::endl;
@@ -63,7 +69,7 @@ void TestClass::popThread()
     std::cout << "pop thread begin." << std::endl;
     while (1)
     {
-        ringChunk->pop();
+        ringChunk->try_pop();
     }
     std::cout << "pop thread begin." << std::endl;
 }

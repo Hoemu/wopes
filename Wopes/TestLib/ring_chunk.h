@@ -10,10 +10,12 @@ public:
     explicit RingChunk(const size_t &ringBufferSize, const size_t &chunkSizeVar);
 
     /** 阻塞式 */
-    void push(const char *var) noexcept;
+    void try_push(const char *var) noexcept;
 
     /** 阻塞式 */
-    CharChunk *pop();
+    CharChunk *try_pop();
+
+    void writeToFile(const char *var, FILE *fp);
 
     unsigned int capacity() const;
 
@@ -32,7 +34,11 @@ private:
     /** 内存总大小 */
     size_t storeSize;
 
+    unique_ptr<CharChunk> singleChunk;
+
     size_t mask;
+
+    std::mutex mMutex;
 
     std::atomic<size_t> readIndex;  // 读指针（原子操作保证可见性）
     std::atomic<size_t> writeIndex; // 写指针

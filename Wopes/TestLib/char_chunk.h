@@ -29,6 +29,8 @@ public:
 
     bool isFull() const;
 
+    size_t size() const;
+
     void resetMemory();
 
 private:

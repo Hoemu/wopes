@@ -1,4 +1,5 @@
 #include "char_chunk.h"
+#include <iostream>
 
 CharChunk::CharChunk(size_t len)
 {
@@ -69,8 +70,14 @@ inline bool CharChunk::isFull() const
     return memorySize == readPtr ? true : false;
 }
 
+size_t CharChunk::size() const
+{
+    return memorySize;
+}
+
 void CharChunk::resetMemory()
 {
     readPtr = 0;
     remainingMemory = memorySize;
+    std::cout << "[is full:" << isFull() << "]";
 }

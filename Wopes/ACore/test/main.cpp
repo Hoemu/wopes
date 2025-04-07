@@ -98,7 +98,11 @@ TEST(LogThroughputTest, SingleThreadPerformance)
     auto end = std::chrono::high_resolution_clock::now();
     double duration = std::chrono::duration<double>(end - start).count();
 
-    std::cout << "A thread throughput is: /n " << kLogCount / duration << " logs/sec\n";
+    std::chrono::duration<double> result = end - start;
+
+    double res = static_cast<double>(result.count());
+    printf("OneThread costTime: %f,  %0.0f log/s\n", res, kLogCount / res);
+    printf("OneThread costTime: %f,  %0.0f log/s\n", res, kLogCount / duration);
 }
 
 /** ****************************** 基础功能测试 */
