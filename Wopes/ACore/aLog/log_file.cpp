@@ -31,12 +31,12 @@ void LogFile::setFilePath(list<string> var)
     // std::cout << "var size is:" << logFilePath.size() << std::endl;
 }
 
-void LogFile::push(MsgData *data)
+void LogFile::pushChar(MsgData *data)
 {
     for (ThreadData &fuc : vecThread)
     {
         // std::cout << "push log input :" << data.msg << std::endl;
-        fuc.ptrDataParam.get()->push(data);
+        fuc.ptrDataParam->pushChar(data);
     }
 }
 
@@ -52,10 +52,10 @@ void LogFile::runThread(const ThreadData &var)
     mFileSystem->createFilePath("a");
     while (var.isRunning)
     {
-        while (vecThread[var.threadID].ptrDataParam.get()->size() != 0)
+        while (vecThread[var.threadID].ptrDataParam->sizeChar() != 0)
         {
-            mFileSystem->appendLine(vecThread[var.threadID].ptrDataParam.get()->frontString());
-            vecThread[var.threadID].ptrDataParam.get()->pop();
+            mFileSystem->appendLine(vecThread[var.threadID].ptrDataParam.get()->frontChar());
+            vecThread[var.threadID].ptrDataParam.get()->popChar();
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
@@ -73,7 +73,7 @@ bool LogFile::exitThread()
 {
     for (int i = 0; i < vecThread.size(); i++)
     {
-        if (vecThread[i].ptrDataParam->size() != 0)
+        while (vecThread[i].ptrDataParam->sizeChar() != 0)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }

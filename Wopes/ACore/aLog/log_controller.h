@@ -43,7 +43,7 @@ public:
 
     void setFileMaxByte(unsigned int max);
 
-    void push(MsgData* var);
+    void pushChar(MsgData* var);
 
     /** 临时使用，需要手挡修改回去 */
     void useDateLogTemp(bool var);

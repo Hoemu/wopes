@@ -5,51 +5,40 @@ LogDataParam::LogDataParam() {}
 
 LogDataParam::~LogDataParam()
 {
-    while (!dataString.empty())
+    while (!dataChar.empty())
     {
-        dataString.pop();
+        dataChar.pop();
     }
 }
 
-const vector<string> &LogDataParam::getLogLevel() const
-{
-    return logLevel;
-}
-
-void LogDataParam::push(MsgData *var)
+void LogDataParam::pushChar(MsgData *var)
 {
     mInputMutex.lock();
-    string dataTemp = "[";
-    dataTemp.insert(1, var->date);
-    dataTemp = dataTemp + "." + std::to_string(var->ms % 1000) + "] ";
-    dataTemp = dataTemp + logLevel[(int)var->model] + " ";
-    dataTemp = dataTemp + var->file + ":(" + var->functionName + ")@";
-    dataTemp = dataTemp + std::to_string(var->line) + " " + var->msg;
-
-    dataString.emplace(dataTemp);
-    // dataString.push(dataTemp);
+    dataChar.push(var->msg);
     mInputMutex.unlock();
 }
 
-void LogDataParam::pop()
+void LogDataParam::popChar()
 {
     mInputMutex.lock();
-    if (dataString.empty())
+    if (dataChar.empty())
     {
-        std::cerr << "queue is empty." << std::endl;
+        std::cerr << "Data char queue is empty." << std::endl;
         return;
     }
 
-    dataString.pop();
+    dataChar.pop();
     mInputMutex.unlock();
 }
 
-size_t LogDataParam::size()
+size_t LogDataParam::sizeChar()
 {
-    return dataString.size();
+    SpinLockGuard guardLock(mInputMutex);
+    return dataChar.size();
 }
 
-string LogDataParam::frontString() const
+string LogDataParam::frontChar()
 {
-    return dataString.front();
+    SpinLockGuard guardLock(mInputMutex);
+    return dataChar.front();
 }

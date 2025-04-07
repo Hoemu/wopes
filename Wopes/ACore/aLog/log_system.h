@@ -11,12 +11,6 @@ class ACORE_EXPORT LogSystem : public InternalSingleton<LogSystem>
 public:
     friend class InternalSingleton<LogSystem>;
 
-    void setLogMsg(std::string file, std::string functionName, int line);
-
-    void setMsg(string msg);
-
-    void setLogModel(LOG_LEVEL model);
-
     void setMessage(const char* format, ...);
 
     LogController* getControllerObject() const;
@@ -43,13 +37,6 @@ private:
     SpinLock mInputMutex;
 
     thread* workConsole;
-};
-
-class ACORE_EXPORT log : public LogSystem
-{
-public:
-private:
-    char msg[512];
 };
 
 #endif // LOG_SYSTEM_H

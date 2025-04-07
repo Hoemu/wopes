@@ -29,7 +29,7 @@ public:
     /** 设置文件路径，只能初始化一次 */
     void setFilePath(list<string> var);
 
-    void push(MsgData* data);
+    void pushChar(MsgData* data);
 
     int logPathVector() const;
 

@@ -54,7 +54,7 @@ bool LogController::getIsFoldFilePath() const
 
 void LogController::setFileMaxByte(unsigned int max) {}
 
-void LogController::push(MsgData *var)
+void LogController::pushChar(MsgData *var)
 {
     if (!config.isSettingLogFileCurrent)
     {
@@ -63,7 +63,7 @@ void LogController::push(MsgData *var)
     }
 
     consoleLogPush(var, config.isConsoleOutput);
-    logFile->push(var);
+    logFile->pushChar(var);
 }
 
 void LogController::consoleLogPush(MsgData *var, const bool &isPush)
@@ -72,7 +72,7 @@ void LogController::consoleLogPush(MsgData *var, const bool &isPush)
     {
         return;
     }
-    dataBuffer->push(var);
+    dataBuffer->pushChar(var);
 }
 
 void LogController::useDateLogTemp(bool var)

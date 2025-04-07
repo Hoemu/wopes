@@ -56,22 +56,18 @@ public:
     LogDataParam();
     ~LogDataParam();
 
-    const vector<string> &getLogLevel() const;
+    void pushChar(MsgData *var);
 
-    void push(MsgData *var);
+    void popChar();
 
-    void pop();
+    size_t sizeChar();
 
-    size_t size();
-
-    string frontString() const;
+    string frontChar();
 
 private:
-    queue<string> dataString;
+    queue<string> dataChar;
 
     SpinLock mInputMutex;
-
-    const vector<string> logLevel = { "LOG_INFO", "LOG_DEBUG", "LOG_DETUALT", "LOG_WARN", "LOG_ERROR", "LOG_FATAL" };
 };
 
 #endif // LOG_DATAPARAM_H

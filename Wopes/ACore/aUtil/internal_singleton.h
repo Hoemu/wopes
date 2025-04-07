@@ -25,7 +25,7 @@ public:
 
 protected:
     InternalSingleton() {};
-    ~InternalSingleton() {};
+    virtual ~InternalSingleton() {};
 
     InternalSingleton(const InternalSingleton&) = delete;
     InternalSingleton(const InternalSingleton&&) = delete;

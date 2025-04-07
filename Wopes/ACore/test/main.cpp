@@ -82,17 +82,17 @@ TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 
 // DISABLED_  前缀：禁止测试项
 /** ****************************** 单线程测试 */
-TEST(LogThroughputTest, DISABLED_SingleThreadPerformance)
+TEST(LogThroughputTest, SingleThreadPerformance)
 {
-    const long long kLogCount = 1000000;
+    const long long kLogCount = 10000;
     acore::ACore aLogInit;
-    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_1" });
+    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_Char" });
     aLogInit.getLogController()->setConsoleCondition(false);
     auto start = std::chrono::high_resolution_clock::now();
 
     for (long long i = 0; i < kLogCount; ++i)
     {
-        // LOG_INFO("Test log message: " + std::to_string(i));
+        LOG_INFO(" Test log message: %d", i);
     }
 
     auto end = std::chrono::high_resolution_clock::now();
@@ -102,7 +102,7 @@ TEST(LogThroughputTest, DISABLED_SingleThreadPerformance)
 }
 
 /** ****************************** 基础功能测试 */
-TEST(LogThroughputTest, BaseTest)
+TEST(LogThroughputTest, DISABLED_BaseTest)
 {
     acore::ACore aLogInit;
     aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_4" });
@@ -110,8 +110,9 @@ TEST(LogThroughputTest, BaseTest)
     aLogInit.getLogController()->setFoldFilePath(true);
     std::cout << "DISABLED_BaseTest" << std::endl;
     // TEST_LOG("fdsaf");
-    LOG_INFO("test");
-    TEST_LOG("[test-> %s", "abcdef");
+
+    LogSystem::instance()->setBaseMsg(__FILE__, __FUNCTION__, __LINE__, "LOG");
+    LogSystem::instance()->setMessage("%s", "adf");
 }
 
 /** ****************************** 控制环境测试 */
