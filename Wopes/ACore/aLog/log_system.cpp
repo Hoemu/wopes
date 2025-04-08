@@ -73,7 +73,6 @@ void LogSystem::setBaseMsg(char* file, const char* functionName, const int& line
     time_t now = time(NULL);
     struct tm* local_tm = localtime(&now);
 
-    // std::cout << "------------begin------------" << std::endl;
     strftime(data->date, sizeof(data->date), "[%Y-%m-%d %H:%M:%S", local_tm);
     snprintf(data->base, sizeof(data->base), ":%d] [%s] %s:(%s)@%d ", ms.count(), logLevel, file, functionName, line);
     mInputMutex.unlock();
