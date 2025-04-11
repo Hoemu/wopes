@@ -7,7 +7,7 @@ LogSystem::LogSystem()
 {
     // 设置默认路径
     std::ios::sync_with_stdio(false); // 输出优化
-    data = new MsgData;
+    data = new MsgData(256, 512, 512);
     controller = new LogController();
     dirTool = new ADir;
     workConsole = new std::thread(&LogSystem::log, this);
@@ -62,7 +62,8 @@ void LogSystem::log()
 
 void LogSystem::setBaseMsg(char* file, const char* functionName, const int& line, const char* logLevel)
 {
-    mInputMutex.lock();
+    mMutex.lock();
+    // mInputMutex.lock();
     if (controller->getIsFoldFilePath() == true)
     {
         file = "NONE";
@@ -75,12 +76,14 @@ void LogSystem::setBaseMsg(char* file, const char* functionName, const int& line
 
     strftime(data->date, sizeof(data->date), "[%Y-%m-%d %H:%M:%S", local_tm);
     snprintf(data->base, sizeof(data->base), ":%d] [%s] %s:(%s)@%d ", ms.count(), logLevel, file, functionName, line);
-    mInputMutex.unlock();
+    // mInputMutex.unlock();
+    mMutex.unlock();
 }
 
 void LogSystem::setMessage(const char* format, ...)
 {
-    mInputMutex.lock();
+    mMutex.lock();
+    // mInputMutex.lock();
     __builtin_va_list local_argv;
     __builtin_va_start(local_argv, format);
     __mingw_vsnprintf(data->msgChar, sizeof(data->msgChar), format, local_argv); // 固定大小？
@@ -92,5 +95,6 @@ void LogSystem::setMessage(const char* format, ...)
 
     controller->pushChar(data);
     condConsumer.notify_one();
-    mInputMutex.unlock();
+    // mInputMutex.unlock();
+    mMutex.unlock();
 }

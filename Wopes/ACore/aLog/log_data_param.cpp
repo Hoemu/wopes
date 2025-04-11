@@ -13,14 +13,17 @@ LogDataParam::~LogDataParam()
 
 void LogDataParam::pushChar(MsgData *var)
 {
-    mInputMutex.lock();
+    mMutex.lock();
+    // mInputMutex.lock();
     dataChar.push(var->msg);
-    mInputMutex.unlock();
+    // mInputMutex.unlock();
+    mMutex.unlock();
 }
 
 void LogDataParam::popChar()
 {
-    mInputMutex.lock();
+    mMutex.lock();
+    // mInputMutex.lock();
     if (dataChar.empty())
     {
         std::cerr << "Data char queue is empty." << std::endl;
@@ -28,7 +31,8 @@ void LogDataParam::popChar()
     }
 
     dataChar.pop();
-    mInputMutex.unlock();
+    // mInputMutex.unlock();
+    mMutex.unlock();
 }
 
 size_t LogDataParam::sizeChar()
@@ -41,4 +45,32 @@ string LogDataParam::frontChar()
 {
     SpinLockGuard guardLock(mInputMutex);
     return dataChar.front();
+}
+
+MsgData::MsgData(unsigned int &&dateSize, unsigned int &&baseSize, unsigned int &&msgCharSize)
+{
+    date = (char *)malloc(sizeof(dateSize));
+    base = (char *)malloc(sizeof(baseSize));
+    msgChar = (char *)malloc(sizeof(dateSize));
+}
+
+MsgData::~MsgData()
+{
+    if (date != NULL)
+    {
+        free(date);
+        date = NULL;
+    }
+
+    if (base != NULL)
+    {
+        free(base);
+        base = NULL;
+    }
+
+    if (msgChar != NULL)
+    {
+        free(msgChar);
+        msgChar = NULL;
+    }
 }
