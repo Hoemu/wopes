@@ -4,23 +4,6 @@
 #include "../aFileSystem/a_dir.h"
 #include "log_file.h"
 
-struct BaseConfigController
-{
-    bool dateLogTemp;
-
-    bool dateLogLongUse;
-
-    bool isConsoleOutput;
-
-    bool isSettingLogFileCurrent;
-
-    /** 是否折叠文件路径 */
-    bool isfoldFilePath;
-
-    /** 是否日志分类 */
-    bool isLogClassify;
-};
-
 /** 日志控制器 */
 class ACORE_EXPORT LogController
 {
@@ -29,6 +12,8 @@ public:
     ~LogController();
 
     void useDateLog(bool var);
+
+    void setConfData(MsgData* var);
 
     bool getDateLog() const;
 
@@ -51,7 +36,7 @@ public:
     void setFilePath(list<string> var);
 
     /** 查询基本配置 */
-    BaseConfigController queryBaseConfig();
+    BaseConfigController queryBaseConfig() const;
 
     LogDataParam* getDataBufferObject() const;
 
@@ -67,7 +52,8 @@ protected:
 private:
     ADir* dirTool;
 
-    BaseConfigController config;
+    /** 一致性数据 */
+    MsgData* confData;
 
     // 这个数据才是一段一段的
     LogFile* logFile;

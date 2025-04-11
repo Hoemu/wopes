@@ -3,7 +3,10 @@
 
 namespace acore
 {
-ACore::ACore() {}
+ACore::ACore()
+{
+    LogSystem::instance();
+}
 
 ACore::~ACore()
 {

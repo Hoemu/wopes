@@ -56,6 +56,14 @@ MsgData::MsgData(u_int &&dateSize, u_int &&baseSize, u_int &&msgCharSize)
     base = (char *)malloc(baseSize);
     msgChar = (char *)malloc(dateSize);
     msgData = (char *)malloc(dateSize + baseSize + dateSize);
+
+    baseConfig.dateLogLongUse = true;
+    baseConfig.dateLogTemp = true;
+    baseConfig.isConsoleOutput = true;
+    baseConfig.isSettingLogFileCurrent = false;
+    baseConfig.isfoldFilePath = true;
+    baseConfig.isLogClassify = false;
+    baseConfig.isExistFilePath = false;
 }
 
 MsgData::~MsgData()

@@ -87,7 +87,7 @@ TEST(LogThroughputTest, SingleThreadPerformance)
     const long long kLogCount = 10000;
     acore::ACore aLogInit;
     aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_Char" });
-    aLogInit.getLogController()->setConsoleCondition(false);
+    aLogInit.getLogController()->setConsoleCondition(true);
     auto start = std::chrono::high_resolution_clock::now();
 
     for (long long i = 0; i < kLogCount; ++i)

@@ -18,6 +18,25 @@ using std::string;
 using std::thread;
 using std::vector;
 
+struct BaseConfigController
+{
+    bool dateLogTemp;
+
+    bool dateLogLongUse;
+
+    bool isConsoleOutput;
+
+    bool isSettingLogFileCurrent;
+
+    /** 是否折叠文件路径 */
+    bool isfoldFilePath;
+
+    /** 是否日志分类 */
+    bool isLogClassify;
+
+    bool isExistFilePath;
+};
+
 struct MsgData
 {
     MsgData(u_int &&dateSize, u_int &&baseSize, u_int &&msgCharSize);
@@ -35,7 +54,7 @@ struct MsgData
     char *msgChar; // TIP 新增
     u_int msgCharLen;
 
-    bool IsFoldFilePath = false;
+    BaseConfigController baseConfig;
 };
 
 class LogDataParam

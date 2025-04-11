@@ -1,1 +1,1 @@
-cmake --install . --prefix "../install/" --verbose
+cmake --install . --prefix "../ACore/" --verbose

@@ -11,3 +11,4 @@ add_subdirectory(./Wope)
 # cmake --install .
 # cmake --build . --target install
 # cmake --install . --prefix "../ACore/" --verbose # 明确的安装
+add_subdirectory(TestWin/TestWin)

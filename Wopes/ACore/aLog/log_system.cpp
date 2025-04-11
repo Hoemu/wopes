@@ -9,6 +9,7 @@ LogSystem::LogSystem()
     std::ios::sync_with_stdio(false); // 输出优化
     data = new MsgData(256, 512, 512);
     controller = new LogController();
+    controller->setConfData(data);
     dirTool = new ADir;
     workConsole = new std::thread(&LogSystem::log, this);
     workConsole->detach();
@@ -64,12 +65,12 @@ void LogSystem::setBaseMsg(char* file, const char* functionName, const int& line
 {
     mMutex.lock();
     // mInputMutex.lock();
-    if (data->IsFoldFilePath == false)
+    if (data->baseConfig.isfoldFilePath == false)
     {
         if (controller->getIsFoldFilePath() == true)
         {
             file = "NONE";
-            data->IsFoldFilePath = true;
+            data->baseConfig.isfoldFilePath = true;
         }
     }
     else
@@ -91,6 +92,7 @@ void LogSystem::setBaseMsg(char* file, const char* functionName, const int& line
 void LogSystem::setMessage(const char* format, ...)
 {
     mMutex.lock();
+    std::cout << "push begin." << std::endl;
     // mInputMutex.lock();
     __builtin_va_list local_argv;
     __builtin_va_start(local_argv, format);
@@ -104,6 +106,7 @@ void LogSystem::setMessage(const char* format, ...)
 
     controller->pushChar(data);
     condConsumer.notify_one();
+    std::cout << "push end." << std::endl;
     // mInputMutex.unlock();
     mMutex.unlock();
 }
