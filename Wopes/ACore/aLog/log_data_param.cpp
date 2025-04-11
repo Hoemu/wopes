@@ -47,11 +47,15 @@ string LogDataParam::frontChar()
     return dataChar.front();
 }
 
-MsgData::MsgData(unsigned int &&dateSize, unsigned int &&baseSize, unsigned int &&msgCharSize)
+MsgData::MsgData(u_int &&dateSize, u_int &&baseSize, u_int &&msgCharSize)
 {
-    date = (char *)malloc(sizeof(dateSize));
-    base = (char *)malloc(sizeof(baseSize));
-    msgChar = (char *)malloc(sizeof(dateSize));
+    dateLen = dateSize;
+    baseLen = baseSize;
+    msgCharLen = msgCharSize;
+    date = (char *)malloc(dateSize);
+    base = (char *)malloc(baseSize);
+    msgChar = (char *)malloc(dateSize);
+    msgData = (char *)malloc(dateSize + baseSize + dateSize);
 }
 
 MsgData::~MsgData()
@@ -72,5 +76,11 @@ MsgData::~MsgData()
     {
         free(msgChar);
         msgChar = NULL;
+    }
+
+    if (msgData != NULL)
+    {
+        free(msgData);
+        msgData = NULL;
     }
 }

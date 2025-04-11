@@ -64,7 +64,15 @@ void LogSystem::setBaseMsg(char* file, const char* functionName, const int& line
 {
     mMutex.lock();
     // mInputMutex.lock();
-    if (controller->getIsFoldFilePath() == true)
+    if (data->IsFoldFilePath == false)
+    {
+        if (controller->getIsFoldFilePath() == true)
+        {
+            file = "NONE";
+            data->IsFoldFilePath = true;
+        }
+    }
+    else
     {
         file = "NONE";
     }
@@ -74,8 +82,8 @@ void LogSystem::setBaseMsg(char* file, const char* functionName, const int& line
     time_t now = time(NULL);
     struct tm* local_tm = localtime(&now);
 
-    strftime(data->date, sizeof(data->date), "[%Y-%m-%d %H:%M:%S", local_tm);
-    snprintf(data->base, sizeof(data->base), ":%d] [%s] %s:(%s)@%d ", ms.count(), logLevel, file, functionName, line);
+    strftime(data->date, data->dateLen, "[%Y-%m-%d %H:%M:%S", local_tm);
+    snprintf(data->base, data->baseLen, ":%d] [%s] %s:(%s)@%d ", ms.count(), logLevel, file, functionName, line);
     // mInputMutex.unlock();
     mMutex.unlock();
 }
@@ -86,9 +94,10 @@ void LogSystem::setMessage(const char* format, ...)
     // mInputMutex.lock();
     __builtin_va_list local_argv;
     __builtin_va_start(local_argv, format);
-    __mingw_vsnprintf(data->msgChar, sizeof(data->msgChar), format, local_argv); // 固定大小？
+    __mingw_vsnprintf(data->msgChar, data->msgCharLen, format, local_argv); // 固定大小？
     __builtin_va_end(local_argv);
 
+    // std::cout << "print:" << data->date << data->base << data->msgChar << std::endl;
     data->msg = data->date;
     data->msg = data->msg + data->base;
     data->msg = data->msg + data->msgChar;

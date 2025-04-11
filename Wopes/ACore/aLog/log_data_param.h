@@ -9,6 +9,8 @@
 #include <vector>
 #include "../aLock/spin_lock.h"
 
+typedef unsigned int u_int;
+
 using std::list;
 using std::mutex;
 using std::queue;
@@ -18,12 +20,22 @@ using std::vector;
 
 struct MsgData
 {
-    MsgData(unsigned int &&dateSize, unsigned int &&baseSize, unsigned int &&msgCharSize);
+    MsgData(u_int &&dateSize, u_int &&baseSize, u_int &&msgCharSize);
     ~MsgData();
     string msg;
+
+    char *msgData;
+
     char *date;
-    char *base;    // TIP 新增
+    u_int dateLen;
+
+    char *base; // TIP 新增
+    u_int baseLen;
+
     char *msgChar; // TIP 新增
+    u_int msgCharLen;
+
+    bool IsFoldFilePath = false;
 };
 
 class LogDataParam
