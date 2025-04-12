@@ -74,9 +74,17 @@ public:
 private:
     queue<string> dataChar;
 
+    size_t capacity;
+
+    std::atomic<size_t> head { 0 };
+    std::atomic<size_t> tail { 0 };
+
     SpinLock mInputMutex;
 
     mutex mMutex;
+
+    thread *pushTread;
+    thread *popThread;
 };
 
 #endif // LOG_DATAPARAM_H

@@ -29,7 +29,8 @@ void LogFile::setFilePath(list<string> var)
         data.threadID = vecThread.size();
         data.isRunning = true;
         data.filePath = path;
-        data.threadPtr = std::make_unique<thread>(&LogFile::runThread, this, data);
+        data.threadPtr = new thread(&LogFile::runThread, this, data);
+        data.threadPtr->detach();
         vecThread.push_back(data);
     }
     // std::cout << "var size is:" << logFilePath.size() << std::endl;
@@ -83,7 +84,13 @@ bool LogFile::exitThread()
         }
 
         vecThread[i].isRunning = false;
-        vecThread[i].threadPtr->detach();
+
+        if (vecThread[i].threadPtr != nullptr)
+        {
+            delete vecThread[i].threadPtr;
+            vecThread[i].threadPtr = nullptr;
+        }
+        // vecThread[i].threadPtr->detach();
         std::cout << "[clear] " << vecThread[i].filePath << std::endl;
     }
     vecThread.clear();

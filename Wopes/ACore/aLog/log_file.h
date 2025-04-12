@@ -2,6 +2,7 @@
 #define LOGFILE_H
 #define unint unsigned int
 
+#include <condition_variable>
 #include <memory>
 #include "../aFileSystem/a_file_system.h"
 #include "log_data_param.h"
@@ -13,7 +14,7 @@ struct ThreadData
     //    void (LogFile::*callback)();
     unsigned int threadID = 0x0000;
     string filePath;
-    std::shared_ptr<thread> threadPtr;
+    thread* threadPtr;
     bool isRunning;
 
     std::shared_ptr<LogDataParam> ptrDataParam;

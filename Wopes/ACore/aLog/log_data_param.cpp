@@ -1,7 +1,11 @@
 #include "log_data_param.h"
 #include <iostream>
 
-LogDataParam::LogDataParam() {}
+LogDataParam::LogDataParam()
+{
+    // pushTread = new thread(&LogDataParam::pushChar, this, nullptr);
+    // popThread = new thread(&LogDataParam::popChar, this);
+}
 
 LogDataParam::~LogDataParam()
 {
@@ -13,25 +17,31 @@ LogDataParam::~LogDataParam()
 
 void LogDataParam::pushChar(MsgData *var)
 {
-    mMutex.lock();
+    if (var == nullptr)
+    {
+        return;
+    }
+    mInputMutex.lock();
     // mInputMutex.lock();
     dataChar.push(var->msg);
     // mInputMutex.unlock();
-    mMutex.unlock();
+    mInputMutex.unlock();
 }
 
 void LogDataParam::popChar()
 {
-    mMutex.lock();
+    SpinLockGuard guard(mInputMutex);
     // mInputMutex.lock();
     if (dataChar.empty())
     {
-        static_assert(true, "data queue char is empty.");
+        std::cerr << "data queue char is empty." << std::endl;
+        mInputMutex.unlock();
+        return;
+        // static_assert(true, "data queue char is empty.");
     }
 
     dataChar.pop();
     // mInputMutex.unlock();
-    mMutex.unlock();
 }
 
 size_t LogDataParam::sizeChar()

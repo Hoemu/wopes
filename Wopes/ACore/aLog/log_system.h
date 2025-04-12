@@ -13,7 +13,7 @@ public:
 
     void setMessage(const char* format, ...);
 
-    LogController* getControllerObject() const;
+    LogController* getControllerObject();
 
     void setBaseMsg(char* file, const char* functionName, const int& line, const char* logLevel);
 

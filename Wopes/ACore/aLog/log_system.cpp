@@ -10,14 +10,15 @@ LogSystem::LogSystem()
     data = new MsgData(256, 512, 512);
     controller = new LogController();
     controller->setConfData(data);
+    // controller->setFilePath({ "../LOG/Defualt.log" });
     dirTool = new ADir;
     workConsole = new std::thread(&LogSystem::log, this);
-    workConsole->detach();
 }
 
 LogSystem::~LogSystem()
 {
     LogDataParam* dataBuffer = controller->getDataBufferObject();
+
     while (controller->getConsoleCondition())
     {
         if (controller->getConsoleCondition() == false)
@@ -29,14 +30,14 @@ LogSystem::~LogSystem()
             break;
         }
     }
-
+    workConsole->detach();
     delete workConsole;
     delete controller;
     delete dirTool;
     delete data;
 }
 
-LogController* LogSystem::getControllerObject() const
+LogController* LogSystem::getControllerObject()
 {
     return controller;
 }
