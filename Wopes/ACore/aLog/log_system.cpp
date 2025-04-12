@@ -10,18 +10,18 @@ LogSystem::LogSystem()
     data = new MsgData(256, 512, 512);
     controller = new LogController();
     controller->setConfData(data);
-    // controller->setFilePath({ "../LOG/Defualt.log" });
-    dirTool = new ADir;
     workConsole = new std::thread(&LogSystem::log, this);
+    controller->loadFileSetting()->setFilePathVector({ "../LOG/Defualt.log" });
 }
 
 LogSystem::~LogSystem()
 {
     LogDataParam* dataBuffer = controller->getDataBufferObject();
+    shared_ptr<LogConfig> configPtr = controller->getLogConfig();
 
-    while (controller->getConsoleCondition())
+    while (configPtr->isConsoleOutput())
     {
-        if (controller->getConsoleCondition() == false)
+        if (configPtr->isConsoleOutput() == false)
         {
             condConsumer.notify_one();
         }
@@ -33,7 +33,6 @@ LogSystem::~LogSystem()
     workConsole->detach();
     delete workConsole;
     delete controller;
-    delete dirTool;
     delete data;
 }
 
@@ -46,14 +45,14 @@ void LogSystem::log()
 {
     LogDataParam* dataBuffer = controller->getDataBufferObject();
 
-    while (controller->getConsoleCondition())
+    while (controller->getLogConfig()->isConsoleOutput())
     {
         std::unique_lock<std::mutex> lock(mMutex);
         if (dataBuffer == nullptr)
         {
             continue;
         }
-        while (controller->getConsoleCondition() && dataBuffer->sizeChar() == 0)
+        while (controller->getLogConfig()->isConsoleOutput() && dataBuffer->sizeChar() == 0)
         {
             condConsumer.wait(lock); // 等待缓冲区不空
         }
@@ -66,18 +65,18 @@ void LogSystem::setBaseMsg(char* file, const char* functionName, const int& line
 {
     mMutex.lock();
     // mInputMutex.lock();
-    if (data->baseConfig.isfoldFilePath == false)
+    if (controller->getLogConfig()->isFoldFilePath() == false)
     {
-        if (controller->getIsFoldFilePath() == true)
+        if (controller->getLogConfig()->isFoldFilePath() == true)
         {
             file = "NONE";
-            data->baseConfig.isfoldFilePath = true;
+            controller->getLogConfig()->setFoldFilePath(true);
         }
         else {}
     }
     else
     {
-        if (controller->getIsFoldFilePath() == false)
+        if (controller->getLogConfig()->isFoldFilePath() == false)
         {
             static_assert(true, "file flod set fail.");
         }

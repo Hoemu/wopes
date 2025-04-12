@@ -1,41 +1,8 @@
 #ifndef LOG_DATAPARAM_H
 #define LOG_DATAPARAM_H
 
-#include <list>
-#include <mutex>
-#include <queue>
-#include <string>
-#include <thread>
-#include <vector>
 #include "../aLock/spin_lock.h"
-
-typedef unsigned int u_int;
-
-using std::list;
-using std::mutex;
-using std::queue;
-using std::string;
-using std::thread;
-using std::vector;
-
-struct BaseConfigController
-{
-    bool dateLogTemp;
-
-    bool dateLogLongUse;
-
-    bool isConsoleOutput;
-
-    bool isSettingLogFileCurrent;
-
-    /** 是否折叠文件路径 */
-    bool isfoldFilePath;
-
-    /** 是否日志分类 */
-    bool isLogClassify;
-
-    bool isExistFilePath;
-};
+#include "./log_config.h"
 
 struct MsgData
 {
@@ -53,8 +20,6 @@ struct MsgData
 
     char *msgChar; // TIP 新增
     u_int msgCharLen;
-
-    BaseConfigController baseConfig;
 };
 
 class LogDataParam
@@ -69,12 +34,16 @@ public:
 
     size_t sizeChar();
 
+    bool isEmpty() noexcept;
+
     string frontChar();
 
 private:
     queue<string> dataChar;
 
     size_t capacity;
+
+    bool empty;
 
     std::atomic<size_t> head { 0 };
     std::atomic<size_t> tail { 0 };

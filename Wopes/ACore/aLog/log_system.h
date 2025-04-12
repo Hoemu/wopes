@@ -24,8 +24,6 @@ protected:
 
     LogController* controller;
 
-    ADir* dirTool;
-
 private:
     LogSystem();
     ~LogSystem();

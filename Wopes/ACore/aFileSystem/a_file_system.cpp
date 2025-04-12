@@ -44,7 +44,7 @@ inline bool AFileSystem::createFilePath(const string &var)
 inline void AFileSystem::appendLine(const string &var)
 {
     fwrite(var.c_str(), var.size(), 1, fp);
-    fwrite(backEnter, strlen(backEnter), 1, fp);
+    fwrite(backEnter, 1, 1, fp);
     // fflush(fp);
 }
 

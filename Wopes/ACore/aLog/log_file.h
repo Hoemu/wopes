@@ -2,23 +2,12 @@
 #define LOGFILE_H
 #define unint unsigned int
 
-#include <condition_variable>
-#include <memory>
-#include "../aFileSystem/a_file_system.h"
+#include <map>
+
 #include "log_data_param.h"
+#include "log_file_setting.h"
 
 using std::iostream;
-
-struct ThreadData
-{
-    //    void (LogFile::*callback)();
-    unsigned int threadID = 0x0000;
-    string filePath;
-    thread* threadPtr;
-    bool isRunning;
-
-    std::shared_ptr<LogDataParam> ptrDataParam;
-};
 
 class LogFile
 {
@@ -27,20 +16,25 @@ public:
     LogFile();
     ~LogFile();
 
-    /** 设置文件路径，只能初始化一次 */
-    void setFilePath(list<string> var);
+    void setFileSetting(shared_ptr<LogFileSetting> var);
+
+    /** 启动文件线程 */
+    void start();
 
     void pushChar(MsgData* data);
 
     int logPathVector() const;
 
 protected:
-    void runThread(const ThreadData& var);
+    void runThread(const FileThreadData& var);
 
     bool exitThread();
 
 private:
-    vector<ThreadData> vecThread;
+    vector<FileThreadData> vecThread;
+    std::map<u_int, FileThreadData> threadMap;
+
+    shared_ptr<LogFileSetting> fileSettingPtr;
 
     bool isRunningThreadHelper;
 

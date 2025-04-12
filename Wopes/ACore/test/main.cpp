@@ -47,8 +47,8 @@ TEST(spdlog, DISABLED_spdlog_test)
 TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 {
     acore::ACore aLogInit;
-    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_1", "../Log/INFO_LOG_2" });
-    aLogInit.getLogController()->setConsoleCondition(false);
+    aLogInit.loadFileSetting()->setFilePathVector({ "../Log/INFO_LOG_1", "../Log/INFO_LOG_2" });
+    aLogInit.loadConfig()->setConsoleOutput(false);
 
     constexpr int kThreads = 10;
     constexpr int kIncrementsPerThread = 10000;
@@ -86,9 +86,11 @@ TEST(LogThroughputTest, SingleThreadPerformance)
 {
     const long long kLogCount = 1000000;
     acore::ACore aLogInit;
-    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_Char" });
-    aLogInit.getLogController()->setConsoleCondition(false);
+    aLogInit.loadFileSetting()->setFilePathVector({ "../Log/INFO_LOG.log" });
+    aLogInit.loadConfig()->setConsoleOutput(false);
     auto start = std::chrono::high_resolution_clock::now();
+
+    aLogInit.getLogController()->start();
 
     for (long long i = 0; i < kLogCount; ++i)
     {
@@ -109,9 +111,9 @@ TEST(LogThroughputTest, SingleThreadPerformance)
 TEST(LogThroughputTest, DISABLED_BaseTest)
 {
     acore::ACore aLogInit;
-    aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_4" });
-    aLogInit.getLogController()->setConsoleCondition(true);
-    aLogInit.getLogController()->setFoldFilePath(true);
+    aLogInit.loadFileSetting()->setFilePathVector({ "../Log/INFO_LOG_BaseTest" });
+    aLogInit.loadConfig()->setConsoleOutput(true);
+    aLogInit.loadConfig()->setFoldFilePath(true);
     std::cout << "DISABLED_BaseTest" << std::endl;
     // TEST_LOG("fdsaf");
 

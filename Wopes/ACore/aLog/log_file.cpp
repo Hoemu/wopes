@@ -1,44 +1,50 @@
 #include "log_file.h"
 #include <iostream>
+#include "../aFileSystem/a_file_system.h"
 
 LogFile::LogFile()
 {
     filePathNumber = 0;
+    fileSettingPtr = make_shared<LogFileSetting>();
 }
 
 LogFile::~LogFile()
 {
     // 确保日志完全写入文件
     exitThread();
-    std::cout << "LogFile delete." << std::endl;
+    std::cout << "release logFile." << std::endl;
 }
 
-void LogFile::setFilePath(list<string> var)
+void LogFile::setFileSetting(shared_ptr<LogFileSetting> var)
 {
-    filePathNumber = var.size();
-    if (filePathNumber == 0)
-    {
-        static_assert(true, "set file path is fail.");
-    }
-    exitThread();
+    fileSettingPtr = var;
+}
 
-    for (const string &path : var)
+void LogFile::start()
+{
+    std::cout << "begin [start]" << std::endl;
+    if (fileSettingPtr.use_count() == 0)
     {
-        ThreadData data;
+        static_assert(true, "[ERROR]:File setting pointer is empty.");
+        return;
+    }
+
+    for (int i = 0, n = fileSettingPtr->getLogFileNumber(); i < n; i++)
+    {
+        FileThreadData data;
+        data.filePath = fileSettingPtr->getTargetFilePath(i);
         data.ptrDataParam = std::make_unique<LogDataParam>();
-        data.threadID = vecThread.size();
+        data.threadID = n - 1;
         data.isRunning = true;
-        data.filePath = path;
-        data.threadPtr = new thread(&LogFile::runThread, this, data);
-        data.threadPtr->detach();
+        data.threadPtr = std::make_shared<thread>(&LogFile::runThread, this, data);
+        // data.threadPtr->detach();
         vecThread.push_back(data);
     }
-    // std::cout << "var size is:" << logFilePath.size() << std::endl;
 }
 
 void LogFile::pushChar(MsgData *data)
 {
-    for (ThreadData &fuc : vecThread)
+    for (FileThreadData &fuc : vecThread)
     {
         // std::cout << "push log input :" << data.msg << std::endl;
         fuc.ptrDataParam->pushChar(data);
@@ -50,18 +56,21 @@ int LogFile::logPathVector() const
     return vecThread.size();
 }
 
-void LogFile::runThread(const ThreadData &var)
+void LogFile::runThread(const FileThreadData &var)
 {
     AFileSystem *mFileSystem = new AFileSystem(var.filePath);
+    std::cout << "run thread is load success, var path is:" << var.filePath << std::endl;
 
     mFileSystem->createFilePath("a");
     while (var.isRunning)
     {
-        while (vecThread[var.threadID].ptrDataParam->sizeChar() != 0)
+        while (var.isRunning && !vecThread[var.threadID].ptrDataParam->isEmpty())
         {
-            mFileSystem->appendLine(vecThread[var.threadID].ptrDataParam.get()->frontChar());
-            vecThread[var.threadID].ptrDataParam.get()->popChar();
+            mFileSystem->appendLine(vecThread[var.threadID].ptrDataParam->frontChar());
+            vecThread[var.threadID].ptrDataParam->popChar();
         }
+        // mFileSystem->closeFile();
+        // mFileSystem->createFilePath("a");
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
@@ -76,23 +85,25 @@ void LogFile::runThread(const ThreadData &var)
 
 bool LogFile::exitThread()
 {
-    for (int i = 0; i < vecThread.size(); i++)
+    bool res = false;
+    int threadSize = vecThread.size();
+    for (int i = 0; i < threadSize; i++)
     {
         while (vecThread[i].ptrDataParam->sizeChar() != 0)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            // vecThread[i].ptrDataParam->popChar();
         }
 
-        vecThread[i].isRunning = false;
+        vecThread[i].isRunning = res;
+        vecThread[i].threadPtr->detach();
 
-        if (vecThread[i].threadPtr != nullptr)
-        {
-            delete vecThread[i].threadPtr;
-            vecThread[i].threadPtr = nullptr;
-        }
-        // vecThread[i].threadPtr->detach();
-        std::cout << "[clear] " << vecThread[i].filePath << std::endl;
+        // vecThread.pop_back();
+        // delete vecThread[i].threadPtr.get();
+        std::cout << "[clear thread:] " << vecThread[i].filePath << std::endl;
     }
     vecThread.clear();
+
+    // std::cout << "current thread number is:" << vecThread.size() << std::endl;
     return true;
 }

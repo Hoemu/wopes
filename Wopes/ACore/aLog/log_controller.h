@@ -11,52 +11,50 @@ public:
     LogController();
     ~LogController();
 
-    void useDateLog(bool var);
-
     void setConfData(MsgData* var);
-
-    bool getDateLog() const;
-
-    bool getConsoleCondition() const;
-
-    void setConsoleCondition(const bool& consoleCondition);
-
-    /** 是否折叠输出的文件路径 */
-    void setFoldFilePath(const bool& var);
-
-    bool getIsFoldFilePath() const;
-
-    void setFileMaxByte(unsigned int max);
 
     void pushChar(MsgData* var);
 
-    /** 临时使用，需要手挡修改回去 */
-    void useDateLogTemp(bool var);
-
-    void setFilePath(list<string> var);
-
-    /** 查询基本配置 */
-    BaseConfigController queryBaseConfig() const;
-
     LogDataParam* getDataBufferObject() const;
 
-    /**
-     * @brief 是否设置日志目录
-     * @return bool
-     */
-    bool isSettingLogFilePath();
+    /** 设置日志配置 */
+    void setConfig(LogConfig* configPtr);
+    /** 设置日志配置 */
+    void setConfig(shared_ptr<LogConfig> configPtr);
+    /** 获取日志配置 */
+    shared_ptr<LogConfig> getLogConfig() const;
+    /** 载入日志配置（可直接进行修改） */
+    shared_ptr<LogConfig> loadLogConfig();
+
+    /** 日志文件设置 */
+    void setFileSetting(LogFileSetting* feilSetting);
+    /** 日志文件设置 */
+    void setFilSetting(shared_ptr<LogFileSetting> feilSetting);
+    /** 获取日志文件设置 */
+    shared_ptr<LogFileSetting> getFileSetting() const;
+    /** 载入日志文件设置（可直接进行修改） */
+    shared_ptr<LogFileSetting> loadFileSetting();
+
+    /** 启动日志（启动后配置最好不要做修改） */
+    void start();
 
 protected:
     void consoleLogPush(MsgData* var, const bool& isPush);
 
 private:
-    ADir* dirTool;
-
     /** 一致性数据 */
     MsgData* confData;
 
+    /** 日志配置指针（会设置初始内存） */
+    shared_ptr<LogConfig> config;
+
+    /** 日志文件设置指针（会设置初始内存） */
+    shared_ptr<LogFileSetting> feilSetting;
+
     // 这个数据才是一段一段的
     LogFile* logFile;
+
+    mutex configMutex;
 
     LogDataParam* dataBuffer;
 };

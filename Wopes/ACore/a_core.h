@@ -15,7 +15,11 @@ public:
     /**
      * @brief 获取日志控制器
      */
-    static LogController *getLogController();
+    LogController *getLogController();
+
+    shared_ptr<LogConfig> loadConfig();
+
+    shared_ptr<LogFileSetting> loadFileSetting();
 
 private:
 };

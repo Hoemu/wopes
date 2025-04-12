@@ -3,21 +3,20 @@
 
 LogController::LogController()
 {
-    dirTool = new ADir;
-    logFile = new LogFile;
+    config = std::make_shared<LogConfig>();
+    feilSetting = std::make_shared<LogFileSetting>();
+    feilSetting->setLogConfigPtr(config);
+
     dataBuffer = new LogDataParam;
+    logFile = new LogFile;
+
+    logFile->setFileSetting(feilSetting);
 }
 
 LogController::~LogController()
 {
     delete logFile;
-    delete dirTool;
     delete dataBuffer;
-}
-
-void LogController::useDateLog(bool var)
-{
-    confData->baseConfig.dateLogLongUse = var;
 }
 
 void LogController::setConfData(MsgData *var)
@@ -26,43 +25,15 @@ void LogController::setConfData(MsgData *var)
     confData = var;
 }
 
-bool LogController::getDateLog() const
-{
-    return confData->baseConfig.dateLogLongUse & confData->baseConfig.dateLogTemp;
-}
-
-bool LogController::getConsoleCondition() const
-{
-    return confData->baseConfig.isConsoleOutput;
-}
-
-void LogController::setConsoleCondition(const bool &consoleCondition)
-{
-    confData->baseConfig.isConsoleOutput = consoleCondition;
-}
-
-void LogController::setFoldFilePath(const bool &var)
-{
-    confData->baseConfig.isfoldFilePath = var;
-    // std::cout << "test:" << isfoldFilePath << std::endl;
-}
-
-bool LogController::getIsFoldFilePath() const
-{
-    return confData->baseConfig.isfoldFilePath;
-}
-
-void LogController::setFileMaxByte(unsigned int max) {}
-
 void LogController::pushChar(MsgData *var)
 {
-    if (!confData->baseConfig.isExistFilePath)
+    if (!config->isExistFilePath())
     {
-        static_assert(true, "[WARNING]:Don't set log path");
-        // std::cerr << "[WARNING]:Don't set log path: " << var->msg << std::endl;
+        static_assert(true, "[ERROR]:Don't set log path");
+        // std::cerr << "[ERROR]:Don't set log path: " << var->msg << std::endl;
     }
 
-    consoleLogPush(var, confData->baseConfig.isConsoleOutput);
+    consoleLogPush(var, config->isConsoleOutput());
     logFile->pushChar(var);
 }
 
@@ -75,42 +46,44 @@ void LogController::consoleLogPush(MsgData *var, const bool &isPush)
     dataBuffer->pushChar(var);
 }
 
-void LogController::useDateLogTemp(bool var)
-{
-    confData->baseConfig.dateLogTemp = var;
-}
-
-void LogController::setFilePath(list<string> var)
-{
-    if (var.size() > 0)
-    {
-        confData->baseConfig.isExistFilePath = true;
-    }
-    else
-    {
-        confData->baseConfig.isExistFilePath = false;
-    }
-
-    std::cout << "set pat is :" << std::endl;
-    for (list<string>::iterator i = var.begin(); i != var.end(); i++)
-    {
-        std::cout << "[" << *i << "]" << std::endl;
-    }
-
-    logFile->setFilePath(var);
-}
-
-BaseConfigController LogController::queryBaseConfig() const
-{
-    return confData->baseConfig;
-}
-
 LogDataParam *LogController::getDataBufferObject() const
 {
     return dataBuffer;
 }
 
-bool LogController::isSettingLogFilePath()
+void LogController::setConfig(LogConfig *configPtr)
 {
-    return logFile->logPathVector() > 0;
+    std::lock_guard<mutex> guard(configMutex);
+    config.reset(configPtr);
+}
+
+void LogController::setConfig(shared_ptr<LogConfig> configPtr)
+{
+    std::lock_guard<mutex> guard(configMutex);
+    config = configPtr;
+}
+
+shared_ptr<LogConfig> LogController::getLogConfig() const
+{
+    return config;
+}
+
+shared_ptr<LogConfig> LogController::loadLogConfig()
+{
+    return config;
+}
+
+shared_ptr<LogFileSetting> LogController::getFileSetting() const
+{
+    return feilSetting;
+}
+
+shared_ptr<LogFileSetting> LogController::loadFileSetting()
+{
+    return feilSetting;
+}
+
+void LogController::start()
+{
+    logFile->start();
 }
