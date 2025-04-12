@@ -8,6 +8,7 @@ struct MsgData
 {
     MsgData(u_int &&dateSize, u_int &&baseSize, u_int &&msgCharSize);
     ~MsgData();
+
     string msg;
 
     char *msgData;
@@ -20,6 +21,8 @@ struct MsgData
 
     char *msgChar; // TIP 新增
     u_int msgCharLen;
+
+    void releaseChar(char *ptr);
 };
 
 class LogDataParam

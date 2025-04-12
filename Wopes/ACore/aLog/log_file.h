@@ -21,14 +21,16 @@ public:
     /** 启动文件线程 */
     void start();
 
-    void pushChar(MsgData* data);
+    /** 退出日志线程 */
+    void quit();
 
-    int logPathVector() const;
+    /** 强行退出线程 */
+    void exit();
+
+    void pushChar(MsgData* data);
 
 protected:
     void runThread(const FileThreadData& var);
-
-    bool exitThread();
 
 private:
     vector<FileThreadData> vecThread;

@@ -25,9 +25,7 @@ void LogDataParam::pushChar(MsgData *var)
         return;
     }
     mInputMutex.lock();
-    // mInputMutex.lock();
     dataChar.push(var->msg);
-    // mInputMutex.unlock();
     mInputMutex.unlock();
 }
 
@@ -38,13 +36,12 @@ void LogDataParam::popChar()
     if (dataChar.empty())
     {
         std::cerr << "data queue char is empty." << std::endl;
-        // mInputMutex.unlock();
-        return;
         // static_assert(true, "data queue char is empty.");
+
+        return;
     }
 
     dataChar.pop();
-    // mInputMutex.unlock();
 }
 
 size_t LogDataParam::sizeChar()
@@ -59,18 +56,6 @@ size_t LogDataParam::sizeChar()
 
 bool LogDataParam::isEmpty() noexcept
 {
-    // if (empty == true)
-    // {
-    //     if (!)
-    //     {
-    //         empty = false;
-    //         return empty;
-    //     }
-    //     else
-    //     {
-    //         return empty;
-    //     }
-    // }
     return dataChar.empty();
 }
 
@@ -93,27 +78,17 @@ MsgData::MsgData(u_int &&dateSize, u_int &&baseSize, u_int &&msgCharSize)
 
 MsgData::~MsgData()
 {
-    if (date != NULL)
-    {
-        free(date);
-        date = NULL;
-    }
+    releaseChar(date);
+    releaseChar(base);
+    releaseChar(msgChar);
+    releaseChar(msgData);
+}
 
-    if (base != NULL)
+void MsgData::releaseChar(char *ptr)
+{
+    if (ptr != NULL)
     {
-        free(base);
-        base = NULL;
-    }
-
-    if (msgChar != NULL)
-    {
-        free(msgChar);
-        msgChar = NULL;
-    }
-
-    if (msgData != NULL)
-    {
-        free(msgData);
-        msgData = NULL;
+        free(ptr);
+        ptr = NULL;
     }
 }

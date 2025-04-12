@@ -11,7 +11,7 @@ LogFile::LogFile()
 LogFile::~LogFile()
 {
     // 确保日志完全写入文件
-    exitThread();
+    quit();
     std::cout << "release logFile." << std::endl;
 }
 
@@ -42,6 +42,36 @@ void LogFile::start()
     }
 }
 
+void LogFile::quit()
+{
+    bool res = false;
+    int threadSize = vecThread.size();
+    for (int i = 0; i < threadSize; i++)
+    {
+        while (vecThread[i].ptrDataParam->sizeChar() != 0)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            // vecThread[i].ptrDataParam->popChar();
+        }
+
+        vecThread[i].isRunning = res;
+        vecThread[i].threadPtr->detach();
+        vecThread[i].threadPtr.reset();
+        std::cout << "[clear thread:] " << vecThread[i].filePath << std::endl;
+    }
+    vecThread.clear();
+}
+
+void LogFile::exit()
+{
+    int threadSize = vecThread.size();
+    for (int i = 0; i < threadSize; i++)
+    {
+        vecThread[i].threadPtr.reset();
+    }
+    vecThread.clear();
+}
+
 void LogFile::pushChar(MsgData *data)
 {
     for (FileThreadData &fuc : vecThread)
@@ -49,11 +79,6 @@ void LogFile::pushChar(MsgData *data)
         // std::cout << "push log input :" << data.msg << std::endl;
         fuc.ptrDataParam->pushChar(data);
     }
-}
-
-int LogFile::logPathVector() const
-{
-    return vecThread.size();
 }
 
 void LogFile::runThread(const FileThreadData &var)
@@ -81,29 +106,4 @@ void LogFile::runThread(const FileThreadData &var)
         delete mFileSystem;
         mFileSystem = nullptr;
     }
-}
-
-bool LogFile::exitThread()
-{
-    bool res = false;
-    int threadSize = vecThread.size();
-    for (int i = 0; i < threadSize; i++)
-    {
-        while (vecThread[i].ptrDataParam->sizeChar() != 0)
-        {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            // vecThread[i].ptrDataParam->popChar();
-        }
-
-        vecThread[i].isRunning = res;
-        vecThread[i].threadPtr->detach();
-
-        // vecThread.pop_back();
-        // delete vecThread[i].threadPtr.get();
-        std::cout << "[clear thread:] " << vecThread[i].filePath << std::endl;
-    }
-    vecThread.clear();
-
-    // std::cout << "current thread number is:" << vecThread.size() << std::endl;
-    return true;
 }
