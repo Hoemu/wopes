@@ -15,8 +15,8 @@
 
  性能测试 | 测试值 |
 | ----------- | ----------- |
-| 写入速度（debug模式） | 30w logs/s~33w logs/s |
-| 写入速度（release模式）| 68w logs/s |
+| 写入速度（debug模式） | 70w logs/s~80w logs/s |
+| 写入速度（release模式）| 142w logs/s |
 | ns/op（release模式）| 4.2k ns/op |
 
 如下图写入速度测试（release模式）：
