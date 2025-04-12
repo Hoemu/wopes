@@ -26,8 +26,7 @@ void LogDataParam::popChar()
     // mInputMutex.lock();
     if (dataChar.empty())
     {
-        std::cerr << "Data char queue is empty." << std::endl;
-        return;
+        static_assert(true, "data queue char is empty.");
     }
 
     dataChar.pop();

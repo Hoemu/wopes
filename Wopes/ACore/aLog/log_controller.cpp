@@ -58,8 +58,8 @@ void LogController::pushChar(MsgData *var)
 {
     if (!confData->baseConfig.isExistFilePath)
     {
-        std::cerr << "[WARNING]:Don't set log path: " << var->msg << std::endl;
-        return;
+        static_assert(true, "[WARNING]:Don't set log path");
+        // std::cerr << "[WARNING]:Don't set log path: " << var->msg << std::endl;
     }
 
     consoleLogPush(var, confData->baseConfig.isConsoleOutput);
@@ -94,7 +94,7 @@ void LogController::setFilePath(list<string> var)
     std::cout << "set pat is :" << std::endl;
     for (list<string>::iterator i = var.begin(); i != var.end(); i++)
     {
-        std::cout << *i << std::endl;
+        std::cout << "[" << *i << "]" << std::endl;
     }
 
     logFile->setFilePath(var);

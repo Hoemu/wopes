@@ -16,6 +16,10 @@ LogFile::~LogFile()
 void LogFile::setFilePath(list<string> var)
 {
     filePathNumber = var.size();
+    if (filePathNumber == 0)
+    {
+        static_assert(true, "set file path is fail.");
+    }
     exitThread();
 
     for (const string &path : var)

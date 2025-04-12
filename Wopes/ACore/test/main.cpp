@@ -84,10 +84,10 @@ TEST(LogThroughputTest, DISABLED_AtomicIncrement)
 /** ****************************** 单线程测试 */
 TEST(LogThroughputTest, SingleThreadPerformance)
 {
-    const long long kLogCount = 10000;
+    const long long kLogCount = 1000000;
     acore::ACore aLogInit;
     aLogInit.getLogController()->setFilePath({ "../Log/INFO_LOG_Char" });
-    aLogInit.getLogController()->setConsoleCondition(true);
+    aLogInit.getLogController()->setConsoleCondition(false);
     auto start = std::chrono::high_resolution_clock::now();
 
     for (long long i = 0; i < kLogCount; ++i)

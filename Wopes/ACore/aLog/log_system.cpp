@@ -72,9 +72,14 @@ void LogSystem::setBaseMsg(char* file, const char* functionName, const int& line
             file = "NONE";
             data->baseConfig.isfoldFilePath = true;
         }
+        else {}
     }
     else
     {
+        if (controller->getIsFoldFilePath() == false)
+        {
+            static_assert(true, "file flod set fail.");
+        }
         file = "NONE";
     }
 
@@ -92,7 +97,7 @@ void LogSystem::setBaseMsg(char* file, const char* functionName, const int& line
 void LogSystem::setMessage(const char* format, ...)
 {
     mMutex.lock();
-    std::cout << "push begin." << std::endl;
+    // std::cout << "push begin." << std::endl;
     // mInputMutex.lock();
     __builtin_va_list local_argv;
     __builtin_va_start(local_argv, format);
@@ -106,7 +111,7 @@ void LogSystem::setMessage(const char* format, ...)
 
     controller->pushChar(data);
     condConsumer.notify_one();
-    std::cout << "push end." << std::endl;
+    // std::cout << "push end." << std::endl;
     // mInputMutex.unlock();
     mMutex.unlock();
 }
