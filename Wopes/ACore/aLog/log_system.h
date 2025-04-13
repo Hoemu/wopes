@@ -6,10 +6,10 @@
 #include "log_controller.h"
 #include "log_data_param.h"
 
-class ACORE_EXPORT LogSystem : public InternalSingleton<LogSystem>
+class ACORE_EXPORT LogSystem : public SingletonLazy<LogSystem>
 {
 public:
-    friend class InternalSingleton<LogSystem>;
+    friend class SingletonLazy<LogSystem>;
 
     void setMessage(const char* format, ...);
 

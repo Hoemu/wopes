@@ -8,7 +8,7 @@
 
 ### 建议使用：
 
-在使用系统上建议使用静态库或者直接源代码导入，源代码导入引用 `acore.cmake`  文件，如下导入方式
+在使用系统上建议使用静态库或者直接源代码导入（动态库调用会增加调用函数微秒级开销），源代码导入引用 `acore.cmake`  文件，如下导入方式
 ```c++
 include(${core_path}/acore.cmake) # 其中 core_path 为日志系统路径
 ```
@@ -35,7 +35,7 @@ include(${core_path}/acore.cmake) # 其中 core_path 为日志系统路径
  性能测试 | 测试值 |
 | ----------- | ----------- |
 | 写入速度（debug模式） | 70w logs/s~80w logs/s |
-| 写入速度（release模式）| 164w logs/s |
+| 写入速度（release模式）| 155w logs/s |
 | ns/op（release模式）| 4.2k ns/op |
 
 如下图写入速度测试（release模式）：

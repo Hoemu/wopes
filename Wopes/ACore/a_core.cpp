@@ -8,10 +8,7 @@ ACore::ACore()
     LogSystem::instance();
 }
 
-ACore::~ACore()
-{
-    LogSystem::destroy();
-}
+ACore::~ACore() {}
 
 LogController *ACore::getLogController()
 {
