@@ -9,6 +9,7 @@ LogConfig::LogConfig()
     configPtr->foldFilePath = true;
     configPtr->logClassify = false;
     configPtr->existFilePath = false;
+    configPtr->implement = false;
 }
 
 void LogConfig::setDataLogTemp(const bool &var)
@@ -64,6 +65,16 @@ void LogConfig::setExistFilePath(const bool &var)
 bool LogConfig::isExistFilePath() const
 {
     return configPtr->existFilePath;
+}
+
+void LogConfig::setImplement(const bool &var)
+{
+    configPtr->implement = var;
+}
+
+bool LogConfig::isImplement() const
+{
+    return configPtr->implement;
 }
 
 bool LogConfig::isDataLogLongUse() const

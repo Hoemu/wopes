@@ -1,6 +1,5 @@
 #include "log_file.h"
 #include <iostream>
-#include "../aFileSystem/a_file_system.h"
 
 LogFile::LogFile()
 {
@@ -29,10 +28,12 @@ void LogFile::start()
         return;
     }
 
+    // std::cout << "get file number:" << fileSettingPtr->getLogFileNumber() << " " << fileSettingPtr->getTargetFilePath(0) << std::endl;
     for (int i = 0, n = fileSettingPtr->getLogFileNumber(); i < n; i++)
     {
         FileThreadData data;
         data.filePath = fileSettingPtr->getTargetFilePath(i);
+        data.fileSystemPtr = std::make_shared<AFileSystem>(data.filePath);
         data.ptrDataParam = std::make_unique<LogDataParam>();
         data.threadID = n - 1;
         data.isRunning = true;
@@ -40,6 +41,7 @@ void LogFile::start()
         // data.threadPtr->detach();
         vecThread.push_back(data);
     }
+    // std::cout << "{file number}:" << fileSettingPtr->getLogFileNumber() << ", {vecThread}:" << vecThread.size() << std::endl;
 }
 
 void LogFile::quit()
@@ -57,7 +59,9 @@ void LogFile::quit()
         vecThread[i].isRunning = res;
         vecThread[i].threadPtr->detach();
         vecThread[i].threadPtr.reset();
-        std::cout << "[clear thread:] " << vecThread[i].filePath << std::endl;
+
+        vecThread[i].fileSystemPtr.reset();
+        // std::cout << "[clear thread:] " << vecThread[i].filePath << " count:" << vecThread[i].fileSystemPtr.use_count() << std::endl;
     }
     vecThread.clear();
 }
@@ -74,36 +78,34 @@ void LogFile::exit()
 
 void LogFile::pushChar(MsgData *data)
 {
+    // std::cout << "push log input :" << data->msg << " vecThread:" << vecThread.size() << std::endl;
     for (FileThreadData &fuc : vecThread)
     {
-        // std::cout << "push log input :" << data.msg << std::endl;
         fuc.ptrDataParam->pushChar(data);
     }
 }
 
 void LogFile::runThread(const FileThreadData &var)
 {
-    AFileSystem *mFileSystem = new AFileSystem(var.filePath);
-    std::cout << "run thread is load success, var path is:" << var.filePath << std::endl;
+    shared_ptr<AFileSystem> mFileSystem = var.fileSystemPtr;
 
+    std::cout << "run thread is load success, var path is:" << var.filePath << "var.isRunning:" << var.isRunning << std::endl;
     mFileSystem->createFilePath("a");
+
     while (var.isRunning)
     {
+        bool res = vecThread[var.threadID].ptrDataParam->isEmpty();
+        // std::cout << "var.threadID:" << var.threadID << std::endl;
         while (var.isRunning && !vecThread[var.threadID].ptrDataParam->isEmpty())
         {
             mFileSystem->appendLine(vecThread[var.threadID].ptrDataParam->frontChar());
             vecThread[var.threadID].ptrDataParam->popChar();
         }
-        // mFileSystem->closeFile();
-        // mFileSystem->createFilePath("a");
+        if (fileSettingPtr->getLogConfig()->isImplement())
+        {
+            mFileSystem->closeFile();
+            mFileSystem->createFilePath("a");
+        }
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
-    mFileSystem->closeFile();
-
-    if (mFileSystem != nullptr)
-    {
-        delete mFileSystem;
-        mFileSystem = nullptr;
     }
 }

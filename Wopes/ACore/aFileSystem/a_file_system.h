@@ -1,7 +1,6 @@
 #ifndef A_FILE_SYSTEM_H
 #define A_FILE_SYSTEM_H
 
-#include <mutex>
 #include <string>
 #include "../ACore_global.h"
 #include "a_dir.h"
@@ -16,10 +15,7 @@ public:
 
     void setPath(const string &targetPath);
 
-    /**
-     *  @brief 创建文件路径
-     *  @param var 表示创建的文件规则
-     */
+    /** 创建文件路径 */
     bool createFilePath(const string &var);
 
     void appendLine(const string &var);
@@ -28,12 +24,7 @@ public:
 
     bool closeFile();
 
-    void autoSaveFile(const int &fileMax);
-
-    /**
-     * @brief 文件是否存在
-     * @return bool
-     */
+    /** 文件是否存在 */
     bool isExist();
 
 private:
@@ -44,8 +35,6 @@ private:
     unsigned int chCount;
 
     unsigned int maxContents;
-
-    std::mutex mMutex;
 
     FILE *fp;
 

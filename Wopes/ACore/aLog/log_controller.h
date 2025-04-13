@@ -1,7 +1,6 @@
 #ifndef LOGCONTROLLER_H
 #define LOGCONTROLLER_H
 #include "../ACore_global.h"
-#include "../aFileSystem/a_dir.h"
 #include "log_file.h"
 
 /** 日志控制器 */

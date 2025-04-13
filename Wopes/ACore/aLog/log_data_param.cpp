@@ -3,10 +3,7 @@
 
 LogDataParam::LogDataParam()
 {
-    // pushTread = new thread(&LogDataParam::pushChar, this, nullptr);
-    // popThread = new thread(&LogDataParam::popChar, this);
     dataChar = {};
-
     empty = true;
 }
 
@@ -56,6 +53,7 @@ size_t LogDataParam::sizeChar()
 
 bool LogDataParam::isEmpty() noexcept
 {
+    // SpinLockGuard guardLock(mInputMutex);
     return dataChar.empty();
 }
 

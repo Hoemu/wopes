@@ -13,12 +13,13 @@ find_source_code(SRCS)
 message(STATUS "PROJECT_VERSION: ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.")
 
 if(IS_GENERAT_LIBRARY)
-    add_library(ACore SHARED
+    add_library(ACore ${ACORE_LIBRARY_STATUS}
         ${SRCS}
         ${ACore_Version}
         )
     target_compile_definitions(ACore PRIVATE ACORE_LIBRARY)
-    message(STATUS "create lib.")
+
+    message(STATUS "create lib:" ${ACORE_LIBRARY_STATUS} ".")
 else()
     add_executable(ACore ${SRCS})
     target_link_libraries(ACore ${GOOLE_TEST_LIB})
@@ -27,9 +28,8 @@ else()
     message(STATUS "create exe.")
 endif()
 
-set_target_properties(ACore PROPERTIES
-    OUTPUT_NAME "acore"          # 修改基础名称，生成 libACore.a
-)
+set_target_properties(ACore PROPERTIES OUTPUT_NAME "acore")
+
 
 # 安装可执行文件到bin目录
 install(TARGETS ACore

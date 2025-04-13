@@ -3,13 +3,12 @@
 #define unint unsigned int
 
 #include <map>
-
 #include "log_data_param.h"
 #include "log_file_setting.h"
 
 using std::iostream;
 
-class LogFile
+class ACORE_EXPORT LogFile
 {
 public:
     // 注意这里面的数据是不生效的（并没有在当前线程下运行）

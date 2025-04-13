@@ -8,6 +8,7 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include "../ACore_global.h"
 
 typedef unsigned int u_int;
 
@@ -40,10 +41,13 @@ struct BaseConfig
 
     /** 是否存在文件路径 */
     bool existFilePath;
+
+    /** 实时载入文件 */
+    bool implement;
 };
 
 /** 日志配置 */
-class LogConfig
+class ACORE_EXPORT LogConfig
 {
 public:
     LogConfig();
@@ -78,6 +82,11 @@ public:
     void setExistFilePath(const bool &var);
     /** 是否存在文件路径 */
     bool isExistFilePath() const;
+
+    /** 设置实时输入 */
+    void setImplement(const bool &var);
+    /** 实时输入 */
+    bool isImplement() const;
 
 private:
     unique_ptr<BaseConfig> configPtr;

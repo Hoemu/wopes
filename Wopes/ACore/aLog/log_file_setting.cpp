@@ -53,6 +53,11 @@ u_int LogFileSetting::getLogFileNumber() const
     {
         std::cerr << "file path number is empty." << std::endl;
     }
-
+    std::cout << "get File number:" << filePathList.size() << std::endl;
     return filePathList.size();
+}
+
+shared_ptr<LogConfig> LogFileSetting::getLogConfig() const
+{
+    return config;
 }

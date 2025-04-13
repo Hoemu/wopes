@@ -32,13 +32,14 @@ else()
     set(IS_GENERAT_LIBRARY ON)    # Release 模式关闭调试
 endif()
 
-#---------------------  以下为手动设置 ---------------------#
+#--------------------------------  以下为手动设置 --------------------------------#
 
-# include(./CMakePackageConfigHelpers)# TODO 需要自动定位 ACore_DIRS 时放开注释
-set(IS_GENERAT_LIBRARY OFF) # 是否生成库/或者是调试模式
-set(IS_GOOGLE_TEST ON) # 是否开启 googleTest
-set(IS_SPDLOG ON)
-set(BUILD_PATH "build")      # 构建路径（相对当前源文件）
+# include(./CMakePackageConfigHelpers)      # NOTE 需要自动定位 ACore_DIRS 时放开注释
+set(IS_GENERAT_LIBRARY OFF)                 # 是否生成库/或者是调试模式
+set(IS_GOOGLE_TEST ON)                      # 是否开启 googleTest
+set(ACORE_LIBRARY_STATUS SHARED)            # 生产静态库 （动态库或者静态库） STATIC/SHARED
+set(IS_SPDLOG ON)                           # 启动 spdLog
+set(BUILD_PATH "build")                     # 构建路径（相对当前源文件）
 set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/../${PROJECT_NAME}") # 自定义安装位置
 set(ACore_LIBS "${CMAKE_INSTALL_PREFIX}/lib/lib${PROJECT_NAME}.dll.a")     # 静态库位置（安装后）
 set(ACore_Resource_DIR ${CMAKE_CURRENT_BINARY_DIR})

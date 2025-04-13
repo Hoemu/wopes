@@ -1,6 +1,7 @@
 #ifndef LOG_FILE_CONFIG_H
 #define LOG_FILE_CONFIG_H
 
+#include "../aFileSystem/a_file_system.h"
 #include "log_config.h"
 #include "log_data_param.h"
 
@@ -15,9 +16,10 @@ struct FileThreadData
     bool isRunning;
 
     shared_ptr<LogDataParam> ptrDataParam;
+    shared_ptr<AFileSystem> fileSystemPtr;
 };
 
-class LogFileSetting : public LogConfig
+class ACORE_EXPORT LogFileSetting : public LogConfig
 {
 public:
     LogFileSetting();
@@ -36,6 +38,8 @@ public:
     u_int getFileMaxByte() const;
 
     u_int getLogFileNumber() const;
+
+    shared_ptr<LogConfig> getLogConfig() const;
 
 private:
     shared_ptr<FileThreadData> threadDataPtr;

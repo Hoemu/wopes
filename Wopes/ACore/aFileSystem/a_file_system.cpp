@@ -11,6 +11,12 @@ AFileSystem::AFileSystem(const string &targetPath) : filePath(targetPath)
 
 AFileSystem::~AFileSystem()
 {
+    if (fp != NULL)
+    {
+        std::cout << "close file." << std::endl;
+        std::fclose(fp);
+    }
+
     if (dir != nullptr)
     {
         delete dir;
@@ -43,6 +49,7 @@ inline bool AFileSystem::createFilePath(const string &var)
 
 inline void AFileSystem::appendLine(const string &var)
 {
+    // std::cout << "append:" << var << std::endl;
     fwrite(var.c_str(), var.size(), 1, fp);
     fwrite(backEnter, 1, 1, fp);
     // fflush(fp);
@@ -55,18 +62,8 @@ inline void AFileSystem::clearContents()
 
 inline bool AFileSystem::closeFile()
 {
+    // std::cout << "close file." << std::endl;
     return std::fclose(fp);
-}
-
-inline void AFileSystem::autoSaveFile(const int &fileMax)
-{
-    fseeko(fp, 0, SEEK_END);
-
-    if (ftello(fp) % fileMax == fileMax)
-    {
-        closeFile();
-        createFilePath("a");
-    }
 }
 
 inline bool AFileSystem::isExist()
