@@ -43,6 +43,7 @@ include(${core_path}/acore.cmake) # 其中 core_path 为日志系统路径
 ![图片 speed ](../img/test-Release.png)
 
 如下图 `ns/op` 测试（release模式）
+
 ![图片 ns/op](../img/test-Release-ns_op.png)
 
 注：当使用多个文件同时写入，会导致性能下降
