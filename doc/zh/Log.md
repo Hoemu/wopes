@@ -30,6 +30,8 @@ include(${core_path}/acore.cmake) # 其中 core_path 为日志系统路径
 - 单例继承（已完成）
 - 其他（待完善...）
 
+代码路径:[点击跳转](../../Wopes/ACore/)
+
 单文件写入数据量如下：
 
  性能测试 | 测试值 |
