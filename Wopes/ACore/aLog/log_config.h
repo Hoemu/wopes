@@ -85,8 +85,10 @@ public:
 
     /** 设置实时输入 */
     void setImplement(const bool &var);
-    /** 实时输入 */
+    /** 是否实时输入 */
     bool isImplement() const;
+
+    void printConfig();
 
 private:
     unique_ptr<BaseConfig> configPtr;

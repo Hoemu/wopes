@@ -1,5 +1,7 @@
 #include "log_config.h"
 
+#include <iostream>
+
 LogConfig::LogConfig()
 {
     configPtr = std::make_unique<BaseConfig>();
@@ -75,6 +77,11 @@ void LogConfig::setImplement(const bool &var)
 bool LogConfig::isImplement() const
 {
     return configPtr->implement;
+}
+
+void LogConfig::printConfig()
+{
+    std::cout << "init log config:" << configPtr->dateLogLongUse << configPtr->dateLogTemp << configPtr->consoleOutput << configPtr->implement << std::endl;
 }
 
 bool LogConfig::isDataLogLongUse() const

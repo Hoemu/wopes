@@ -11,6 +11,8 @@ LogController::LogController()
     logFile = new LogFile;
 
     logFile->setFileSetting(feilSetting);
+
+    feilSetting->printConfig();
 }
 
 LogController::~LogController()

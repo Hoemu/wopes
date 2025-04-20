@@ -4,9 +4,12 @@
 #include <atomic>
 #include <mutex>
 
+// 单例模板
+// NOTE 写了三个模板，懒汉基础版，懒汉线程安全版，饿汉版
+
 /** 懒汉模板 */
 template<typename className>
-class InternalSingleton
+class SingletonLazy
 {
 public:
     static className* instance()
@@ -28,53 +31,62 @@ public:
     };
 
 protected:
-    InternalSingleton() {};
-    virtual ~InternalSingleton() {};
+    SingletonLazy() {};
+    virtual ~SingletonLazy() {};
 
 private:
-    InternalSingleton(const InternalSingleton&) = delete;
-    InternalSingleton(const InternalSingleton&&) = delete;
-    void operator=(const InternalSingleton&) = delete;
+    SingletonLazy(const SingletonLazy&) = delete;
+    SingletonLazy(const SingletonLazy&&) = delete;
+    void operator=(const SingletonLazy&) = delete;
     static className* mInstance;
 };
 template<typename className>
-className* InternalSingleton<className>::mInstance = nullptr; // 初始化为T类型的默认值
+className* SingletonLazy<className>::mInstance = nullptr; // 初始化为T类型的默认值
 
 /** 懒汉模板（线程安全模式） */
-template<typename lazyClass>
-class SingletonLazy
+template<typename lazySafeClass>
+class SingletonLazySafe
 {
 public:
-    static lazyClass* instance()
+    static lazySafeClass* instance()
     {
-        lazyClass* tmp = mInstance.load(std::memory_order_relaxed);
+        lazySafeClass* tmp = mInstance.load(std::memory_order_relaxed);
         if (tmp == nullptr)
         {
             std::lock_guard<std::mutex> lock(mtx); // 加锁
             tmp = mInstance.load(std::memory_order_relaxed);
             if (tmp == nullptr)
             {
-                tmp = new lazyClass();
+                tmp = new lazySafeClass();
                 mInstance.store(tmp, std::memory_order_release);
             }
         }
         return tmp;
     }
 
+    static void destroy()
+    {
+        if (mInstance != nullptr)
+        {
+            delete mInstance;
+            mInstance = nullptr;
+        }
+    };
+
 protected:
-    SingletonLazy() {};
-    virtual ~SingletonLazy() {};
+    SingletonLazySafe() {};
+    virtual ~SingletonLazySafe() {};
 
 private:
-    static std::atomic<lazyClass*> mInstance; // 原子指针
+    static std::atomic<lazySafeClass*> mInstance; // 原子指针
     static std::mutex mtx;
-    SingletonLazy(const SingletonLazy&) = delete;
-    SingletonLazy& operator=(const SingletonLazy&) = delete;
+    SingletonLazySafe(const SingletonLazySafe&) = delete;
+    SingletonLazySafe& operator=(const SingletonLazySafe&) = delete;
 };
-template<typename lazyClass>
-std::atomic<lazyClass*> SingletonLazy<lazyClass>::mInstance(nullptr);
-template<typename lazyClass>
-std::mutex SingletonLazy<lazyClass>::mtx;
+template<typename lazySafeClass>
+std::atomic<lazySafeClass*> SingletonLazySafe<lazySafeClass>::mInstance(nullptr);
+template<typename lazySafeClass>
+std::mutex SingletonLazySafe<lazySafeClass>::mtx;
 
 /** 饿汉模板（注：只能支持到毫秒级） */
 template<typename eagerClass>
@@ -86,6 +98,15 @@ public:
         std::lock_guard<std::mutex> lock(mtx); // 加锁
         return mInstance;                      // 直接返回已初始化的实例
     }
+
+    static void destroy()
+    {
+        if (mInstance != nullptr)
+        {
+            delete mInstance;
+            mInstance = nullptr;
+        }
+    };
 
 protected:
     SingletonEager() {};
