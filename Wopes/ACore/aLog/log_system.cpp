@@ -6,8 +6,8 @@
 LogSystem::LogSystem()
 {
     // 设置默认路径
-    std::ios::sync_with_stdio(false); // 输出优化
-    data = new MsgData(256, 512, 512);
+    std::ios::sync_with_stdio(false);  // 输出优化
+    data = new MsgData(256, 512, 512); // 初始化内存（自定义）
     controller = new LogController();
     controller->setConfData(data);
     workConsole = new std::thread(&LogSystem::log, this);

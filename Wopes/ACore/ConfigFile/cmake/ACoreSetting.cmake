@@ -35,7 +35,7 @@ endif()
 #--------------------------------  以下为手动设置 --------------------------------#
 
 # include(./CMakePackageConfigHelpers)      # NOTE 需要自动定位 ACore_DIRS 时放开注释
-set(IS_GENERAT_LIBRARY OFF)                 # 是否生成库/或者是调试模式
+# set(IS_GENERAT_LIBRARY OFF)                 # 是否生成库/或者是调试模式
 set(IS_GOOGLE_TEST ON)                      # 是否开启 googleTest
 set(ACORE_LIBRARY_STATUS STATIC)            # 生产静态库 （动态库或者静态库） STATIC/SHARED
 set(IS_SPDLOG ON)                           # 启动 spdLog
