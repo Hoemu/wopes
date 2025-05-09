@@ -21,8 +21,7 @@ if(IS_GENERAT_LIBRARY)
 
     message(STATUS "create lib:" ${ACORE_LIBRARY_STATUS} ".")
 else()
-    add_executable(ACore ${SRCS}
-        aNetwork/tcp_base.h aNetwork/tcp_base.cpp)
+    add_executable(ACore ${SRCS})
     target_link_libraries(ACore ${GOOLE_TEST_LIB})
     enable_testing()
     add_test(NAME ACore COMMAND ACore)
